@@ -1,5 +1,7 @@
 import { SubmitHandler, useForm } from "react-hook-form";
 
+import { errorMessage, PASSWORD_MIN_LENGTH } from "@/helpers/validation";
+import { REGEX_EMAIL } from "@/lib/constants";
 import { useSignup } from "@/queries/user";
 import { FormRules } from "@/types/form";
 import { SignupFormField } from "@/types/user";
@@ -20,18 +22,51 @@ export default function useSignupForm() {
 
   const rules: FormRules<SignupFormField> = {
     email: {
-      required: true,
+      required: {
+        value: true,
+        message: errorMessage.REQUIRED_EMAIL,
+      },
+      pattern: {
+        value: REGEX_EMAIL,
+        message: errorMessage.INVALID_EMAIL_FORMAT,
+      },
     },
     password: {
-      required: true,
+      required: {
+        value: true,
+        message: errorMessage.REQUIRED_PASSWORD,
+      },
+      minLength: {
+        value: PASSWORD_MIN_LENGTH,
+        message: errorMessage.MIN_LENGTH_PASSWORD,
+      },
     },
     passwordConfirm: {
-      required: true,
+      validate: (passwordConfirm, { password }) =>
+        passwordConfirm === password || errorMessage.NOT_EQUAL_PASSWORD_CONFIRM,
     },
     type: {
       required: true,
     },
   };
 
-  return { form, onSubmit, rules };
+  const handlers = {
+    email: {
+      onBlur: () => {
+        form.trigger("email");
+      },
+    },
+    password: {
+      onBlur: () => {
+        form.trigger(["password", "passwordConfirm"]);
+      },
+    },
+    passwordConfirm: {
+      onBlur: () => {
+        form.trigger("passwordConfirm");
+      },
+    },
+  };
+
+  return { form, onSubmit, rules, handlers };
 }
