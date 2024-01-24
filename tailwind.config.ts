@@ -12,6 +12,10 @@ const config = {
   ],
   prefix: "",
   theme: {
+    screens: {
+      tablet: "744px",
+      desktop: "1200px",
+    },
     container: {
       center: true,
       padding: "2rem",
