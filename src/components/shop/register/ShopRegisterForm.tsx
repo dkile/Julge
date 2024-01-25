@@ -1,10 +1,12 @@
-"use client";
-
 import { zodResolver } from "@hookform/resolvers/zod";
 import Image from "next/image";
+import { useState } from "react";
 import { useForm } from "react-hook-form";
 import * as z from "zod";
 
+import { fetcher } from "@/apis/fetcher";
+import { ShopRegisterFormModal } from "@/components/shop/register/ShopRegisterFormModal";
+import { AlertDialog, AlertDialogTrigger } from "@/components/ui/alert-dialog";
 import { Button } from "@/components/ui/button";
 import {
   Form,
@@ -22,6 +24,7 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { Textarea } from "@/components/ui/textarea";
+import { apiRouteUtils } from "@/routes";
 
 const CATEGORY = [
   "한식",
@@ -72,6 +75,7 @@ const formSchema = z.object({
 });
 
 export default function ShopRegisterForm() {
+  const [responseResult, setResponseResult] = useState("");
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -80,12 +84,30 @@ export default function ShopRegisterForm() {
       address1: "",
       address2: "",
       description: "",
-      imageUrl: "",
+      imageUrl: "https://i.ibb.co/s9ZGXVd/202312223572.png",
       originalHourlyPay: "",
     },
   });
 
-  function onSubmit(values: z.infer<typeof formSchema>) {}
+  const token = null; // 임시값
+
+  async function onSubmit(values: z.infer<typeof formSchema>) {
+    try {
+      await fetcher.post(apiRouteUtils.SHOPS, {
+        json: values,
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+      setResponseResult("200");
+    } catch (e: any) {
+      if (e.response.status === 401) {
+        setResponseResult("401");
+      } else if (e.response.status === 409) {
+        setResponseResult("409");
+      }
+    }
+  }
 
   return (
     <>
@@ -93,7 +115,6 @@ export default function ShopRegisterForm() {
         <span>가게 정보</span>
         <Image src="/icons/close.svg" width="10" height="10" alt="종료이미지" />
       </div>
-
       <Form {...form}>
         <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
           <FormField
@@ -160,7 +181,6 @@ export default function ShopRegisterForm() {
                         {item}
                       </SelectItem>
                     ))}
-                    )
                   </SelectContent>
                 </Select>
               </FormItem>
@@ -192,18 +212,7 @@ export default function ShopRegisterForm() {
               </FormItem>
             )}
           />
-          <FormField
-            control={form.control}
-            name="imageUrl"
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel>가게 이미지</FormLabel>
-                <FormControl>
-                  <Input type="file" {...field} />
-                </FormControl>
-              </FormItem>
-            )}
-          />
+          {/* TODO: Input Type : file 추가 예정 */}
           <FormField
             control={form.control}
             name="description"
@@ -220,8 +229,12 @@ export default function ShopRegisterForm() {
               </FormItem>
             )}
           />
-
-          <Button type="submit">등록하기</Button>
+          <AlertDialog>
+            <AlertDialogTrigger asChild>
+              <Button type="submit">등록하기</Button>
+            </AlertDialogTrigger>
+            <ShopRegisterFormModal responseResult={responseResult} />
+          </AlertDialog>
         </form>
       </Form>
     </>
