@@ -1,5 +1,5 @@
 import NoticeListCard from "@/components/notices/NoticeListCard";
-import NoticeDropdownMenu from "@/components/notices/NoticeListDropDownMenu";
+import NoticeListDropdownMenu from "@/components/notices/NoticeListDropdownMenu";
 import NoticeListPagination from "@/components/notices/NoticeListPagination";
 import NoticeListPopover from "@/components/notices/NoticeListPopover";
 
@@ -17,7 +17,7 @@ export default function notices() {
         <div className="flex flex-col gap-[1.6rem]">
           <h1 className="text-[2rem] font-[700]">전체 공고</h1>
           <div className="flex gap-[1rem]">
-            <NoticeDropdownMenu />
+            <NoticeListDropdownMenu />
             <NoticeListPopover />
           </div>
         </div>
