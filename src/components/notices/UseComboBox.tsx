@@ -65,7 +65,7 @@ export default function UseComboBox() {
               <CommandItem
                 key={framework.value}
                 value={framework.value}
-                onSelect={(currentValue) => {
+                onSelect={(currentValue: string) => {
                   setValue(currentValue === value ? "" : currentValue);
                   setOpen(false);
                 }}

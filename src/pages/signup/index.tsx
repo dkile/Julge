@@ -1,9 +1,12 @@
 import SignupForm from "@/components/signup/SignupForm";
+import DialogProvider from "@/providers/DialogProvider";
 
 export default function Page() {
   return (
-    <section>
-      <SignupForm />
-    </section>
+    <DialogProvider>
+      <section>
+        <SignupForm />
+      </section>
+    </DialogProvider>
   );
 }

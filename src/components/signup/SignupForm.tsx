@@ -1,3 +1,4 @@
+import ValidationErrorDialog from "@/components/signup/ValidationErrorDialog";
 import { Button } from "@/components/ui/button";
 import {
   Form,
@@ -104,6 +105,7 @@ export default function SignupForm() {
         <Button type="submit" disabled={!form.formState.isValid}>
           가입하기
         </Button>
+        <ValidationErrorDialog />
       </form>
     </Form>
   );

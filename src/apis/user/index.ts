@@ -6,6 +6,7 @@ import {
   type UsersRequestBody,
   usersResponseSchema,
 } from "@/apis/user/schema";
+import { ConflictRequestError } from "@/helpers/error";
 import { apiRouteUtils } from "@/routes";
 
 export const postUsers = async ({
@@ -23,8 +24,10 @@ export const postUsers = async ({
     })
     .json()
     .then(usersResponseSchema.parse)
-    .then()
     .then((res) => res.item)
     .catch((err: HTTPError) => {
+      if (err.response.status === 409)
+        throw new ConflictRequestError(err.message);
+
       throw err;
     });
