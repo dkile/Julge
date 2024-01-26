@@ -1,5 +1,5 @@
 import NoticeListCard from "@/components/notices/NoticeListCard";
-import NoticeListDropdownMenu from "@/components/notices/NoticeListDropdownMenu";
+import NoticeListDropdownMenu from "@/components/notices/NoticeListDropDownMenu";
 import NoticeListPagination from "@/components/notices/NoticeListPagination";
 import NoticeListPopover from "@/components/notices/NoticeListPopover";
 
