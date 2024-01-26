@@ -19,7 +19,7 @@ function NoticeRegister() {
   return (
     <>
       <Link href={"/notices"}>
-        <div className="relative h-[2rem] w-[10.8rem]">
+        <div className="relative h-[1.5rem] w-[8.1rem]">
           <Image
             src="/icons/logo.svg"
             layout="fill"
@@ -34,7 +34,7 @@ function NoticeRegister() {
             <div className="w-[37.5rem] gap-[0.8rem]">
               <div className="flex flex-col items-center justify-center">
                 <div className="flex w-full flex-col items-start gap-[0.8rem] px-[1.2rem] pb-[8rem] pt-[4rem]">
-                  <div className="flex h-[52.3rem] w-full flex-col items-center gap-[2.4rem]">
+                  <div className="flex w-full flex-col items-center gap-[2.4rem]">
                     <div className="flex w-full items-center justify-between self-stretch">
                       <h3 className="text-[2rem] font-bold not-italic leading-normal text-black">
                         공고 등록
@@ -51,7 +51,7 @@ function NoticeRegister() {
                         />
                       </Button>
                     </div>
-                    <div className="flex h-[52.3rem] w-full flex-col justify-end gap-[2rem]">
+                    <div className="flex w-full flex-col justify-end gap-[2rem]">
                       <div className="flex w-full flex-col items-start gap-[0.8rem]">
                         <FormField
                           control={form.control}
