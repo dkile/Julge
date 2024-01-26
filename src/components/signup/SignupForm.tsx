@@ -1,3 +1,4 @@
+import { CheckRadioGroupItem } from "@/components/signup/CheckRadioGroupItem";
 import ValidationErrorDialog from "@/components/signup/ValidationErrorDialog";
 import { Button } from "@/components/ui/button";
 import {
@@ -9,30 +10,35 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
-import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
+import { RadioGroup } from "@/components/ui/radio-group";
 import useSignupForm from "@/hooks/useSignupForm";
+import { cn } from "@/lib/utils";
 
 export default function SignupForm() {
   const { form, onSubmit, rules, handlers } = useSignupForm();
 
   return (
     <Form {...form}>
-      <form onSubmit={form.handleSubmit(onSubmit)}>
+      <form
+        onSubmit={form.handleSubmit(onSubmit)}
+        className="flex w-full flex-col gap-[2.8rem]"
+      >
         <FormField
           control={form.control}
           name="email"
           rules={rules.email}
           render={({ field }) => (
-            <FormItem>
-              <FormLabel>이메일</FormLabel>
+            <FormItem className="w-full">
+              <FormLabel className="text-[1.6rem]">이메일</FormLabel>
               <FormControl>
                 <Input
                   placeholder="이메일을 입력해주세요."
                   {...field}
                   onBlur={handlers.email.onBlur}
+                  className="mt-[0.8rem] w-full focus-visible:ring-gray-40 data-[invalid]:border-red-40"
                 />
               </FormControl>
-              <FormMessage />
+              <FormMessage className="absolute text-[1.2rem]" />
             </FormItem>
           )}
         />
@@ -42,15 +48,17 @@ export default function SignupForm() {
           rules={rules.password}
           render={({ field }) => (
             <FormItem>
-              <FormLabel>비밀번호</FormLabel>
+              <FormLabel className="text-[1.6rem]">비밀번호</FormLabel>
               <FormControl>
                 <Input
+                  type="password"
                   placeholder="비밀번호를 입력해주세요."
                   {...field}
                   onBlur={handlers.password.onBlur}
+                  className="mt-[0.8rem] w-full focus-visible:ring-gray-40"
                 />
               </FormControl>
-              <FormMessage />
+              <FormMessage className="absolute text-[1.2rem]" />
             </FormItem>
           )}
         />
@@ -60,15 +68,17 @@ export default function SignupForm() {
           rules={rules.passwordConfirm}
           render={({ field }) => (
             <FormItem>
-              <FormLabel>비밀번호 확인</FormLabel>
+              <FormLabel className="text-[1.6rem]">비밀번호 확인</FormLabel>
               <FormControl>
                 <Input
+                  type="password"
                   placeholder="비밀번호를 다시 입력해주세요."
                   {...field}
                   onBlur={handlers.passwordConfirm.onBlur}
+                  className="mt-[0.8rem] w-full focus-visible:ring-gray-40"
                 />
               </FormControl>
-              <FormMessage />
+              <FormMessage className="absolute text-[1.2rem]" />
             </FormItem>
           )}
         />
@@ -78,31 +88,46 @@ export default function SignupForm() {
           rules={rules.type}
           render={({ field }) => (
             <FormItem>
-              <FormLabel>회원 유형</FormLabel>
+              <FormLabel className="text-[1.6rem]">회원 유형</FormLabel>
               <FormControl>
                 <RadioGroup
                   defaultValue={field.value}
                   onValueChange={field.onChange}
+                  className="flex gap-[1.6rem]"
                 >
-                  <FormItem>
+                  <FormItem
+                    className={cn(
+                      "flex items-center justify-center gap-[1.2rem] space-y-0 rounded-[3.2rem] border-[0.1rem] border-gray-30 bg-white px-[4.2rem] py-[1.2rem]",
+                      field.value === "employee" && "border-primary",
+                    )}
+                  >
                     <FormControl>
-                      <RadioGroupItem value="employee" />
+                      <CheckRadioGroupItem value="employee" />
                     </FormControl>
-                    <FormLabel>알바님</FormLabel>
+                    <FormLabel className="text-[1.4rem]">알바님</FormLabel>
                   </FormItem>
-                  <FormItem>
+                  <FormItem
+                    className={cn(
+                      "flex items-center justify-center gap-[1.2rem] space-y-0 rounded-[3.2rem] border-[0.1rem] border-gray-30 bg-white px-[4.2rem] py-[1.2rem]",
+                      field.value === "employer" && "border-primary",
+                    )}
+                  >
                     <FormControl>
-                      <RadioGroupItem value="employer" />
+                      <CheckRadioGroupItem value="employer" />
                     </FormControl>
-                    <FormLabel>사장님</FormLabel>
+                    <FormLabel className="text-[1.4rem]">사장님</FormLabel>
                   </FormItem>
                 </RadioGroup>
               </FormControl>
-              <FormMessage />
+              <FormMessage className="absolute text-[1.2rem]" />
             </FormItem>
           )}
         />
-        <Button type="submit" disabled={!form.formState.isValid}>
+        <Button
+          type="submit"
+          disabled={!form.formState.isValid}
+          className="h-max rounded-[0.6rem] py-[1.6rem] text-[1.6rem]"
+        >
           가입하기
         </Button>
         <ValidationErrorDialog />
