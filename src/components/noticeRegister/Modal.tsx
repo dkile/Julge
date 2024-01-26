@@ -15,9 +15,9 @@ function RegisterModal() {
       <AlertDialogTrigger asChild>
         <Button
           type="submit"
-          className="flex h-[2rem] items-center justify-center gap-[0.8rem] self-stretch rounded-md bg-primary px-[13.6rem] py-[1.4rem]"
+          className="flex h-[4.8rem] items-center justify-center gap-[0.8rem] self-stretch rounded-md bg-primary px-[13.6rem] py-[1.4rem]"
         >
-          <span className="text-center text-lg font-bold leading-5 text-white">
+          <span className="text-center text-[1.6rem] font-bold leading-5 text-white">
             등록하기
           </span>
         </Button>
