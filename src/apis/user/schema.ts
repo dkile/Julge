@@ -2,7 +2,7 @@ import { z } from "zod";
 
 import { createResponseSchema } from "@/apis/schema";
 
-const userType = z.enum(["employee", "employer"]);
+export const userType = z.enum(["employee", "employer"]);
 
 export const userDTO = z.object({
   id: z.string(),
