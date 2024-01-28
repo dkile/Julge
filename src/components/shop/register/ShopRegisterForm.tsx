@@ -1,10 +1,12 @@
 import { zodResolver } from "@hookform/resolvers/zod";
 import Image from "next/image";
-import { useState } from "react";
+import { ChangeEvent, useState } from "react";
 import { useForm } from "react-hook-form";
 import * as z from "zod";
 
 import { fetcher } from "@/apis/fetcher";
+import { postImages, putPresignedURL } from "@/apis/shops";
+import ShopImageCard from "@/components/shop/register/ShopImageCard";
 import { ShopRegisterFormModal } from "@/components/shop/register/ShopRegisterFormModal";
 import { AlertDialog, AlertDialogTrigger } from "@/components/ui/alert-dialog";
 import { Button } from "@/components/ui/button";
@@ -76,6 +78,7 @@ const formSchema = z.object({
 
 export default function ShopRegisterForm() {
   const [responseResult, setResponseResult] = useState("");
+  const [imgURL, setImgURL] = useState("");
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -84,12 +87,22 @@ export default function ShopRegisterForm() {
       address1: "",
       address2: "",
       description: "",
-      imageUrl: "https://i.ibb.co/s9ZGXVd/202312223572.png",
+      imageUrl: "https://i.ibb.co/0V2PH9f/default.jpg",
       originalHourlyPay: "",
     },
   });
+  const handleInputImgFile = async (e: ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (file) {
+      const presignedURL = await postImages(token, file.name);
+      await putPresignedURL(presignedURL, file);
+      const nonQueryPresignedURL = presignedURL.split("?")[0];
+      setImgURL(nonQueryPresignedURL);
+      form.setValue("imageUrl", imgURL);
+    }
+  };
 
-  const token = null; // 임시값
+  const token = ""; // 임시값
 
   async function onSubmit(values: z.infer<typeof formSchema>) {
     try {
@@ -212,7 +225,21 @@ export default function ShopRegisterForm() {
               </FormItem>
             )}
           />
-          {/* TODO: Input Type : file 추가 예정 */}
+          <FormItem>
+            <FormLabel htmlFor="imgSelector">
+              가게 이미지
+              <ShopImageCard imgURL={imgURL} />
+            </FormLabel>
+            <FormControl>
+              <Input
+                accept=".jpg, .jpeg, .png"
+                className="hidden"
+                id="imgSelector"
+                type="file"
+                onChange={handleInputImgFile}
+              />
+            </FormControl>
+          </FormItem>
           <FormField
             control={form.control}
             name="description"
