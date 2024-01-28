@@ -1,4 +1,5 @@
-import { TokenDTO, TokenResponse } from "@/apis/auth/schema";
+import { TokenDTO, TokenResponse, UserDTO } from "@/apis/auth/schema";
+import { User } from "@/types/user";
 
 export const extractTokenDTOFromResponse = (res: TokenResponse): TokenDTO => {
   const {
@@ -11,3 +12,9 @@ export const extractTokenDTOFromResponse = (res: TokenResponse): TokenDTO => {
     user: userDTO,
   };
 };
+
+export const mapUserDTOToUser = (udto: UserDTO): User => ({
+  id: udto.id,
+  email: udto.email,
+  type: udto.type,
+});
