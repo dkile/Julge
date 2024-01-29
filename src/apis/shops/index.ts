@@ -23,3 +23,14 @@ export const postImages = async (token: string, name: string) => {
 export const putPresignedURL = async (presignedURL: string, img: File) => {
   await ky.put(presignedURL, { body: img });
 };
+
+// TODO: 에러처리
+export const getShopsData = async (shopId: string) => {
+  try {
+    const response = await fetcher.get(apiRouteUtils.parseShopsURL(shopId));
+    const result = await response.json();
+    return result;
+  } catch (e: any) {
+    throw e;
+  }
+};
