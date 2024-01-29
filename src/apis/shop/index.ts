@@ -16,9 +16,7 @@ export const postNoticeRegistration = async ({
 }: NoticeRegistrationRequestBody): Promise<NoticeRegistrationDTO> =>
   await fetcher
     .post(
-      apiRouteUtils.parseNoticeRegisterURL(
-        "c90e94dd-556b-4fad-9bef-f6c81cc4f242",
-      ),
+      apiRouteUtils.parseNoticeURL("c90e94dd-556b-4fad-9bef-f6c81cc4f242"),
       {
         json: {
           hourlyPay,
