@@ -34,7 +34,7 @@ function RegisterModal() {
           </AlertDialogTitle>
         </AlertDialogHeader>
         <AlertDialogFooter>
-          <Link href={`/shops/${shopId}/notices/${noticeId}`}>
+          <Link href={`shops/${shopId}/notices/${noticeId}`}>
             <AlertDialogAction className="flex h-[4.2rem] w-[13.8rem] items-center justify-center gap-[1rem] rounded-md bg-primary px-[5.6rem] py-[1.2rem]">
               <span className="text-center text-[1.4rem] font-medium not-italic leading-normal text-white">
                 확인

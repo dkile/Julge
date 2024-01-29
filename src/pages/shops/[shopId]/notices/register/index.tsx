@@ -40,6 +40,7 @@ function NoticeRegister() {
                         공고 등록
                       </h3>
                       <Button
+                        type="button"
                         variant="ghost"
                         className="relative h-[2.4rem] w-[2.4rem]"
                       >
