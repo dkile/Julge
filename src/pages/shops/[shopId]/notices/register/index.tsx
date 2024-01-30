@@ -9,12 +9,13 @@ import {
   FormField,
   FormItem,
   FormLabel,
+  FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import useNoticeRegistForm from "@/hooks/useNoticeRegistForm";
 
 function NoticeRegister() {
-  const { form, onSubmit } = useNoticeRegistForm();
+  const { form, onSubmit, rules, handlers } = useNoticeRegistForm();
 
   return (
     <>
@@ -57,6 +58,7 @@ function NoticeRegister() {
                         <FormField
                           control={form.control}
                           name="hourlyPay"
+                          rules={rules.hourlyPay}
                           render={({ field }) => (
                             <FormItem className="w-full">
                               <FormLabel
@@ -71,12 +73,14 @@ function NoticeRegister() {
                                     {...field}
                                     id="hourlyPay"
                                     name="hourlyPay"
+                                    onBlur={handlers.hourlyPay.onBlur}
                                   />
                                 </FormControl>
                                 <span className="absolute inset-y-0 right-0 flex items-center pr-[2rem] text-[1.6rem] font-normal not-italic leading-[2.6rem] text-black">
                                   원
                                 </span>
                               </div>
+                              <FormMessage className="absolute text-[1.2rem]" />
                             </FormItem>
                           )}
                         />
@@ -85,6 +89,7 @@ function NoticeRegister() {
                         <FormField
                           control={form.control}
                           name="startsAt"
+                          rules={rules.startsAt}
                           render={({ field }) => (
                             <FormItem className="w-full">
                               <FormLabel
@@ -99,9 +104,12 @@ function NoticeRegister() {
                                     {...field}
                                     id="startsAt"
                                     name="startsAt"
+                                    placeholder="2023-07-01 15:00"
+                                    onBlur={handlers.startsAt.onBlur}
                                   />
                                 </FormControl>
                               </div>
+                              <FormMessage className="absolute text-[1.2rem]" />
                             </FormItem>
                           )}
                         />
@@ -110,6 +118,7 @@ function NoticeRegister() {
                         <FormField
                           control={form.control}
                           name="workhour"
+                          rules={rules.workhour}
                           render={({ field }) => (
                             <FormItem className="w-full">
                               <FormLabel
@@ -124,12 +133,14 @@ function NoticeRegister() {
                                     {...field}
                                     id="workhour"
                                     name="workhour"
+                                    onBlur={handlers.workhour.onBlur}
                                   />
                                 </FormControl>
                                 <span className="absolute inset-y-0 right-0 flex items-center pr-[2rem] text-[1.6rem] font-normal not-italic leading-[2.6rem] text-black">
                                   시간
                                 </span>
                               </div>
+                              <FormMessage className="absolute text-[1.2rem]" />
                             </FormItem>
                           )}
                         />
@@ -160,7 +171,7 @@ function NoticeRegister() {
                         />
                       </div>
                     </div>
-                    <RegisterModal />
+                    <RegisterModal form={form} />
                   </div>
                 </div>
               </div>

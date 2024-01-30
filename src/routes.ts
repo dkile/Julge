@@ -14,6 +14,6 @@ export const apiRouteUtils = {
   SHOPS: "shops",
   TOKEN: "token",
   IMAGES: "images",
-  parseNoticeURL: (shopId: string) => `shops/${shopId}/notices`,
+  parseShopNoticesURL: (shopId: string) => `shops/${shopId}/notices`,
   parseShopsURL: (shopId: string) => `shops/${shopId}`,
 };
