@@ -18,3 +18,18 @@ export const mapUserDTOToUser = (udto: UserDTO): User => ({
   email: udto.email,
   type: udto.type,
 });
+
+export const setAccessTokenInStorage = (token: string) => {
+  if (typeof window !== "undefined")
+    sessionStorage.setItem("accessToken", token);
+};
+
+export const removeAccessTokenInStorage = () => {
+  if (typeof window !== "undefined")
+    window.sessionStorage.removeItem("accessToken");
+};
+
+export const getAccessTokenInStorage = () => {
+  if (typeof window !== "undefined")
+    return window.sessionStorage.getItem("accessToken");
+};
