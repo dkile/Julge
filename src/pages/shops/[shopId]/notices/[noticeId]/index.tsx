@@ -1,4 +1,5 @@
 import Image from "next/image";
+import React, { useState } from "react";
 
 import {
   ApproveBadge,
@@ -12,7 +13,32 @@ import {
 } from "@/components/noticeDetail/Buttons";
 import NoticeDetailPagination from "@/components/noticeDetail/NoticeDetailPagination";
 
+//TODO: 가게의 특정 공고의 지원 목록 조회하는 api를 구성하면 username과 status를 수정할 예정
+const initialApplicants = [
+  { name: "김강현", status: "pending" },
+  { name: "서혜진", status: "pending" },
+  { name: "주진혁", status: "pending" },
+  { name: "서혜진", status: "pending" },
+  { name: "장민혁", status: "pending" },
+  { name: "고기훈", status: "pending" },
+];
+
 function NoticeDetail() {
+  const [applicants, setApplicants] = useState(initialApplicants);
+
+  const handleApprove = (index: number) => {
+    const updatedApplicants = [...applicants];
+    updatedApplicants[index].status = "approved";
+    setApplicants(updatedApplicants);
+    alert("신청을 승인했습니다.");
+  };
+
+  const handleReject = (index: number) => {
+    const updatedApplicants = [...applicants];
+    updatedApplicants[index].status = "rejected";
+    setApplicants(updatedApplicants);
+    alert("신청을 거절했습니다.");
+  };
   return (
     <div className="flex flex-col items-center justify-start">
       <div className="relative h-[1.5rem] w-[8.1rem]">
@@ -103,75 +129,41 @@ function NoticeDetail() {
           신청자 목록
         </span>
         <div className="h-full w-full rounded-[1rem] border border-gray-20">
-          {/* TODO: 신청자 목록 표 반응형 추후 완성예정 */}
           <div className="grid grid-cols-2 grid-rows-5">
-            <div className="col-span-1 flex items-center gap-[1.2rem] rounded-tl-[1rem] border-r-[0.1rem] border-gray-20 bg-red-10 px-[0.8rem] py-[1.2rem]">
+            <div className="col-span-1 flex items-center gap-[1.2rem] rounded-tl-[1rem] border-r-[0.1rem] border-t-[0.1rem] border-gray-20 bg-red-10 px-[0.8rem] py-[1.2rem]">
               <span className="text-[1.2rem] font-normal not-italic leading-[1.6rem] text-black">
                 신청자
               </span>
             </div>
-            <div className="col-span-1 flex items-center gap-[1.2rem] rounded-tr-[1rem] bg-red-10 px-[0.8rem] py-[1.2rem]">
+            <div className="col-span-1 flex items-center gap-[1.2rem] rounded-tr-[1rem] border-t-[0.1rem] bg-red-10 px-[0.8rem] py-[1.2rem]">
               <span className="text-[1.2rem] font-normal not-italic leading-[1.6rem] text-black">
                 상태
               </span>
             </div>
-            <div className="col-span-1 flex items-center gap-[1.2rem] self-stretch border-b-[0.1rem] border-r-[0.1rem] border-t-[0.1rem] border-gray-20 bg-white px-[0.8rem] py-[1.2rem]">
-              <span className="text-black-50 scroll-auto text-[1.4rem] font-normal not-italic leading-[2.2rem]">
-                {"김강현"}
-              </span>
-            </div>
-            <div className="md:col-span-1 md:block hidden items-center gap-[1.2rem] border-b-[0.1rem] border-r-[0.1rem] bg-red-10 px-[0.8rem] py-[1.2rem]">
-              <span className="text-black-50 scroll-auto truncate text-[1.6rem] font-normal not-italic leading-[2.6rem]">
-                {"최선을 다하겠습니다"}
-              </span>
-            </div>
-            <div className="col-span-1 flex items-center gap-[1.2rem] self-stretch border-b-[0.1rem] border-t-[0.1rem] border-gray-20 bg-white px-[0.8rem] py-[1.2rem]">
-              <RejectButton />
-              <ApproveButton />
-            </div>
-            <div className="col-span-1 flex items-center gap-[1.2rem] self-stretch border-b-[0.1rem] border-r-[0.1rem] border-gray-20 bg-white px-[0.8rem] py-[1.2rem]">
-              <span className="text-black-50 scroll-auto text-[1.4rem] font-normal not-italic leading-[2.2rem]">
-                {"서혜진"}
-              </span>
-            </div>
-            <div className="md:col-span-1 md:block hidden items-center gap-[1.2rem] self-stretch border-b-[0.1rem] border-r-[0.1rem] bg-white px-[0.8rem] py-[1.2rem]">
-              <span className="text-black-50 scroll-auto truncate text-[1.6rem] font-normal not-italic leading-[2.6rem]">
-                {"최선을 다하겠습니다"}
-              </span>
-            </div>
-            <div className="col-span-1 flex items-center gap-[1.2rem] self-stretch border-b-[0.1rem] border-gray-20 bg-white px-[0.8rem] py-[1.2rem]">
-              <ApproveBadge />
-            </div>
-            <div className="col-span-1 flex items-center gap-[1.2rem] self-stretch border-b-[0.1rem] border-r-[0.1rem] border-gray-20 bg-white px-[0.8rem] py-[1.2rem]">
-              <span className="text-black-50 scroll-auto text-[1.4rem] font-normal not-italic leading-[2.2rem]">
-                {"주진혁"}
-              </span>
-            </div>
-            <div className="md:col-span-1 md:block hidden items-center gap-[1.2rem] self-stretch border-b-[0.1rem] border-r-[0.1rem] bg-white px-[0.8rem] py-[1.2rem]">
-              <span className="text-black-50 scroll-auto truncate text-[1.6rem] font-normal not-italic leading-[2.6rem]">
-                {"최선을 다하겠습니다"}
-              </span>
-            </div>
-            <div className="col-span-1 flex items-center gap-[1.2rem] self-stretch border-b-[0.1rem] border-gray-20 bg-white px-[0.8rem] py-[1.2rem]">
-              <RejectBadge />
-            </div>
-            <div className="col-span-1 flex items-center gap-[1.2rem] self-stretch border-b-[0.1rem] border-r-[0.1rem] border-gray-20 bg-white px-[0.8rem] py-[1.2rem]">
-              <span className="text-black-50 scroll-auto text-[1.4rem] font-normal not-italic leading-[2.2rem]">
-                {"장민혁"}
-              </span>
-            </div>
-            <div className="col-span-1 flex items-center gap-[1.2rem] self-stretch border-b-[0.1rem] border-gray-20 bg-white px-[0.8rem] py-[1.2rem]"></div>
-            <div className="col-span-1 flex items-center gap-[1.2rem] self-stretch border-b-[0.1rem] border-r-[0.1rem] border-gray-20 bg-white px-[0.8rem] py-[1.2rem]">
-              <span className="text-black-50 scroll-auto text-[1.4rem] font-normal not-italic leading-[2.2rem]">
-                {"고기훈"}
-              </span>
-            </div>
-            <div className="md:col-span-1 md:block hidden items-center gap-[1.2rem] self-stretch border-b-[0.1rem] border-r-[0.1rem] bg-white px-[0.8rem] py-[1.2rem]">
-              <span className="text-black-50 scroll-auto truncate text-[1.6rem] font-normal not-italic leading-[2.6rem]">
-                {"최선을 다하겠습니다"}
-              </span>
-            </div>
-            <div className="col-span-1 flex items-center gap-[1.2rem] self-stretch border-b-[0.1rem] border-gray-20 bg-white px-[0.8rem] py-[1.2rem]"></div>
+            {applicants.map((applicant, index) => (
+              <React.Fragment key={index}>
+                <div className="col-span-1 flex items-center gap-[1.2rem] self-stretch border-b-[0.1rem] border-r-[0.1rem] border-t-[0.1rem] border-gray-20 bg-white px-[0.8rem] py-[1.2rem]">
+                  <span className="text-black-50 scroll-auto text-[1.4rem] font-normal not-italic leading-[2.2rem]">
+                    {applicant.name}
+                  </span>
+                </div>
+                <div className="md:col-span-1 md:block hidden items-center gap-[1.2rem] border-b-[0.1rem] border-r-[0.1rem] bg-red-10 px-[0.8rem] py-[1.2rem]">
+                  <span className="text-black-50 scroll-auto truncate text-[1.6rem] font-normal not-italic leading-[2.6rem]">
+                    {"최선을 다하겠습니다"}
+                  </span>
+                </div>
+                <div className="col-span-1 flex items-center gap-[1.2rem] self-stretch border-b-[0.1rem] border-t-[0.1rem] border-gray-20 bg-white px-[0.8rem] py-[1.2rem]">
+                  {applicant.status === "pending" && (
+                    <>
+                      <ApproveButton onClick={() => handleApprove(index)} />
+                      <RejectButton onClick={() => handleReject(index)} />
+                    </>
+                  )}
+                  {applicant.status === "approved" && <ApproveBadge />}
+                  {applicant.status === "rejected" && <RejectBadge />}
+                </div>
+              </React.Fragment>
+            ))}
           </div>
           <div className="flex h-[5.6rem] w-full items-center justify-center">
             <NoticeDetailPagination />
