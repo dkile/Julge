@@ -34,7 +34,7 @@ const colorCalculate = (num: number) => {
   else return "red-10";
 };
 
-const timeCalculate = (time: string, workhour: number) => {
+export const timeCalculate = (time: string, workhour: number) => {
   const startDay = time.split("T")[0];
   const startTime = time.split("T")[1].split(":")[0];
   const minute = time.split("T")[1].split(":")[1];
