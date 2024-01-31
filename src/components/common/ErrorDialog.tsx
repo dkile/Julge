@@ -8,14 +8,16 @@ import {
   DialogFooter,
 } from "@/components/ui/dialog";
 import { cn } from "@/lib/utils";
-import { DialogActionContext, DialogContext } from "@/providers/DialogProvider";
+import {
+  ErrorDialogActionContext,
+  ErrorDialogContext,
+} from "@/providers/ErrorDialogProvider";
 import { fontPretendard } from "@/styles/fonts";
 
 export default function ValidationErrorDialog() {
-  const opened = useContext(DialogContext);
-  const { close, toggle } = useContext(DialogActionContext);
+  const { opened, errorMessage } = useContext(ErrorDialogContext);
+  const { close, toggle } = useContext(ErrorDialogActionContext);
 
-  // TODO: "비밀번호가 일치하지 않습니다."를 errorMessage로 바꾸고 외부에서 주입받도록 변경. errorMessage는 에러 객체의 message.
   return (
     <Dialog open={opened} onOpenChange={toggle}>
       <DialogContent
@@ -25,7 +27,7 @@ export default function ValidationErrorDialog() {
         )}
       >
         <DialogDescription className="text-[1.6rem] text-black">
-          비밀번호가 일치하지 않습니다.
+          {errorMessage}
         </DialogDescription>
         <DialogFooter>
           <Button

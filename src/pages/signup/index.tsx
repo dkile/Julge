@@ -1,13 +1,14 @@
 import Image from "next/image";
 import Link from "next/link";
 
+import ErrorDialog from "@/components/common/ErrorDialog";
 import SignupForm from "@/components/signup/SignupForm";
-import DialogProvider from "@/providers/DialogProvider";
+import ErrorDialogProvider from "@/providers/ErrorDialogProvider";
 import { PAGE_ROUTES } from "@/routes";
 
 export default function Page() {
   return (
-    <DialogProvider>
+    <ErrorDialogProvider>
       <div className="flex min-h-screen items-center justify-center">
         <section className="flex w-full max-w-[35rem] flex-col items-center gap-[4rem] text-[1.6rem] text-black">
           <Link href={PAGE_ROUTES.NOTICES} className="w-max">
@@ -32,7 +33,8 @@ export default function Page() {
             </div>
           </div>
         </section>
+        <ErrorDialog />
       </div>
-    </DialogProvider>
+    </ErrorDialogProvider>
   );
 }

@@ -5,12 +5,14 @@ import { useContext } from "react";
 import { postUsers } from "@/apis/user";
 import { UsersRequestBody } from "@/apis/user/schema";
 import { ConflictRequestError } from "@/helpers/error";
-import { DialogActionContext } from "@/providers/DialogProvider";
+import { ErrorDialogActionContext } from "@/providers/ErrorDialogProvider";
 import { PAGE_ROUTES } from "@/routes";
 
 export const useSignup = () => {
   const router = useRouter();
-  const { open: openValidationErrorDialog } = useContext(DialogActionContext);
+  const { open: openValidationErrorDialog } = useContext(
+    ErrorDialogActionContext,
+  );
 
   const mutation = useMutation({
     mutationFn: ({ email, password, type }: UsersRequestBody) =>
@@ -20,7 +22,8 @@ export const useSignup = () => {
       router.push(PAGE_ROUTES.SIGNIN);
     },
     onError: (err) => {
-      if (err instanceof ConflictRequestError) openValidationErrorDialog();
+      if (err instanceof ConflictRequestError)
+        openValidationErrorDialog(err.message);
     },
   });
 

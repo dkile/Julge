@@ -1,5 +1,4 @@
 import { CheckRadioGroupItem } from "@/components/signup/CheckRadioGroupItem";
-import ValidationErrorDialog from "@/components/signup/ValidationErrorDialog";
 import { Button } from "@/components/ui/button";
 import {
   Form,
@@ -130,7 +129,6 @@ export default function SignupForm() {
         >
           가입하기
         </Button>
-        <ValidationErrorDialog />
       </form>
     </Form>
   );
