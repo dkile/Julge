@@ -6,7 +6,7 @@ import { apiRouteUtils } from "@/routes";
 // TODO: 에러처리
 export const postImages = async (token: string, name: string) => {
   try {
-    const response = await fetcher.post(apiRouteUtils.IMAGES, {
+    const res = await fetcher.post(apiRouteUtils.IMAGES, {
       json: {
         name,
       },
@@ -14,7 +14,7 @@ export const postImages = async (token: string, name: string) => {
         Authorization: `Bearer ${token}`,
       },
     });
-    const result: any = await response.json();
+    const result: any = await res.json();
     return result.item.url;
   } catch (e: any) {}
 };
@@ -27,10 +27,20 @@ export const putPresignedURL = async (presignedURL: string, img: File) => {
 // TODO: 에러처리
 export const getShopsData = async (shopId: string) => {
   try {
-    const response = await fetcher.get(apiRouteUtils.parseShopsURL(shopId));
-    const result = await response.json();
+    const res = await fetcher.get(apiRouteUtils.parseShopsURL(shopId));
+    const result = await res.json();
     return result;
   } catch (e: any) {
     throw e;
   }
+};
+
+// TODO: 에러처리
+
+export const getNoticesListData = async (shopId: string) => {
+  try {
+    const res = await fetcher.get(apiRouteUtils.parseShopNoticesURL(shopId));
+    const result = await res.json();
+    return result;
+  } catch {}
 };
