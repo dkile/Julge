@@ -4,8 +4,7 @@ import { useContext } from "react";
 
 import { postToken } from "@/apis/auth";
 import { TokenRequestBody } from "@/apis/auth/schema";
-import { fetcher } from "@/apis/fetcher";
-import { mapUserDTOToUser, setAccessTokenInStorage } from "@/helpers/auth";
+import { mapUserDTOToUser } from "@/helpers/auth";
 import { NotFoundRequestError } from "@/helpers/error";
 import { ErrorDialogActionContext } from "@/providers/ErrorDialogProvider";
 import { UserActionContext } from "@/providers/UserProvider";
@@ -21,11 +20,9 @@ export const useSignin = () => {
   const mutation = useMutation({
     mutationFn: ({ email, password }: TokenRequestBody) =>
       postToken({ email, password }),
-    onSuccess: ({ token, user: userDTO }) => {
+    onSuccess: ({ token, user: userDTO }): void => {
       const user = mapUserDTOToUser(userDTO);
-      setAccessTokenInStorage(token);
-      fetcher.setAccessToken(token);
-      login(user);
+      login(token, user);
       router.push(PAGE_ROUTES.NOTICES);
     },
     onError: (err) => {

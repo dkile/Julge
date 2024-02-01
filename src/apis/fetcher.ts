@@ -40,7 +40,15 @@ class KyAdapter implements Fetcher {
 
     this.#extend({
       headers: {
-        Authorization: token,
+        Authorization: `Bearer ${token}`,
+      },
+    });
+  }
+
+  removeAccessToken() {
+    this.#extend({
+      headers: {
+        Authorization: undefined,
       },
     });
   }

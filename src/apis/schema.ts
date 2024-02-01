@@ -14,7 +14,15 @@ export const jsonSchema: z.ZodType<Json> = z.lazy(() =>
 );
 
 export const linkSchema = z.object({
-  rel: z.enum(["self", "prev", "next", "update", "applications", "alerts"]),
+  rel: z.enum([
+    "self",
+    "prev",
+    "next",
+    "update",
+    "applications",
+    "alerts",
+    "shop",
+  ]),
   description: z.string(),
   method: z.enum(["GET", "POST", "PUT", "DELETE"]),
   href: z.string(),

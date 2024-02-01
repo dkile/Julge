@@ -1,12 +1,21 @@
 import Image from "next/image";
 import Link from "next/link";
+import { useRouter } from "next/router";
+import { useContext, useEffect } from "react";
 
 import ErrorDialog from "@/components/common/ErrorDialog";
 import SigninForm from "@/components/signin/SigninForm";
 import ErrorDialogProvider from "@/providers/ErrorDialogProvider";
+import { UserContext } from "@/providers/UserProvider";
 import { PAGE_ROUTES } from "@/routes";
 
 export default function Page() {
+  const user = useContext(UserContext);
+  const router = useRouter();
+  useEffect(() => {
+    if (user) router.push(PAGE_ROUTES.NOTICES);
+  }, [router, user]);
+
   return (
     <ErrorDialogProvider>
       <div className="flex min-h-screen items-center justify-center">
