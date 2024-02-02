@@ -1,4 +1,3 @@
-import Image from "next/image";
 import Link from "next/link";
 
 import ShopImageCard from "@/components/shop/ShopImageCard";
@@ -10,6 +9,7 @@ import {
   AlertDialogTitle,
 } from "@/components/ui/alert-dialog";
 import { AlertDialog, AlertDialogTrigger } from "@/components/ui/alert-dialog";
+import BackPageButton from "@/components/ui/BackPageButton";
 import { Button } from "@/components/ui/button";
 import {
   Form,
@@ -90,7 +90,7 @@ export default function ShopDataForm({
     <>
       <div className="flex justify-between">
         <span>가게 정보</span>
-        <Image src="/icons/close.svg" width="10" height="10" alt="종료이미지" />
+        <BackPageButton />
       </div>
       <Form {...form}>
         <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
