@@ -18,4 +18,11 @@ export const apiRouteUtils = {
   parseShopsURL: (shopId: string) => `shops/${shopId}`,
   parseShopNoticeDetail: (shopId: string, noticeId: string) =>
     `shops/${shopId}/notices/${noticeId}`,
+  parseShopNewNoticesURL: (shopId: string, options: OptionsType) =>
+    `shops/${shopId}/notices?offset=${options.offset}&limit=${options.limit}`,
+};
+
+type OptionsType = {
+  offset: number;
+  limit: number;
 };

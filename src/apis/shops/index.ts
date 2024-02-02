@@ -44,3 +44,21 @@ export const getNoticesListData = async (shopId: string) => {
     return result;
   } catch {}
 };
+
+type OptionsType = {
+  offset: number;
+  limit: number;
+};
+
+export const getNewNoticesListData = async (
+  shopId: string,
+  options: OptionsType,
+) => {
+  try {
+    const res = await fetcher.get(
+      apiRouteUtils.parseShopNewNoticesURL(shopId, options),
+    );
+    const result = await res.json();
+    return result;
+  } catch {}
+};

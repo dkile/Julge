@@ -31,6 +31,10 @@ type DataType = {
 };
 
 type NoticesType = {
+  offset: number;
+  limit: number;
+  count: number; // 전체 개수
+  hasNext: boolean; // 다음 내용 존재 여부
   items: Array<{
     item?: {
       id: string;
