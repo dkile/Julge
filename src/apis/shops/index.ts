@@ -44,7 +44,6 @@ export const getNoticesListData = async (shopId: string) => {
     return result;
   } catch {}
 };
-
 type OptionsType = {
   offset: number;
   limit: number;
@@ -61,4 +60,36 @@ export const getNewNoticesListData = async (
     const result = await res.json();
     return result;
   } catch {}
+};
+
+// TODO: 에러처리
+export const postShopRegistData = async (token: string, values: any) => {
+  try {
+    const res = await fetcher.post(apiRouteUtils.SHOPS, {
+      json: values,
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
+  } catch (err: any) {
+    throw err;
+  }
+};
+
+// TODO: 에러처리
+export const putShopEditData = async (
+  token: string,
+  values: any,
+  shopId: string,
+) => {
+  try {
+    await fetcher.put(apiRouteUtils.parseShopsURL(shopId), {
+      json: values,
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
+  } catch (err: any) {
+    throw err;
+  }
 };

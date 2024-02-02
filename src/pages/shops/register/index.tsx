@@ -1,5 +1,5 @@
-import ShopRegisterForm from "@/components/shop/register/ShopRegisterForm";
+import ShopRegister from "@/components/shop/register/ShopRegister";
 
-export default function ShopRegister() {
-  return <ShopRegisterForm />;
+export default function ShopRegist() {
+  return <ShopRegister />;
 }

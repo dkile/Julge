@@ -43,7 +43,9 @@ export default function ShopDataCard({ shopId, shopData }: ShopDataCardProps) {
             <p>{shopData.description}</p>
           </CardContent>
           <CardFooter className="flex gap-[10px]">
-            <Button>편집하기</Button>
+            <Button asChild>
+              <Link href={PAGE_ROUTES.parseShopsEditURL(shopId)}>편집하기</Link>
+            </Button>
             <Button asChild>
               <Link href={PAGE_ROUTES.parseNoticeRegisterURL(shopId)}>
                 공고 등록하기

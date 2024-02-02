@@ -1,11 +1,13 @@
 export const PAGE_ROUTES = {
   SIGNUP: "/signup",
   SIGNIN: "/signin",
+  SHOPS: "/shops",
   NOTICES: "/notices",
   SHOPS_REGISTER: "/shops/register",
   SHOPS: "/shops",
   PROFILE: "/profile",
   parseShopsURL: (shopId: string) => `/shops/${shopId}`,
+  parseShopsEditURL: (shopId: string) => `/shops/edit/${shopId}`,
   parseNoticeRegisterURL: (shopId: string) =>
     `/shops/${shopId}/notices/register`,
 };
