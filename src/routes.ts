@@ -2,6 +2,7 @@ export const PAGE_ROUTES = {
   SIGNUP: "/signup",
   SIGNIN: "/signin",
   NOTICES: "/notices",
+  NOTICES_DETAIL: (shopId: string) => `/shops/${shopId}/notices`,
   SHOPS_REGISTER: "/shops/register",
   SHOPS: "/shops",
   PROFILE: "/profile",
@@ -12,6 +13,7 @@ export const PAGE_ROUTES = {
 };
 
 export const API_ROUTE = process.env.NEXT_PUBLIC_API_ENDPOINT;
+
 export const apiRouteUtils = {
   USERS: "users",
   SHOPS: "shops",
@@ -19,6 +21,7 @@ export const apiRouteUtils = {
   IMAGES: "images",
   parseShopNoticesURL: (shopId: string) => `shops/${shopId}/notices`,
   parseShopsURL: (shopId: string) => `shops/${shopId}`,
+  NOTICES: "notices?offset=0&limit=10",
   parseShopNoticeDetail: (shopId: string, noticeId: string) =>
     `shops/${shopId}/notices/${noticeId}`,
   parseShopNoticeApplications: (
