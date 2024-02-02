@@ -1,13 +1,14 @@
 import Image from "next/image";
 import Link from "next/link";
 
+import SearchBar from "@/components/common/SearchBar";
 import { Button } from "@/components/ui/button";
 import { PAGE_ROUTES } from "@/routes";
 
 export default function EmployerHeader() {
   return (
-    <header className="flex h-[64px] items-center justify-between px-[20px]">
-      <Link href={PAGE_ROUTES.SHOPS}>
+    <header className="m-auto flex max-w-[1088px] flex-wrap items-center justify-between gap-x-[32px] px-[20px]">
+      <Link href={PAGE_ROUTES.SHOPS} className="order-1 min-w-max p-[12px]">
         <Image
           src="/icons/logo.svg"
           alt="로고:홈으로 이동"
@@ -17,7 +18,10 @@ export default function EmployerHeader() {
           priority
         />
       </Link>
-      <div className="flex items-center gap-[8px] text-[1.4rem] font-bold">
+      <div className="order-3 flex-1">
+        <SearchBar />
+      </div>
+      <div className="order-2 flex items-center gap-[8px] text-[1.4rem] font-bold">
         <Button
           variant="ghost"
           asChild
