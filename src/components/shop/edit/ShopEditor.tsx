@@ -1,4 +1,3 @@
-import { zodResolver } from "@hookform/resolvers/zod";
 import { ChangeEvent, useState } from "react";
 import { useForm } from "react-hook-form";
 import * as z from "zod";
@@ -41,8 +40,7 @@ export default function ShopEditor({ shopId, shopData }: ShopEditorProps) {
   const [imgURL, setImgURL] = useState(shopData.imageUrl);
 
   const form = useForm<z.infer<typeof formSchema>>({
-    resolver: zodResolver(formSchema),
-    defaultValues: {
+    values: {
       name: shopData.name,
       category: shopData.category,
       address1: shopData.address1,

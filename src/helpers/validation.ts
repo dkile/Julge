@@ -10,4 +10,10 @@ export const errorMessage = {
   REQUIRED_HOURLYPAY: "시급을 입력해 주세요.",
   REQUIRED_STARTSAT: "시작 일시를 입력해 주세요.",
   REQUIRED_WORKHOUR: "업무 시간을 입력해 주세요.",
+  REQUIRED_SHOPNAME: "가게 이름을 입력해 주세요.",
+  REQUIRED_SHOPCATEGORY: "분류를 선택해 주세요.",
+  REQUIRED_ADDRESS: "주소를 선택해 주세요.",
+  REQUIRED_DETAILED_ADDRESS: "상세 주소를 입력해 주세요.",
+  INVALID_HOURLYPAY: "시급은 9860원(2024년 최저시급) 이상이여야 합니다.",
+  REQUIRED_NUMBER: "숫자를 입력해 주세요.",
 };

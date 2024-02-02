@@ -17,6 +17,7 @@ import {
   FormField,
   FormItem,
   FormLabel,
+  FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import {
@@ -27,6 +28,7 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { Textarea } from "@/components/ui/textarea";
+import { errorMessage } from "@/helpers/validation";
 
 const CATEGORY = [
   "한식",
@@ -86,6 +88,8 @@ export default function ShopDataForm({
   buttonText,
   modalData,
 }: ShopDataFormProps) {
+  const NUM_REGEX = /^\d+$/;
+
   return (
     <>
       <div className="flex justify-between">
@@ -96,20 +100,35 @@ export default function ShopDataForm({
         <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
           <FormField
             control={form.control}
-            rules={{ required: true }}
+            rules={{
+              required: {
+                value: true,
+                message: errorMessage.REQUIRED_SHOPNAME,
+              },
+            }}
             name="name"
             render={({ field }) => (
               <FormItem>
                 <FormLabel>가게 이름*</FormLabel>
                 <FormControl>
-                  <Input placeholder="입력" {...field} />
+                  <Input
+                    placeholder="입력"
+                    {...field}
+                    onBlur={() => form.trigger("name")}
+                  />
                 </FormControl>
+                <FormMessage className="absolute text-[1.2rem]" />
               </FormItem>
             )}
           />
           <FormField
             control={form.control}
-            rules={{ required: true }}
+            rules={{
+              required: {
+                value: true,
+                message: errorMessage.REQUIRED_SHOPCATEGORY,
+              },
+            }}
             name="category"
             render={({ field }) => (
               <FormItem>
@@ -123,6 +142,7 @@ export default function ShopDataForm({
                       <SelectValue placeholder="입력" />
                     </SelectTrigger>
                   </FormControl>
+                  <FormMessage className="absolute text-[1.2rem]" />
                   <SelectContent>
                     {CATEGORY.map((item) => {
                       return (
@@ -138,7 +158,12 @@ export default function ShopDataForm({
           />
           <FormField
             control={form.control}
-            rules={{ required: true }}
+            rules={{
+              required: {
+                value: true,
+                message: errorMessage.REQUIRED_ADDRESS,
+              },
+            }}
             name="address1"
             render={({ field }) => (
               <FormItem>
@@ -152,6 +177,7 @@ export default function ShopDataForm({
                       <SelectValue placeholder="입력" />
                     </SelectTrigger>
                   </FormControl>
+                  <FormMessage className="absolute text-[1.2rem]" />
                   <SelectContent>
                     {ADDRESS.map((item) => (
                       <SelectItem key={item} value={item}>
@@ -165,27 +191,55 @@ export default function ShopDataForm({
           />
           <FormField
             control={form.control}
-            rules={{ required: true }}
+            rules={{
+              required: {
+                value: true,
+                message: errorMessage.REQUIRED_DETAILED_ADDRESS,
+              },
+            }}
             name="address2"
             render={({ field }) => (
               <FormItem>
                 <FormLabel>상세 주소*</FormLabel>
                 <FormControl>
-                  <Input placeholder="입력" {...field} />
+                  <Input
+                    placeholder="입력"
+                    {...field}
+                    onBlur={() => form.trigger("address2")}
+                  />
                 </FormControl>
+                <FormMessage className="absolute text-[1.2rem]" />
               </FormItem>
             )}
           />
           <FormField
             control={form.control}
-            rules={{ required: true }}
+            rules={{
+              required: {
+                value: true,
+                message: errorMessage.REQUIRED_HOURLYPAY,
+              },
+              pattern: {
+                value: NUM_REGEX,
+                message: errorMessage.REQUIRED_NUMBER,
+              },
+              min: {
+                value: 9860,
+                message: errorMessage.INVALID_HOURLYPAY,
+              },
+            }}
             name="originalHourlyPay"
             render={({ field }) => (
               <FormItem>
                 <FormLabel>기본 시급*</FormLabel>
                 <FormControl>
-                  <Input type="number" min={0} placeholder="입력" {...field} />
+                  <Input
+                    placeholder="입력"
+                    {...field}
+                    onBlur={() => form.trigger("originalHourlyPay")}
+                  />
                 </FormControl>
+                <FormMessage className="absolute text-[1.2rem]" />
               </FormItem>
             )}
           />
@@ -222,22 +276,22 @@ export default function ShopDataForm({
           />
           <AlertDialog>
             <AlertDialogTrigger asChild>
-              <Button type="submit">{buttonText}</Button>
+              <Button disabled={!form.formState.isValid} type="submit">
+                {buttonText}
+              </Button>
             </AlertDialogTrigger>
-            <AlertDialogContent>
-              {modalData && (
-                <>
-                  <AlertDialogHeader>
-                    <AlertDialogTitle>{modalData.msg}</AlertDialogTitle>
-                  </AlertDialogHeader>
-                  <AlertDialogFooter>
-                    <Link href={modalData.path}>
-                      <AlertDialogAction>확인</AlertDialogAction>
-                    </Link>
-                  </AlertDialogFooter>
-                </>
-              )}
-            </AlertDialogContent>
+            {modalData && (
+              <AlertDialogContent>
+                <AlertDialogHeader>
+                  <AlertDialogTitle>{modalData.msg}</AlertDialogTitle>
+                </AlertDialogHeader>
+                <AlertDialogFooter>
+                  <Link href={modalData.path}>
+                    <AlertDialogAction>확인</AlertDialogAction>
+                  </Link>
+                </AlertDialogFooter>
+              </AlertDialogContent>
+            )}
           </AlertDialog>
         </form>
       </Form>
