@@ -3,6 +3,8 @@ export const PAGE_ROUTES = {
   SIGNIN: "/signin",
   NOTICES: "/notices",
   SHOPS_REGISTER: "/shops/register",
+  SHOPS: "/shops",
+  PROFILE: "/profile",
   parseShopsURL: (shopId: string) => `/shops/${shopId}`,
   parseNoticeRegisterURL: (shopId: string) =>
     `/shops/${shopId}/notices/register`,

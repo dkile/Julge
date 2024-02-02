@@ -29,14 +29,14 @@ export default function App({ Component, pageProps }: AppProps) {
     <QueryClientProvider client={queryClient}>
       <HydrationBoundary state={pageProps.dehydratedState}>
         <UserProvider>
-          <main
+          <div
             className={cn(
-              "min-h-screen bg-background font-spoqa antialiased",
+              "min-h-dvh bg-background font-spoqa antialiased",
               fontSpoqaHanSansNeo.variable,
             )}
           >
             <Component {...pageProps} />
-          </main>
+          </div>
         </UserProvider>
       </HydrationBoundary>
       <ReactQueryDevtools initialIsOpen={false} />

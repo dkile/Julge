@@ -9,8 +9,8 @@ import { PAGE_ROUTES } from "@/routes";
 export default function Page() {
   return (
     <ErrorDialogProvider>
-      <div className="flex min-h-screen items-center justify-center">
-        <section className="flex w-full max-w-[35rem] flex-col items-center gap-[4rem] text-[1.6rem] text-black">
+      <div className="flex h-dvh items-center">
+        <section className="mx-auto flex w-full max-w-[35rem] flex-col items-center gap-[4rem] text-[1.6rem] text-black">
           <Link href={PAGE_ROUTES.NOTICES} className="w-max">
             <Image
               src="/icons/logo.svg"
