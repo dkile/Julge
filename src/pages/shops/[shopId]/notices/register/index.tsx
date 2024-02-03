@@ -104,7 +104,7 @@ function NoticeRegister() {
                                     {...field}
                                     id="startsAt"
                                     name="startsAt"
-                                    placeholder="2023-07-01 15:00"
+                                    type="datetime-local"
                                     onBlur={handlers.startsAt.onBlur}
                                   />
                                 </FormControl>
@@ -114,6 +114,7 @@ function NoticeRegister() {
                           )}
                         />
                       </div>
+
                       <div className="flex w-full flex-col items-start gap-[0.8rem]">
                         <FormField
                           control={form.control}

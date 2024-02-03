@@ -17,9 +17,11 @@ export default function useSignupForm() {
     workhour,
     description,
   }) => {
+    const formattedStartsAt = `${startsAt}:00Z`;
+
     mutate({
       hourlyPay,
-      startsAt,
+      startsAt: formattedStartsAt,
       workhour,
       description,
     });
