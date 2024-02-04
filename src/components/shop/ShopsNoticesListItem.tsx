@@ -61,44 +61,70 @@ export default function ShopsNoticesListItem({
   const color = colorCalculate(riseRate);
 
   return (
-    <>
-      <Card className="w-auto max-w-[37.5rem]">
-        <CardHeader>
-          <Image src={shopData.imageUrl} alt="" width={162} height={148} />
+    <div>
+      <Card className="w-[17.1rem] overflow-hidden p-[1.2rem] tablet:w-[33.2rem] tablet:p-[1.6rem] desktop:w-[31.2rem]">
+        <CardHeader className="mb-[1.2rem] h-[8.4rem] w-[14.7rem] rounded-[1.2rem] p-0 tablet:mb-[2rem] tablet:h-[17.1rem] tablet:w-[30rem] desktop:h-[16rem] desktop:w-[28rem]">
+          <Image
+            className="h-[8.4rem] w-[14.7rem] object-cover p-0 tablet:h-[17.1rem] tablet:w-[30rem] desktop:h-[16rem] desktop:w-[28rem]"
+            src={shopData.imageUrl}
+            alt=""
+            width={162}
+            height={148}
+          />
         </CardHeader>
-        <CardContent>
-          <div className="flex flex-col gap-[1rem]">
-            <CardTitle>{shopData.name}</CardTitle>
-            <div className="flex items-start gap-[0.5rem]">
-              <Image src="/icons/clock.svg" alt="" width={16} height={16} />
-              <div>
-                <CardDescription>{startDay}</CardDescription>
-                <CardDescription>
-                  {startTime}:{minute}~{endTime}:{minute}({item.workhour}
-                  시간)
-                </CardDescription>
-              </div>
+        <CardContent className="p-0">
+          <div className="flex flex-col gap-[0.8rem]">
+            <CardTitle className="text-[16px] font-bold leading-[2rem] tablet:text-[2rem] desktop:leading-normal">
+              {shopData.name}
+            </CardTitle>
+            <div className="flex items-start gap-[0.6rem] tablet:items-center">
+              <Image
+                className="talbet:w-[2rem] tablet:h-[2rem]"
+                src="/icons/clock.svg"
+                alt=""
+                width={16}
+                height={16}
+              />
+              <CardDescription className="text-[1.2rem] leading-[1.6rem] text-gray-50 tablet:text-[1.4rem] tablet:leading-[2.2rem]">
+                {startDay} <br className="tablet:hidden" />
+                {startTime}:{minute}~{endTime}:{minute} ({item.workhour}
+                시간)
+              </CardDescription>
             </div>
-            <div className="flex items-center gap-[0.5rem]">
-              <Image src="/icons/point.svg" alt="" width={16} height={16} />
-              <CardDescription>{shopData.address1}</CardDescription>
+            <div className="flex items-center gap-[0.6rem]">
+              <Image
+                className="talbet:w-[2rem] tablet:h-[2rem]"
+                src="/icons/point.svg"
+                alt=""
+                width={16}
+                height={16}
+              />
+              <CardDescription className="text-[1.2rem] leading-[1.6rem] text-gray-50 tablet:text-[1.4rem]">
+                {shopData.address1}
+              </CardDescription>
             </div>
           </div>
         </CardContent>
-        <CardFooter>
-          <div className="flex flex-col">
-            <span className="text-[1.8rem] font-[700] text-black">
-              {item.hourlyPay}원
+        <CardFooter className="mt-[1.6rem] p-0">
+          <div className="flex w-[100%] flex-col gap-[0.2rem] tablet:flex-row tablet:items-center tablet:justify-between">
+            <span className="whitespace-nowrap text-[1.8rem] font-bold tablet:text-[2.4rem]">
+              {Number(item.hourlyPay).toLocaleString()}원
             </span>
             <div className="flex">
-              <span className={`text-[1.2rem] font-[400] text-${color}`}>
-                기존 시급보다 {riseRate}%
-              </span>
-              <ArrowUpIconCustom color={color} />
+              <div
+                className={`flex tablet:h-[3.6rem] tablet:items-center tablet:rounded-[2rem] tablet:bg-${color} tablet:p-[1.2rem]`}
+              >
+                <span
+                  className={`text-${color} whitespace-nowrap text-[1.2rem] leading-[1.6rem] tablet:text-[1.4rem] tablet:font-bold tablet:text-white`}
+                >
+                  기존 시급보다 {riseRate}%
+                </span>
+                {riseRate > 0 && <ArrowUpIconCustom color={color} />}
+              </div>
             </div>
           </div>
         </CardFooter>
       </Card>
-    </>
+    </div>
   );
 }
