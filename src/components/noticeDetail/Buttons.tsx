@@ -1,9 +1,5 @@
 import { Button } from "@/components/ui/button";
 
-interface RejectButtonProps {
-  onClick: () => void;
-}
-
 export const EditNoticeButton = () => {
   return (
     <Button className="h-[3.8rem] w-full rounded-[0.6rem] border-[0.1rem] border-primary bg-white px-[2rem] py-[1rem]">
@@ -14,7 +10,7 @@ export const EditNoticeButton = () => {
   );
 };
 
-export const RejectButton = ({ onClick }: RejectButtonProps) => {
+export const RejectButton = ({ onClick }: any) => {
   return (
     <Button
       onClick={onClick}
@@ -27,7 +23,7 @@ export const RejectButton = ({ onClick }: RejectButtonProps) => {
   );
 };
 
-export const ApproveButton = ({ onClick }: RejectButtonProps) => {
+export const ApproveButton = ({ onClick }: any) => {
   return (
     <Button
       onClick={onClick}

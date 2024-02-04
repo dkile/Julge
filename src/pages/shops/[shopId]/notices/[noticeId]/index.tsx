@@ -1,4 +1,3 @@
-import Pagination from "@mui/material/Pagination";
 import { useQuery } from "@tanstack/react-query";
 import Image from "next/image";
 import { useRouter } from "next/router";
@@ -6,17 +5,15 @@ import React, { useEffect, useState } from "react";
 
 import { fetcher } from "@/apis/fetcher";
 import ApplicationList from "@/components/noticeDetail/ApplicationList";
+import ApproveDialog from "@/components/noticeDetail/ApproveDialog";
 import {
   ApproveBadge,
   HighHourlyWageBadge,
   RejectBadge,
 } from "@/components/noticeDetail/Badge";
-import {
-  ApproveButton,
-  EditNoticeButton,
-  RejectButton,
-} from "@/components/noticeDetail/Buttons";
+import { EditNoticeButton } from "@/components/noticeDetail/Buttons";
 import { useTimeCalculate } from "@/components/noticeDetail/Hooks";
+import RejectDialog from "@/components/noticeDetail/RejectDialog";
 import { apiRouteUtils } from "@/routes";
 
 //TODO: 추후 shopId는 가게 등록 페이지에서 전달받고 noticeId는 쿼리값으로 적용할 예정
@@ -84,20 +81,17 @@ function NoticeDetail() {
       status: item.status,
     }),
   );
-  const applicantData = applicationData?.items?.[0]?.item;
   const [applicants, setApplicants] = useState(initialApplicants);
-  const handleApprove = (index: number) => {
+  const handleApprove = (applicationId: number) => {
     const updatedApplicants = [...applicants];
-    updatedApplicants[index].status = "accepted";
+    updatedApplicants[applicationId].status = "accepted";
     setApplicants(updatedApplicants);
-    alert("신청을 승인했습니다.");
   };
 
-  const handleReject = (index: number) => {
+  const handleReject = (applicationId: number) => {
     const updatedApplicants = [...applicants];
-    updatedApplicants[index].status = "rejected";
+    updatedApplicants[applicationId].status = "rejected";
     setApplicants(updatedApplicants);
-    alert("신청을 거절했습니다.");
   };
 
   useEffect(() => {
@@ -224,9 +218,9 @@ function NoticeDetail() {
             {applicants?.map(
               (
                 applicant: { name: string | undefined; status: string },
-                index: number | undefined,
+                applicationId: number | undefined,
               ) => (
-                <React.Fragment key={index}>
+                <React.Fragment key={applicationId}>
                   <div className="col-span-1 flex items-center gap-[1.2rem] self-stretch border-b-[0.1rem] border-r-[0.1rem] border-t-[0.1rem] border-gray-20 bg-white px-[0.8rem] py-[1.2rem]">
                     <span className="text-black-50 scroll-auto text-[1.4rem] font-normal not-italic leading-[2.2rem]">
                       {applicant.name}
@@ -239,19 +233,18 @@ function NoticeDetail() {
                   </div>
                   <div className="col-span-1 flex items-center gap-[1.2rem] self-stretch border-b-[0.1rem] border-t-[0.1rem] border-gray-20 bg-white px-[0.8rem] py-[1.2rem]">
                     {applicant.status === "pending" && (
-                      <>
-                        <ApproveButton
-                          onClick={() =>
-                            index !== undefined && handleApprove(index)
-                          }
-                        />
-                        <RejectButton
-                          onClick={() =>
-                            index !== undefined && handleReject(index)
-                          }
-                        />
-                      </>
+                      <ApproveDialog
+                        applicationId={applicationId}
+                        handleApprove={handleApprove}
+                      />
                     )}
+                    {applicant.status === "pending" && (
+                      <RejectDialog
+                        applicationId={applicationId}
+                        handleReject={handleReject}
+                      />
+                    )}
+
                     {applicant.status === "accepted" && <ApproveBadge />}
                     {applicant.status === "rejected" && <RejectBadge />}
                   </div>
@@ -259,18 +252,7 @@ function NoticeDetail() {
               ),
             )}
           </div>
-          <div className="flex h-[5.6rem] w-full items-center justify-center">
-            <Pagination
-              count={data?.info ? data.info.pages : offset + 1}
-              variant="outlined"
-              color="primary"
-              className="pagination"
-              page={offset}
-              onChange={handlePaginationChange}
-              hidePrevButton
-              hideNextButton
-            />
-          </div>
+          <div className="flex h-[5.6rem] w-full items-center justify-center"></div>
         </div>
       </div>
     </div>
