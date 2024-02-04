@@ -10,6 +10,7 @@ export default function ShopImageCard({ imgURL }: ShopImageCardProps) {
         {imgURL ? (
           <div className="h-[20rem] w-[35.1rem] overflow-hidden tablet:h-[27.6rem] tablet:w-[48.3rem]">
             <Image
+              className="cursor-pointer object-cover tablet:h-[27.6rem] tablet:w-[48.3rem]"
               src={imgURL}
               height="200"
               width="351"
