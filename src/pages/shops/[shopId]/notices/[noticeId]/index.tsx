@@ -13,7 +13,8 @@ import {
 } from "@/components/noticeDetail/Badge";
 import { EditNoticeButton } from "@/components/noticeDetail/Buttons";
 import { useTimeCalculate } from "@/components/noticeDetail/Hooks";
-  import ApplyListPagination from "@/components/noticeDetail/Pagination";
+import ApplyListPagination from "@/components/noticeDetail/Pagination";
+import RejectDialog from "@/components/noticeDetail/RejectDialog";
 import { apiRouteUtils } from "@/routes";
 
 //TODO: 추후 shopId는 가게 등록 페이지에서 전달받고 noticeId는 쿼리값으로 적용할 예정
