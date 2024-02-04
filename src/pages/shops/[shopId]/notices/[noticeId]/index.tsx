@@ -13,7 +13,7 @@ import {
 } from "@/components/noticeDetail/Badge";
 import { EditNoticeButton } from "@/components/noticeDetail/Buttons";
 import { useTimeCalculate } from "@/components/noticeDetail/Hooks";
-import RejectDialog from "@/components/noticeDetail/RejectDialog";
+  import ApplyListPagination from "@/components/noticeDetail/Pagination";
 import { apiRouteUtils } from "@/routes";
 
 //TODO: 추후 shopId는 가게 등록 페이지에서 전달받고 noticeId는 쿼리값으로 적용할 예정
@@ -64,13 +64,6 @@ function NoticeDetail() {
     } else if (increasePercentage > 20) {
       badgeProps = { className: "bg-red-20", increasePercentage };
     }
-  }
-
-  function handlePaginationChange(e: any, value: React.SetStateAction<number>) {
-    setOffset(value);
-    router.push(`pagination/?limit=6&offset=${value}`, undefined, {
-      shallow: true,
-    });
   }
 
   //TODO: 가게의 특정 공고의 지원 목록 조회하는 api를 구성하면 username과 status를 수정할 예정
@@ -252,7 +245,13 @@ function NoticeDetail() {
               ),
             )}
           </div>
-          <div className="flex h-[5.6rem] w-full items-center justify-center"></div>
+          <div className="flex h-[5.6rem] w-full items-center justify-center">
+            <ApplyListPagination
+              offset={offset}
+              shopId={shopId}
+              noticeId={noticeId}
+            />
+          </div>
         </div>
       </div>
     </div>
