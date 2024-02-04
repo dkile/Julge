@@ -2,6 +2,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { useContext } from "react";
 
+import NotificationBox from "@/components/common/NotificationBox";
 import SearchBar from "@/components/common/SearchBar";
 import { Button } from "@/components/ui/button";
 import { UserActionContext, UserContext } from "@/providers/UserProvider";
@@ -26,23 +27,24 @@ export default function EmployeeHeader() {
       <div className="order-3 flex-1">
         <SearchBar />
       </div>
-      <div className="order-2 flex items-center gap-[8px] text-[1.4rem] font-bold">
+      <div className="order-2 flex items-center gap-[4px] text-[1.4rem] font-bold">
         {user ? (
           <>
             <Button
               variant="ghost"
               asChild
-              className="h-max rounded-[8px] p-[12px] text-[1.4rem] font-bold text-gray-600"
+              className="h-max rounded-[8px] p-[8px] text-[1.4rem] font-bold text-gray-600"
             >
               <Link href={PAGE_ROUTES.PROFILE}>내 프로필</Link>
             </Button>
             <Button
               variant="ghost"
-              className="h-max rounded-[8px] px-[12px] py-[12px] text-[1.4rem] font-bold text-gray-600"
+              className="h-max rounded-[8px] p-[8px] text-[1.4rem] font-bold text-gray-600"
               onClick={() => logout()}
             >
               로그아웃
             </Button>
+            <NotificationBox />
           </>
         ) : (
           <>
