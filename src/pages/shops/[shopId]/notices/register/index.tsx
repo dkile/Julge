@@ -33,8 +33,8 @@ function NoticeRegister() {
       <div className="flex h-screen flex-col items-center justify-center bg-[#FAFAFA]">
         <Form {...form}>
           <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
-            <div className="w-[37.5rem] gap-[0.8rem] tablet:w-[74.4rem] desktop:w-[144rem]">
-              <div className="flex flex-col items-center justify-center">
+            <div className="w-[37.5rem] gap-[0.8rem] tablet:w-[74.4rem] desktop:w-[128rem]">
+              <div className="flex w-full flex-col items-center justify-center">
                 <div className="flex w-full flex-col items-start gap-[0.8rem] px-[1.2rem] pb-[8rem] pt-[4rem] tablet:px-[3.2rem] tablet:py-[6rem] desktop:px-[23.8rem] desktop:py-[6rem]">
                   <div className="flex w-full flex-col items-center gap-[2.4rem] tablet:gap-[3.2rem]">
                     <div className="flex w-full items-center justify-between self-stretch">
