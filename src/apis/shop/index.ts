@@ -7,8 +7,8 @@ export const getShopsData = async (shopId: string) => {
     const res = await fetcher.get(apiRouteUtils.parseShopsURL(shopId));
     const result = await res.json();
     return result;
-  } catch (e: any) {
-    throw e;
+  } catch (err: any) {
+    throw err;
   }
 };
 
@@ -69,4 +69,12 @@ export const putShopEditData = async (
   } catch (err: any) {
     throw err;
   }
+};
+
+export const getUsersData = async (userId: string) => {
+  try {
+    const res = await fetcher.get(`${apiRouteUtils.USERS}/${userId}`);
+    const result = await res.json();
+    return result;
+  } catch {}
 };
