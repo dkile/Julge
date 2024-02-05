@@ -1,4 +1,5 @@
-import { TokenDTO, TokenResponse, UserDTO } from "@/apis/auth/schema";
+import { TokenDTO, TokenResponse } from "@/apis/auth/schema";
+import { User as UserDTO } from "@/apis/schema";
 import { User } from "@/types/user";
 
 export const extractTokenDTOFromResponse = (res: TokenResponse): TokenDTO => {

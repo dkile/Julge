@@ -1,7 +1,7 @@
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 
-import { getNoticesListData, getShopsData } from "@/apis/shops";
+import { getNoticesListData, getShopsData } from "@/apis/shop";
 import EmptyDataCard from "@/components/shop/EmptyDataCard";
 import ShopDataCard from "@/components/shop/ShopDataCard";
 import ShopsNoticesList from "@/components/shop/ShopsNoticesList";

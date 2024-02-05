@@ -1,35 +1,72 @@
-import { HTTPError } from "ky";
-
 import { fetcher } from "@/apis/fetcher";
-import {
-  type NoticeRegistrationDTO,
-  type NoticeRegistrationRequestBody,
-  noticeRegistrationResponseSchema,
-} from "@/apis/shop/schema";
 import { apiRouteUtils } from "@/routes";
 
-export const postNoticeRegistration = async ({
-  hourlyPay,
-  startsAt,
-  workhour,
-  description,
-}: NoticeRegistrationRequestBody): Promise<NoticeRegistrationDTO> =>
-  await fetcher
-    .post(
-      apiRouteUtils.parseShopNoticesURL("c90e94dd-556b-4fad-9bef-f6c81cc4f242"),
-      {
-        json: {
-          hourlyPay,
-          startsAt,
-          workhour,
-          description,
-        },
+// TODO: 에러처리
+export const getShopsData = async (shopId: string) => {
+  try {
+    const res = await fetcher.get(apiRouteUtils.parseShopsURL(shopId));
+    const result = await res.json();
+    return result;
+  } catch (e: any) {
+    throw e;
+  }
+};
+
+// TODO: 에러처리
+
+export const getNoticesListData = async (shopId: string) => {
+  try {
+    const res = await fetcher.get(apiRouteUtils.parseShopNoticesURL(shopId));
+    const result = await res.json();
+    return result;
+  } catch {}
+};
+type OptionsType = {
+  offset: number;
+  limit: number;
+};
+
+export const getNewNoticesListData = async (
+  shopId: string,
+  options: OptionsType,
+) => {
+  try {
+    const res = await fetcher.get(
+      apiRouteUtils.parseShopNewNoticesURL(shopId, options),
+    );
+    const result = await res.json();
+    return result;
+  } catch {}
+};
+
+// TODO: 에러처리
+export const postShopRegistData = async (token: string, values: any) => {
+  try {
+    const res = await fetcher.post(apiRouteUtils.SHOPS, {
+      json: values,
+      headers: {
+        Authorization: `Bearer ${token}`,
       },
-    )
-    .json()
-    .then(noticeRegistrationResponseSchema.parse)
-    .then()
-    .then((res) => res.item)
-    .catch((err: HTTPError) => {
-      throw err;
     });
+  } catch (err: any) {
+    throw err;
+  }
+};
+
+// TODO: 에러처리
+export const putShopEditData = async (
+  token: string,
+  values: any,
+  shopId: string,
+) => {
+  try {
+    await fetcher.put(apiRouteUtils.parseShopsURL(shopId), {
+      json: values,
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
+  } catch (err: any) {
+    throw err;
+  }
+};

@@ -1,10 +1,9 @@
 import { HTTPError } from "ky";
 
 import { fetcher } from "@/apis/fetcher";
+import { Shop, User } from "@/apis/schema";
 import {
-  RequiredUserDTO,
-  ShopDTO,
-  type UserDTO,
+  RequiredUser,
   userGetResponseSchema,
   UsersPostRequestBody,
   usersPostResponseSchema,
@@ -17,7 +16,7 @@ export const postUsers = async ({
   email,
   password,
   type,
-}: UsersPostRequestBody): Promise<RequiredUserDTO> =>
+}: UsersPostRequestBody): Promise<RequiredUser> =>
   await fetcher
     .post(apiRouteUtils.USERS, {
       json: {
@@ -38,7 +37,7 @@ export const postUsers = async ({
 
 export const getUser = async (
   userId: string,
-): Promise<{ user: UserDTO; shop: ShopDTO }> =>
+): Promise<{ user: User; shop: Shop | null }> =>
   await fetcher
     .get(`${apiRouteUtils.USERS}/${userId}`)
     .json()

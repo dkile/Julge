@@ -1,6 +1,6 @@
 import { useQuery } from "@tanstack/react-query";
 
-import { getNoticeList } from "@/apis/noticeList";
+import { getNoticeList } from "@/apis/notice";
 
 export const useNoticeList = () => {
   const { data, error, isLoading } = useQuery<any>({

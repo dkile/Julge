@@ -1,7 +1,7 @@
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 
-import { getShopsData } from "@/apis/shops";
+import { getShopsData } from "@/apis/shop";
 import ShopEditor from "@/components/shop/edit/ShopEditor";
 
 export default function ShopEdit() {

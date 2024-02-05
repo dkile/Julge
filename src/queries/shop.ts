@@ -1,7 +1,7 @@
 import { useMutation } from "@tanstack/react-query";
 
-import { postNoticeRegistration } from "@/apis/shop";
-import { NoticeRegistrationRequestBody } from "@/apis/shop/schema";
+import { postNoticeRegistration } from "@/apis/notice";
+import { NoticesPostRequestBody } from "@/apis/notice/schema";
 
 export const useNoticeRegistration = () => {
   const mutation = useMutation({
@@ -10,7 +10,7 @@ export const useNoticeRegistration = () => {
       startsAt,
       workhour,
       description,
-    }: NoticeRegistrationRequestBody) =>
+    }: NoticesPostRequestBody) =>
       postNoticeRegistration({ hourlyPay, startsAt, workhour, description }),
     onSuccess: () => {},
   });

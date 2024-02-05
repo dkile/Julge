@@ -1,59 +1,38 @@
 import { z } from "zod";
 
-import { createResponseSchema } from "@/apis/schema";
+import { linksSchema, shopSchema, userSchema } from "@/apis/schema";
 
-export const userType = z.enum(["employee", "employer"]);
-
-export const shopDTO = z.object({
-  id: z.string(),
-  name: z.string(),
-  category: z.string(),
-  address1: z.string(),
-  address2: z.string(),
-  description: z.string(),
-  imageUrl: z.string(),
-  originalHourlyPay: z.string(),
+export const requiredUserSchema = userSchema.pick({
+  id: true,
+  email: true,
+  type: true,
 });
-export type ShopDTO = z.infer<typeof shopDTO>;
+export type RequiredUser = z.infer<typeof requiredUserSchema>;
 
-export const userDTO = z.object({
-  id: z.string(),
-  email: z.string().email(),
-  type: userType,
-  name: z.optional(z.string()),
-  phone: z.optional(z.string()),
-  address: z.optional(z.string()),
-  bio: z.optional(z.string()),
-});
-export type UserDTO = z.infer<typeof userDTO>;
-
-export const requiredUserDTO = z.object({
-  id: z.string(),
-  email: z.string().email(),
-  type: userType,
-});
-export type RequiredUserDTO = z.infer<typeof requiredUserDTO>;
-
-export const usersPostResponseSchema = createResponseSchema(
-  z.object({
-    item: requiredUserDTO,
-  }),
-);
+export const usersPostResponseSchema = z
+  .object({
+    item: requiredUserSchema,
+  })
+  .merge(linksSchema);
 export type UsersPostResponse = z.infer<typeof usersPostResponseSchema>;
 
 export type UsersPostRequestBody = {
   email: string;
   password: string;
-  type: z.infer<typeof userType>;
+  type: "employee" | "employer";
 };
 
-export const userGetResponseSchema = createResponseSchema(
-  z.object({
-    item: userDTO.extend({
-      shop: z.object({
-        item: shopDTO,
+export const userGetResponseSchema = z
+  .object({
+    item: userSchema.merge(
+      z.object({
+        shop: z
+          .object({
+            item: shopSchema,
+          })
+          .nullable(),
       }),
-    }),
-  }),
-);
+    ),
+  })
+  .merge(linksSchema);
 export type UserGetResponse = z.infer<typeof userGetResponseSchema>;

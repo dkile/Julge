@@ -1,13 +1,11 @@
-import { ShopDTO } from "@/apis/user/schema";
-import { UserDTO, UserGetResponse } from "@/apis/user/schema";
+import { Shop, User } from "@/apis/schema";
+import { UserGetResponse } from "@/apis/user/schema";
 
 export const extractUserShopDTOFromResponse = (
   res: UserGetResponse,
-): { user: UserDTO; shop: ShopDTO } => {
+): { user: User; shop: Shop | null } => {
   const { item: user } = res;
-  const {
-    shop: { item: shopDTO },
-  } = user;
+  const shopDTO = user.shop;
   return {
     user: {
       id: user.id,
@@ -18,6 +16,6 @@ export const extractUserShopDTOFromResponse = (
       bio: user.bio,
       phone: user.phone,
     },
-    shop: shopDTO,
+    shop: shopDTO ? shopDTO.item : null,
   };
 };
