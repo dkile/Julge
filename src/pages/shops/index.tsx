@@ -22,16 +22,17 @@ export default function ShopsDefaultPage() {
       router.push(PAGE_ROUTES.NOTICES);
       return;
     }
+
     if (user) {
       const getUserData = async () => {
         const response: any = await getUsersData(user.id);
         if (response.item.shop) {
-          router.push(PAGE_ROUTES.parseShopsURL(response.item.shop.id));
+          router.push(PAGE_ROUTES.parseShopsURL(response.item.shop.item.id));
           return;
         }
+        setIsLoading(false);
       };
       getUserData();
-      setIsLoading(false);
     }
   }, [user]);
 

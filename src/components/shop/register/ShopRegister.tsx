@@ -5,6 +5,7 @@ import * as z from "zod";
 import { postImages, putPresignedURL } from "@/apis/image";
 import { postShopRegistData } from "@/apis/shop";
 import ShopDataForm from "@/components/shop/ShopDataForm";
+import { getAccessTokenInStorage } from "@/helpers/auth";
 import { PAGE_ROUTES } from "@/routes";
 
 const formSchema = z.object({
@@ -39,19 +40,20 @@ export default function ShopRegister() {
   const handleInputImgFile = async (e: ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (file) {
-      const presignedURL = await postImages(token, file.name);
+      const presignedURL = await postImages(
+        getAccessTokenInStorage() as string,
+        file.name,
+      );
       await putPresignedURL(presignedURL, file);
       const nonQueryPresignedURL = presignedURL.split("?")[0];
       setImgURL(nonQueryPresignedURL);
     }
   };
 
-  const token = ""; // 임시값
-
   async function onSubmit(values: z.infer<typeof formSchema>) {
     values.imageUrl = imgURL;
     try {
-      await postShopRegistData(token, values);
+      await postShopRegistData(getAccessTokenInStorage() as string, values);
       setModalData({
         msg: "등록이 완료되었습니다.",
         path: PAGE_ROUTES.SHOPS,

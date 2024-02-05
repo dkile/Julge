@@ -8,7 +8,7 @@ export default function ShopImageCard({ imgURL }: ShopImageCardProps) {
     <>
       <div className="mt-[0.8rem] flex h-[20rem] w-[35.1rem] flex-col items-center justify-center rounded-[1.2rem] bg-gray-10 tablet:h-[27.6rem] tablet:w-[48.3rem]">
         {imgURL ? (
-          <div className="h-[20rem] w-[35.1rem] overflow-hidden tablet:h-[27.6rem] tablet:w-[48.3rem]">
+          <div className="h-[20rem] w-[35.1rem] overflow-hidden rounded-[1.2rem] tablet:h-[27.6rem] tablet:w-[48.3rem]">
             <Image
               className="cursor-pointer object-cover tablet:h-[27.6rem] tablet:w-[48.3rem]"
               src={imgURL}

@@ -1,10 +1,13 @@
 import { useRouter } from "next/router";
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 
-import { getNoticesListData, getShopsData } from "@/apis/shop";
+import { getNoticesListData, getShopsData, getUsersData } from "@/apis/shop";
+import EmployerLayout from "@/components/common/EmployerLayout";
 import EmptyDataCard from "@/components/shop/EmptyDataCard";
 import ShopDataCard from "@/components/shop/ShopDataCard";
 import ShopsNoticesList from "@/components/shop/ShopsNoticesList";
+import { getAccessTokenInStorage } from "@/helpers/auth";
+import { UserContext } from "@/providers/UserProvider";
 import { PAGE_ROUTES } from "@/routes";
 
 type DataType = {
@@ -33,8 +36,8 @@ type DataType = {
 type NoticesType = {
   offset: number;
   limit: number;
-  count: number; // 전체 개수
-  hasNext: boolean; // 다음 내용 존재 여부
+  count: number;
+  hasNext: boolean;
   items: Array<{
     item?: {
       id: string;
@@ -48,13 +51,39 @@ type NoticesType = {
 };
 
 export default function Shop() {
+  const user = useContext(UserContext);
   const [isLoading, setIsLoading] = useState(true);
+  const [isAccessChecking, setIsAccessChecking] = useState(true);
   const [shopData, setShopData] = useState<DataType | null>(null);
   const [noticesListData, setNoticesListData] = useState<NoticesType | null>(
     null,
   );
   const router = useRouter();
   const { shopId } = router.query;
+
+  useEffect(() => {
+    if (!getAccessTokenInStorage()) {
+      router.push(PAGE_ROUTES.SIGNIN);
+      return;
+    }
+
+    if (user?.type === "employee") {
+      router.push(PAGE_ROUTES.NOTICES);
+      return;
+    }
+
+    if (user) {
+      const getUserData = async () => {
+        const response: any = await getUsersData(user.id);
+        if (!response.item.shop || response.item.shop.item.id !== shopId) {
+          router.push(PAGE_ROUTES.SHOPS);
+          return;
+        }
+        setIsAccessChecking(false);
+      };
+      getUserData();
+    }
+  }, [user]);
 
   useEffect(() => {
     if (typeof shopId === "string") {
@@ -69,32 +98,33 @@ export default function Shop() {
     }
   }, [shopId]);
 
-  return isLoading ? (
-    //TODO : loading 차후 구현
-    <div className="text-[60px]">로딩중</div>
-  ) : shopData ? (
-    <div>
-      <ShopDataCard shopId={shopId} shopData={shopData} />
-      {noticesListData?.items.length ? (
-        <ShopsNoticesList
-          shopData={shopData}
-          noticesListData={noticesListData}
-        />
+  return (
+    <EmployerLayout>
+      {isLoading || isAccessChecking ? (
+        //TODO : loading 차후 구현
+        <div className="text-[60px]">로딩중</div>
       ) : (
-        <EmptyDataCard
-          title="등록한 공고"
-          description="공고를 등록해 보세요."
-          buttonText="공고 등록하기"
-          buttonLink={PAGE_ROUTES.parseNoticeRegisterURL(shopId as string)}
-        />
+        shopData && (
+          <div>
+            <ShopDataCard shopId={shopId} shopData={shopData} />
+            {noticesListData?.items.length ? (
+              <ShopsNoticesList
+                shopData={shopData}
+                noticesListData={noticesListData}
+              />
+            ) : (
+              <EmptyDataCard
+                title="등록한 공고"
+                description="공고를 등록해 보세요."
+                buttonText="공고 등록하기"
+                buttonLink={PAGE_ROUTES.parseNoticeRegisterURL(
+                  shopId as string,
+                )}
+              />
+            )}
+          </div>
+        )
       )}
-    </div>
-  ) : (
-    <EmptyDataCard
-      title="내 가게"
-      description="내 가게를 소개하고 공고도 등록해 보세요."
-      buttonText="가게 등록하기"
-      buttonLink={PAGE_ROUTES.SHOPS_REGISTER}
-    />
+    </EmployerLayout>
   );
 }
