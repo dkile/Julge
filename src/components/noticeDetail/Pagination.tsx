@@ -32,7 +32,7 @@ function ApplyListPagination({
           <PaginationLink
             href={`${PAGE_ROUTES.parseShopNoticeApplicationsURL(shopId, noticeId)}?limit=6&offset=${offset}`}
           >
-            {offset}
+            <span className="text-[1.2rem] tablet:text-[1.4rem]">{offset}</span>
           </PaginationLink>
         </PaginationItem>
         <PaginationItem>

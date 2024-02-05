@@ -8,7 +8,7 @@ export const ApproveBadge = () => {
       variant="secondary"
       className="flex items-center rounded-[2rem] bg-blue-10 px-[1rem] py-[0.6rem]"
     >
-      <span className="text-[1.2rem] font-normal not-italic leading-[1.6rem] text-blue-20">
+      <span className="text-[1.2rem] font-normal not-italic leading-[1.6rem] text-blue-20 tablet:text-[1.4rem] tablet:font-bold">
         승인 완료
       </span>
     </Badge>
@@ -21,7 +21,7 @@ export const RejectBadge = () => {
       variant="secondary"
       className="flex items-center rounded-[2rem] bg-red-10 px-[1rem] py-[0.6rem]"
     >
-      <span className="text-[1.2rem] font-normal not-italic leading-[1.6rem] text-red-40">
+      <span className="text-[1.2rem] font-normal not-italic leading-[1.6rem] text-red-40 tablet:text-[1.4rem] tablet:font-bold">
         거절
       </span>
     </Badge>
