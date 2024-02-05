@@ -58,4 +58,21 @@ class KyAdapter implements Fetcher {
   }
 }
 
-export const fetcher = new KyAdapter(ky.create({ prefixUrl: API_ROUTE }));
+export const fetcher = new KyAdapter(
+  ky.create({
+    prefixUrl: API_ROUTE,
+    hooks: {
+      beforeError: [
+        async (err) => {
+          const { response } = err;
+          if (response && response.body) {
+            const { message } = await response.json();
+            err.message = message;
+          }
+
+          return err;
+        },
+      ],
+    },
+  }),
+);
