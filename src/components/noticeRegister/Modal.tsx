@@ -41,15 +41,17 @@ function RegisterModal({ form }: any) {
   return (
     <AlertDialog>
       <AlertDialogTrigger asChild>
-        <Button
-          type="submit"
-          disabled={!form.formState.isValid}
-          className="flex h-[4.8rem] items-center justify-center gap-[0.8rem] self-stretch rounded-md bg-primary px-[13.6rem] py-[1.4rem]"
-        >
-          <span className="text-center text-[1.6rem] font-bold leading-5 text-white">
-            등록하기
-          </span>
-        </Button>
+        <div className="flex w-full items-center justify-center">
+          <Button
+            type="submit"
+            disabled={!form.formState.isValid}
+            className="flex h-[4.8rem] w-full items-center justify-center gap-[0.8rem] self-stretch rounded-md bg-primary px-[13.6rem] py-[1.4rem] tablet:w-[31.2rem]"
+          >
+            <span className="text-center text-[1.6rem] font-bold leading-5 text-white">
+              등록하기
+            </span>
+          </Button>
+        </div>
       </AlertDialogTrigger>
     </AlertDialog>
   );
