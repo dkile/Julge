@@ -14,20 +14,20 @@ import { useNoticeRegistration } from "@/queries/shop";
 
 function RegisterModal({ form }: any) {
   const shopId = "c90e94dd-556b-4fad-9bef-f6c81cc4f242";
-  const noticeId = "1";
+  const noticeId = "e3d12108-044e-410b-9092-1184300d79f2";
   const noticeRegistrationMutation = useNoticeRegistration();
 
   if (noticeRegistrationMutation.isSuccess) {
     return (
-      <AlertDialogContent className="flex h-[22rem] w-[32.7rem] flex-col items-center justify-center gap-[5rem] rounded-md border border-none bg-white py-[2.8rem]">
+      <AlertDialogContent className="flex h-[22rem] w-[32.7rem] flex-col items-center justify-center gap-[5rem] rounded-md border border-none bg-white py-[2.8rem] tablet:h-[25rem] tablet:w-[54rem]">
         <AlertDialogHeader>
-          <AlertDialogTitle className="text-[1.6rem] font-medium not-italic leading-normal text-[#333236]">
+          <AlertDialogTitle className="translate-y-[3.5rem] text-[1.6rem] font-medium not-italic leading-normal text-[#333236] tablet:translate-y-[3.5rem] tablet:text-[1.8rem] desktop:translate-y-[3.5rem] desktop:text-[1.8rem]">
             등록이 완료되었습니다.
           </AlertDialogTitle>
         </AlertDialogHeader>
-        <AlertDialogFooter>
+        <AlertDialogFooter className="flex tablet:w-full">
           <Link href={`/shops/${shopId}/notices/${noticeId}`}>
-            <AlertDialogAction className="flex h-[4.2rem] w-[13.8rem] items-center justify-center gap-[1rem] rounded-md bg-primary px-[5.6rem] py-[1.2rem]">
+            <AlertDialogAction className="flex h-[4.2rem] w-[13.8rem] translate-y-[2rem] items-center justify-center gap-[1rem] rounded-md bg-primary px-[5.6rem] py-[1.2rem] tablet:translate-x-[34rem] tablet:translate-y-[2.5rem] desktop:translate-x-[34rem] desktop:translate-y-[2.5rem]">
               <span className="text-center text-[1.4rem] font-medium not-italic leading-normal text-white">
                 확인
               </span>
