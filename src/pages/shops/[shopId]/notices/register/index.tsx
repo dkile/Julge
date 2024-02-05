@@ -1,6 +1,6 @@
 import Image from "next/image";
+import Link from "next/link";
 
-import EmployerLayout from "@/components/common/EmployerLayout";
 import RegisterModal from "@/components/noticeRegister/Modal";
 import { Button } from "@/components/ui/button";
 import {
@@ -19,7 +19,17 @@ function NoticeRegister() {
   const { form, onSubmit, rules, handlers } = useNoticeRegistForm();
 
   return (
-    <EmployerLayout>
+    <>
+      <Link href={"/notices"}>
+        <div className="relative h-[1.5rem] w-[8.1rem]">
+          <Image
+            src="/icons/logo.svg"
+            layout="fill"
+            objectFit="contain"
+            alt="로고이미지"
+          />
+        </div>
+      </Link>
       <div className="flex h-screen flex-col items-center justify-center bg-[#FAFAFA]">
         <Form {...form}>
           <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
@@ -175,7 +185,7 @@ function NoticeRegister() {
           </form>
         </Form>
       </div>
-    </EmployerLayout>
+    </>
   );
 }
 

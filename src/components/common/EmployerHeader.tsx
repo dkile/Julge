@@ -23,10 +23,10 @@ export default function EmployerHeader() {
           priority
         />
       </Link>
-      <div className="order-3 flex-1 tablet:order-2">
+      <div className="order-3 flex-1">
         <SearchBar />
       </div>
-      <div className="order-2 flex items-center gap-[8px] text-[1.4rem] font-bold tablet:order-3">
+      <div className="order-2 flex items-center gap-[8px] text-[1.4rem] font-bold">
         {user ? (
           <>
             <Button
