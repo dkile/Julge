@@ -35,7 +35,7 @@ export const HighHourlyWageBadge = (props: {
   const { className, increasePercentage } = props;
   return (
     <Badge
-      className={`flex h-[2.4rem] w-[13.1rem] items-center gap-[0.2rem] rounded-[2rem] ${className} px-[0.8rem] py-[0.4rem]`}
+      className={`flex h-[2.4rem] items-center gap-[0.2rem] rounded-[2rem] ${className} px-[0.8rem] py-[0.4rem]`}
     >
       <span className="items-center text-[1.2rem] font-normal not-italic leading-[1.6rem] text-white">
         기존 시급보다 {increasePercentage}%

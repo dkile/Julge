@@ -14,13 +14,17 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
-import useNoticeRegistForm from "@/hooks/useNoticeRegistForm";
+import useNoticeEditForm from "@/hooks/useNoticeEditForm";
 
-function NoticeRegister() {
+function NoticeEdit() {
   const router = useRouter();
-  const { shopId } = router.query;
+  const { shopId, noticeId } = router.query;
   const parsedShopId = shopId as string;
-  const { form, onSubmit, rules, handlers } = useNoticeRegistForm(parsedShopId);
+  const parsedNoticeId = noticeId as string;
+  const { form, onSubmit, rules, handlers } = useNoticeEditForm(
+    parsedShopId,
+    parsedNoticeId,
+  );
 
   return (
     <EmployerLayout>
@@ -49,7 +53,7 @@ function NoticeRegister() {
                       </Button>
                     </div>
                     <div className="flex w-full flex-col justify-end gap-[2rem]">
-                      <div className="flex flex-col gap-[2rem] gap-x-[2.4rem] desktop:flex desktop:w-full desktop:flex-row desktop:gap-y-[2rem]">
+                      <div className="desktop:flex desktop:w-full desktop:flex-row desktop:gap-[2rem]">
                         <div className="flex flex-col gap-[2rem] tablet:flex tablet:w-full tablet:flex-row tablet:gap-[2rem] desktop:w-2/3">
                           <div className="flex w-full flex-col items-start gap-[0.8rem] tablet:w-1/2 desktop:w-1/2">
                             <FormField
@@ -183,4 +187,4 @@ function NoticeRegister() {
   );
 }
 
-export default NoticeRegister;
+export default NoticeEdit;

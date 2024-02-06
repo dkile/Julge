@@ -33,7 +33,7 @@ export default function ShopRegist() {
       };
       getUserData();
     }
-  }, [user]);
+  }, [router, user]);
 
   return (
     <EmployerLayout>

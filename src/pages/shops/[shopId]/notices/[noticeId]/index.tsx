@@ -18,17 +18,20 @@ import ApplyListPagination from "@/components/noticeDetail/Pagination";
 import RejectDialog from "@/components/noticeDetail/RejectDialog";
 import { apiRouteUtils } from "@/routes";
 
-//TODO: 추후 shopId는 가게 등록 페이지에서 전달받고 noticeId는 쿼리값으로 적용할 예정
 function NoticeDetail() {
   const router = useRouter();
   const [offset, setOffset] = useState(1);
-  const shopId = "c90e94dd-556b-4fad-9bef-f6c81cc4f242";
-  const noticeId = "e3d12108-044e-410b-9092-1184300d79f2";
+  const { shopId, noticeId } = router.query;
+  const normalizedShopId = String(shopId);
+  const normalizedNoticeId = String(noticeId);
   const { data } = useQuery<any>({
     queryKey: ["notice", noticeId],
     queryFn: async () => {
       const response = await fetcher.get(
-        apiRouteUtils.parseShopNoticeDetail(shopId, noticeId),
+        apiRouteUtils.parseShopNoticeDetail(
+          normalizedShopId,
+          normalizedNoticeId,
+        ),
       );
       if (!response.ok) {
         throw new Error("Network response was not ok");
@@ -36,6 +39,7 @@ function NoticeDetail() {
       return response.json();
     },
   });
+
   const shopOriginalData = data?.item?.shop?.item ?? {};
   const shopNoticeData = data?.item ?? {};
   const startsAt = shopNoticeData.startsAt;
@@ -50,19 +54,32 @@ function NoticeDetail() {
 
   let increasePercentage: number | undefined;
   if (hourlyPay > originalHourlyPay) {
-    increasePercentage =
-      ((hourlyPay - originalHourlyPay) / originalHourlyPay) * 100;
+    increasePercentage = Math.round(
+      ((hourlyPay - originalHourlyPay) / originalHourlyPay) * 100,
+    );
   }
   let badgeProps = {};
   if (increasePercentage !== undefined) {
     if (increasePercentage >= 50) {
-      badgeProps = { className: "bg-red-50", increasePercentage };
+      badgeProps = {
+        className: "bg-red-40",
+        increasePercentage: increasePercentage.toFixed(0),
+      };
     } else if (increasePercentage >= 40) {
-      badgeProps = { className: "bg-red-40", increasePercentage };
+      badgeProps = {
+        className: "bg-red-30",
+        increasePercentage: increasePercentage.toFixed(0),
+      };
     } else if (increasePercentage >= 30) {
-      badgeProps = { className: "bg-red-30", increasePercentage };
+      badgeProps = {
+        className: "bg-red-20",
+        increasePercentage: increasePercentage.toFixed(0),
+      };
     } else if (increasePercentage > 20) {
-      badgeProps = { className: "bg-red-20", increasePercentage };
+      badgeProps = {
+        className: "bg-red-10",
+        increasePercentage: increasePercentage.toFixed(0),
+      };
     }
   }
 
@@ -103,7 +120,7 @@ function NoticeDetail() {
         <div className="flex w-full flex-col items-start gap-[1.2rem] px-[1.2rem] py-[4rem] tablet:w-full tablet:px-[3.2rem] tablet:py-[6rem] desktop:px-[23.8rem]">
           <div className="flex w-full flex-col gap-[1.6rem] tablet:w-full">
             <div className="inline-flex flex-col items-start gap-[0.8rem]">
-              <span className="text-[1.4rem] font-bold not-italic leading-normal text-primary tablet:text-[1.6rem]	">
+              <span className="text-[1.4rem] font-bold not-italic leading-normal text-primary tablet:text-[1.6rem]  ">
                 {shopOriginalData?.category}
               </span>
               <span className="text-[2rem] font-bold not-italic leading-normal text-black tablet:text-[2.8rem]">
@@ -122,7 +139,7 @@ function NoticeDetail() {
               <div className="flex flex-col items-start gap-[2.4rem] self-stretch">
                 <div className="flex flex-col items-start gap-[0.8rem] self-stretch tablet:gap-[1.2rem]">
                   <div className="flex flex-col items-start gap-[0.8rem]">
-                    <span className="text-[1.4rem] font-bold not-italic leading-normal text-primary tablet:text-[1.6rem]	">
+                    <span className="text-[1.4rem] font-bold not-italic leading-normal text-primary tablet:text-[1.6rem]  ">
                       시급
                     </span>
                     <div className="flex w-full items-center gap-[0.4rem]">
@@ -170,7 +187,10 @@ function NoticeDetail() {
                     {shopOriginalData?.description}
                   </span>
                 </div>
-                <EditNoticeButton />
+                <EditNoticeButton
+                  shopId={normalizedShopId}
+                  noticeId={normalizedNoticeId}
+                />
               </div>
             </div>
             <div className="flex h-[15.3rem] w-full flex-col items-start gap-[0.8rem] rounded-[1.2rem] bg-gray-10 p-[2rem] tablet:h-[14.8rem]">
@@ -259,8 +279,8 @@ function NoticeDetail() {
             <div className="flex h-[5.6rem] w-full items-center justify-center">
               <ApplyListPagination
                 offset={offset}
-                shopId={shopId}
-                noticeId={noticeId}
+                shopId={normalizedShopId}
+                noticeId={normalizedNoticeId}
               />
             </div>
           </div>

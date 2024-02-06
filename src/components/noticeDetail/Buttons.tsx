@@ -1,11 +1,24 @@
-import { Button } from "@/components/ui/button";
+import Link from "next/link";
 
-export const EditNoticeButton = () => {
+import { Button } from "@/components/ui/button";
+import { PAGE_ROUTES } from "@/routes";
+
+interface EditNoticeButtonProps {
+  shopId: string;
+  noticeId: string;
+}
+
+export const EditNoticeButton: React.FC<EditNoticeButtonProps> = ({
+  shopId,
+  noticeId,
+}) => {
   return (
     <Button className="h-[3.8rem] w-full rounded-[0.6rem] border-[0.1rem] border-primary bg-white px-[2rem] py-[1rem] tablet:h-[4.8rem]">
-      <span className="text-center text-[1.4rem] font-bold not-italic leading-normal text-primary tablet:text-[1.6rem]">
-        공고 편집하기
-      </span>
+      <Link href={PAGE_ROUTES.parseShopNoticeEditURL(shopId, noticeId)}>
+        <span className="text-center text-[1.4rem] font-bold not-italic leading-normal text-primary tablet:text-[1.6rem]">
+          공고 편집하기
+        </span>
+      </Link>
     </Button>
   );
 };

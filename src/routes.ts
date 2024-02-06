@@ -8,6 +8,8 @@ export const PAGE_ROUTES = {
   MY: "/my",
   parseShopsURL: (shopId: string) => `/shops/${shopId}`,
   parseShopsEditURL: (shopId: string) => `/shops/edit/${shopId}`,
+  parseShopNoticeEditURL: (shopId: string, noticeId: string) =>
+    `/shops/${shopId}/notices/${noticeId}/edit`,
   parseNoticeRegisterURL: (shopId: string) =>
     `/shops/${shopId}/notices/register`,
   parseShopNoticeApplicationsURL: (shopId: string, noticeId: string) =>

@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { useState } from "react";
 
 import {
   AlertDialog,
@@ -10,18 +11,23 @@ import {
   AlertDialogTrigger,
 } from "@/components/ui/alert-dialog";
 import { Button } from "@/components/ui/button";
-import { useNoticeRegistration } from "@/queries/shop";
 
-function RegisterModal({ form }: any, shopId: string) {
-  const noticeId = "e3d12108-044e-410b-9092-1184300d79f2";
-  const noticeRegistrationMutation = useNoticeRegistration(shopId);
+function RegisterModal({ form }: any) {
+  const [isOpen, setIsOpen] = useState(false);
+
+  const handleOpen = () => {
+    if (form.formState.isValid) {
+      setIsOpen(true);
+    }
+  };
 
   return (
-    <AlertDialog>
+    <AlertDialog open={isOpen}>
       <AlertDialogTrigger asChild>
         <div className="flex w-full items-center justify-center">
           <Button
-            type="submit"
+            type="button"
+            onClick={handleOpen}
             disabled={!form.formState.isValid}
             className="flex h-[4.8rem] w-full items-center justify-center gap-[0.8rem] self-stretch rounded-md bg-primary px-[13.6rem] py-[1.4rem] tablet:w-[31.2rem]"
           >
