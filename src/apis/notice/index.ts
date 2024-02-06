@@ -69,7 +69,8 @@ export const putNoticeRegistration = async (
     .catch((err: HTTPError) => {
       throw err;
     });
-  
+};
+
 export const getAllNoticesListData = async () => {
   try {
     //TODO: 페이지네이션에 맞게 offset 변경예정
