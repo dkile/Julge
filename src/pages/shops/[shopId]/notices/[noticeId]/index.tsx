@@ -36,7 +36,6 @@ function NoticeDetail() {
       return response.json();
     },
   });
-
   const shopOriginalData = data?.item?.shop?.item ?? {};
   const shopNoticeData = data?.item ?? {};
   const startsAt = shopNoticeData.startsAt;
@@ -46,7 +45,6 @@ function NoticeDetail() {
     startsAt,
     workhour,
   );
-
   const originalHourlyPay = shopOriginalData.originalHourlyPay;
   const hourlyPay = shopNoticeData.hourlyPay;
 

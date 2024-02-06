@@ -78,6 +78,8 @@ export const linksSchema = z.object({
         "applications",
         "alerts",
         "shop",
+        "create",
+        "list",
       ]),
       description: z.string(),
       method: z.enum(["GET", "POST", "PUT", "DELETE"]),

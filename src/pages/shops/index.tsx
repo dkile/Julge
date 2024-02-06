@@ -34,7 +34,7 @@ export default function ShopsDefaultPage() {
       };
       getUserData();
     }
-  }, [user]);
+  }, [router, user]);
 
   return isLoading ? (
     <div>임시로딩중</div>

@@ -1,4 +1,5 @@
 import Image from "next/image";
+import { useRouter } from "next/router";
 
 import EmployerLayout from "@/components/common/EmployerLayout";
 import RegisterModal from "@/components/noticeRegister/Modal";
@@ -16,7 +17,10 @@ import { Textarea } from "@/components/ui/textarea";
 import useNoticeRegistForm from "@/hooks/useNoticeRegistForm";
 
 function NoticeRegister() {
-  const { form, onSubmit, rules, handlers } = useNoticeRegistForm();
+  const router = useRouter();
+  const { shopId } = router.query;
+  const parsedShopId = shopId as string;
+  const { form, onSubmit, rules, handlers } = useNoticeRegistForm(parsedShopId);
 
   return (
     <EmployerLayout>
@@ -167,7 +171,7 @@ function NoticeRegister() {
                         />
                       </div>
                     </div>
-                    <RegisterModal form={form} />
+                    <RegisterModal form={form} parsedShopId={parsedShopId} />
                   </div>
                 </div>
               </div>
