@@ -62,10 +62,10 @@ export default function ShopsNoticesListItem({
 
   return (
     <div>
-      <Card className="w-[17.1rem] overflow-hidden p-[1.2rem] tablet:w-[33.2rem] tablet:p-[1.6rem] desktop:w-[31.2rem]">
+      <Card className="w-[17.1rem] overflow-hidden rounded-[1.2rem] p-[1.2rem] tablet:w-[33.2rem] tablet:p-[1.6rem] desktop:w-[31.2rem]">
         <CardHeader className="mb-[1.2rem] h-[8.4rem] w-[14.7rem] rounded-[1.2rem] p-0 tablet:mb-[2rem] tablet:h-[17.1rem] tablet:w-[30rem] desktop:h-[16rem] desktop:w-[28rem]">
           <Image
-            className="h-[8.4rem] w-[14.7rem] object-cover p-0 tablet:h-[17.1rem] tablet:w-[30rem] desktop:h-[16rem] desktop:w-[28rem]"
+            className="h-[8.4rem] w-[14.7rem] rounded-[1.2rem] object-cover p-0 tablet:h-[17.1rem] tablet:w-[30rem] desktop:h-[16rem] desktop:w-[28rem]"
             src={shopData.imageUrl}
             alt=""
             width={162}

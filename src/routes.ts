@@ -23,7 +23,7 @@ export const apiRouteUtils = {
   IMAGES: "images",
   parseShopNoticesURL: (shopId: string) => `shops/${shopId}/notices`,
   parseShopsURL: (shopId: string) => `shops/${shopId}`,
-  NOTICES: "notices?offset=0&limit=10",
+  NOTICES: "notices",
   parseShopNoticeDetail: (shopId: string, noticeId: string) =>
     `shops/${shopId}/notices/${noticeId}`,
   parseShopNoticeApplications: (
