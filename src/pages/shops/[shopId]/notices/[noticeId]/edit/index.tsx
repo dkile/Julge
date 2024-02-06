@@ -1,5 +1,6 @@
 import Image from "next/image";
 import { useRouter } from "next/router";
+import { useContext, useEffect } from "react";
 
 import EmployerLayout from "@/components/common/EmployerLayout";
 import RegisterModal from "@/components/noticeRegister/Modal";
@@ -14,9 +15,13 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
+import { getAccessTokenInStorage } from "@/helpers/auth";
 import useNoticeEditForm from "@/hooks/useNoticeEditForm";
+import { UserContext } from "@/providers/UserProvider";
+import { PAGE_ROUTES } from "@/routes";
 
 function NoticeEdit() {
+  const user = useContext(UserContext);
   const router = useRouter();
   const { shopId, noticeId } = router.query;
   const parsedShopId = shopId as string;
@@ -25,6 +30,13 @@ function NoticeEdit() {
     parsedShopId,
     parsedNoticeId,
   );
+
+  useEffect(() => {
+    if (!getAccessTokenInStorage()) {
+      router.push(PAGE_ROUTES.SIGNIN);
+      return;
+    }
+  }, [user]);
 
   return (
     <EmployerLayout>

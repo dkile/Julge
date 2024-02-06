@@ -1,7 +1,7 @@
 import { useQuery } from "@tanstack/react-query";
 import Image from "next/image";
 import { useRouter } from "next/router";
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 
 import { fetcher } from "@/apis/fetcher";
 import EmployerLayout from "@/components/common/EmployerLayout";
@@ -16,9 +16,12 @@ import { EditNoticeButton } from "@/components/noticeDetail/Buttons";
 import { useTimeCalculate } from "@/components/noticeDetail/Hooks";
 import ApplyListPagination from "@/components/noticeDetail/Pagination";
 import RejectDialog from "@/components/noticeDetail/RejectDialog";
-import { apiRouteUtils } from "@/routes";
+import { getAccessTokenInStorage } from "@/helpers/auth";
+import { UserContext } from "@/providers/UserProvider";
+import { apiRouteUtils, PAGE_ROUTES } from "@/routes";
 
 function NoticeDetail() {
+  const user = useContext(UserContext);
   const router = useRouter();
   const [offset, setOffset] = useState(1);
   const { shopId, noticeId } = router.query;
@@ -113,6 +116,13 @@ function NoticeDetail() {
       }
     }
   }, [router.query.offset]);
+
+  useEffect(() => {
+    if (!getAccessTokenInStorage()) {
+      router.push(PAGE_ROUTES.SIGNIN);
+      return;
+    }
+  }, [user]);
 
   return (
     <EmployerLayout>
