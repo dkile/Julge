@@ -5,7 +5,7 @@ export const PAGE_ROUTES = {
   NOTICES_DETAIL: (shopId: string) => `/shops/${shopId}/notices`,
   SHOPS_REGISTER: "/shops/register",
   SHOPS: "/shops",
-  PROFILE: "/profile",
+  MY: "/my",
   parseShopsURL: (shopId: string) => `/shops/${shopId}`,
   parseShopsEditURL: (shopId: string) => `/shops/edit/${shopId}`,
   parseNoticeRegisterURL: (shopId: string) =>

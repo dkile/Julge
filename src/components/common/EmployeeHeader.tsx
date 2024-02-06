@@ -35,7 +35,7 @@ export default function EmployeeHeader() {
               asChild
               className="h-max rounded-[8px] p-[8px] text-[1.4rem] font-bold text-gray-600"
             >
-              <Link href={PAGE_ROUTES.PROFILE}>내 프로필</Link>
+              <Link href={PAGE_ROUTES.MY}>내 프로필</Link>
             </Button>
             <Button
               variant="ghost"
