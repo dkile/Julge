@@ -8,29 +8,46 @@ import {
   PaginationPrevious,
 } from "@/components/ui/pagination";
 
-export default function NoticeListPagination() {
+interface NoticeListPagination {
+  count: number;
+  handlePage: (num: number) => void;
+  page: number;
+}
+
+export default function NoticeListPagination({
+  count,
+  handlePage,
+  page,
+}: NoticeListPagination) {
+  const pageCount = Math.ceil(count / 6);
+
+  const handlePrePageClick = () => {
+    if (page > 1) {
+      handlePage(page - 1);
+    }
+  };
+  const handleNextPageClick = () => {
+    if (page < pageCount) {
+      handlePage(page + 1);
+    }
+  };
+
   return (
-    <Pagination>
+    <Pagination className="mb-[6rem]">
       <PaginationContent>
-        <PaginationItem>
-          <PaginationPrevious href="#" />
+        <PaginationItem className="cursor-pointer" onClick={handlePrePageClick}>
+          <PaginationPrevious />
         </PaginationItem>
-        <PaginationItem>
-          <PaginationLink href="#">1</PaginationLink>
+        {page > 1 && <PaginationEllipsis />}
+        <PaginationItem className="cursor-pointer">
+          <PaginationLink isActive>{page}</PaginationLink>
         </PaginationItem>
-        <PaginationItem>
-          <PaginationLink href="#" isActive>
-            2
-          </PaginationLink>
-        </PaginationItem>
-        <PaginationItem>
-          <PaginationLink href="#">3</PaginationLink>
-        </PaginationItem>
-        <PaginationItem>
-          <PaginationEllipsis />
-        </PaginationItem>
-        <PaginationItem>
-          <PaginationNext href="#" />
+        {page < pageCount && <PaginationEllipsis />}
+        <PaginationItem
+          className="cursor-pointer"
+          onClick={handleNextPageClick}
+        >
+          <PaginationNext />
         </PaginationItem>
       </PaginationContent>
     </Pagination>

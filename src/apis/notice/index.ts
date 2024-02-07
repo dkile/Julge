@@ -71,11 +71,10 @@ export const putNoticeRegistration = async (
     });
 };
 
-export const getAllNoticesListData = async () => {
+export const getNoticesListData = async (offset = 0) => {
   try {
-    //TODO: 페이지네이션에 맞게 offset 변경예정
     const response = await fetcher.get(
-      apiRouteUtils.NOTICES + "?offset=46&limit=6",
+      apiRouteUtils.NOTICES + `?offset=${offset}&limit=6`,
     );
     const result = await response.json();
     return result;
