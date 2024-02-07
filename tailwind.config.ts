@@ -3,6 +3,20 @@ import type { Config } from "tailwindcss";
 const { fontFamily } = require("tailwindcss/defaultTheme");
 
 const config = {
+  safelist: [
+    "tablet:bg-red-10",
+    "tablet:bg-red-20",
+    "tablet:bg-red-30",
+    "tablet:bg-red-40",
+    "text-red-10",
+    "text-red-20",
+    "text-red-30",
+    "text-red-40",
+    "fill-red-10",
+    "fill-red-20",
+    "fill-red-30",
+    "fill-red-40",
+  ],
   darkMode: ["class"],
   content: [
     "./pages/**/*.{ts,tsx}",
