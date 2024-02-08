@@ -83,11 +83,10 @@ export const getNoticesListData = async (offset = 0) => {
   }
 };
 
-export const getCustomNoticesListData = async () => {
+export const getCustomNoticesListData = async (address = "") => {
   try {
-    //TODO : query 사용자의 주소에 맞게 수정 해야함
     const response = await fetcher.get(
-      apiRouteUtils.NOTICES + `?offset=0&limit=6&address=${"서울시 중구"}`,
+      apiRouteUtils.NOTICES + `?offset=0&limit=10&address=${address}`,
     );
     const result = await response.json();
     return result;
