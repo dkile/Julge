@@ -12,26 +12,35 @@ import { cn } from "@/lib/utils";
 
 const frameworks = [
   {
-    value: "test1",
+    value: "time",
     label: "마감임박순",
   },
   {
-    value: "test2",
+    value: "pay",
     label: "시급많은순",
   },
   {
-    value: "test3",
-    label: "시급적은순",
+    value: "hour",
+    label: "시간적은순",
   },
   {
-    value: "test4",
+    value: "shop",
     label: "가나다순",
   },
 ];
 
-export default function NoticeListDropdownMenu() {
+interface NotcieListDropdownMenuProps {
+  handleOrderBy: (value: string) => void;
+}
+
+export default function NoticeListDropdownMenu({
+  handleOrderBy,
+}: NotcieListDropdownMenuProps) {
   const [open, setOpen] = React.useState(false);
   const [value, setValue] = React.useState("");
+  React.useEffect(() => {
+    handleOrderBy(value);
+  }, [value]);
 
   return (
     <Popover open={open} onOpenChange={setOpen}>
