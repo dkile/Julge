@@ -2,10 +2,11 @@ import { useMutation } from "@tanstack/react-query";
 import { useRouter } from "next/router";
 import { useContext } from "react";
 
-import { postUsers } from "@/apis/user";
-import { UsersPostRequestBody } from "@/apis/user/schema";
+import { postUsers, putUser } from "@/apis/user";
+import { userPutRequestBody, UsersPostRequestBody } from "@/apis/user/schema";
 import { ConflictRequestError } from "@/helpers/error";
 import { ErrorDialogActionContext } from "@/providers/ErrorDialogProvider";
+import { UserContext } from "@/providers/UserProvider";
 import { PAGE_ROUTES } from "@/routes";
 
 export const useSignup = () => {
@@ -28,4 +29,23 @@ export const useSignup = () => {
   });
 
   return mutation;
+};
+
+export const useMyRegister = () => {
+  const user = useContext(UserContext);
+  const router = useRouter();
+  const { open: openErrorDialog } = useContext(ErrorDialogActionContext);
+
+  const { mutate } = useMutation({
+    mutationFn: ({ name, phone, address, bio }: userPutRequestBody) =>
+      putUser(user!.id, { name, phone, address, bio }),
+    onSuccess: () => {
+      router.replace(PAGE_ROUTES.MY);
+    },
+    onError: (err) => {
+      openErrorDialog(err.message);
+    },
+  });
+
+  return { mutate };
 };

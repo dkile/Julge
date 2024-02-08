@@ -1,6 +1,7 @@
 import { z } from "zod";
 
 import { linksSchema, shopSchema, userSchema } from "@/apis/schema";
+import { Address } from "@/types/user";
 
 export const requiredUserSchema = userSchema.pick({
   id: true,
@@ -36,3 +37,10 @@ export const userGetResponseSchema = z
   })
   .merge(linksSchema);
 export type UserGetResponse = z.infer<typeof userGetResponseSchema>;
+
+export type userPutRequestBody = {
+  name: string;
+  phone: string;
+  address: Address;
+  bio?: string;
+};

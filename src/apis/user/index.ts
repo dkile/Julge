@@ -5,6 +5,7 @@ import { Shop, User } from "@/apis/schema";
 import {
   RequiredUser,
   userGetResponseSchema,
+  userPutRequestBody,
   UsersPostRequestBody,
   usersPostResponseSchema,
 } from "@/apis/user/schema";
@@ -43,6 +44,16 @@ export const getUser = async (
     .json()
     .then(userGetResponseSchema.parse)
     .then(extractUserShopDTOFromResponse)
+    .catch((err: HTTPError) => {
+      throw err;
+    });
+
+export const putUser = async (userId: string, body: userPutRequestBody) =>
+  fetcher
+    .put(`${apiRouteUtils.USERS}/${userId}`, {
+      json: body,
+    })
+    .json()
     .catch((err: HTTPError) => {
       throw err;
     });

@@ -14,7 +14,7 @@ import {
 } from "@/providers/ErrorDialogProvider";
 import { fontPretendard } from "@/styles/fonts";
 
-export default function ValidationErrorDialog() {
+export default function ErrorDialog() {
   const { opened, errorMessage } = useContext(ErrorDialogContext);
   const { close, toggle } = useContext(ErrorDialogActionContext);
 
