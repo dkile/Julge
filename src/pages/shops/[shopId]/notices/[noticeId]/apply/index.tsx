@@ -12,6 +12,7 @@ import { useTimeCalculate } from "@/components/noticeDetail/Hooks";
 import NoticeApplyItem from "@/components/noticeDetail/NoticeApplyItem";
 import { getAccessTokenInStorage } from "@/helpers/auth";
 import { UserContext } from "@/providers/UserProvider";
+import { useUserQuery } from "@/queries/user";
 import { apiRouteUtils, PAGE_ROUTES } from "@/routes";
 
 function NoticeDetailApply() {
@@ -23,6 +24,25 @@ function NoticeDetailApply() {
   const { shopId, noticeId } = router.query;
   const normalizedShopId = String(shopId);
   const normalizedNoticeId = String(noticeId);
+
+  const { userProfile }: any = useUserQuery();
+
+  const profile =
+    userProfile && userProfile.name && userProfile.phone && userProfile.address
+      ? {
+          name: userProfile.name,
+          phone: userProfile.phone,
+          address: userProfile.address,
+        }
+      : undefined;
+
+  const handleApply = () => {
+    if (!profile) {
+      alert("내 프로필을 먼저 등록해 주세요.");
+      router.push("/my");
+    } else {
+    }
+  };
 
   useEffect(() => {
     if (user?.type === "employer") {
@@ -195,7 +215,7 @@ function NoticeDetailApply() {
                     {shopOriginalData?.description}
                   </span>
                 </div>
-                <ApplyNoticeButton />
+                <ApplyNoticeButton handleApply={handleApply} />
               </div>
             </div>
             <div className="flex h-[15.3rem] w-full flex-col items-start gap-[0.8rem] rounded-[1.2rem] bg-gray-10 p-[2rem] tablet:h-[14.8rem]">
