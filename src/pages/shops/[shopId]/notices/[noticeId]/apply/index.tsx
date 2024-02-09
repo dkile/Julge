@@ -2,7 +2,7 @@ import { useQuery } from "@tanstack/react-query";
 import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/router";
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 
 import { fetcher } from "@/apis/fetcher";
 import EmployeeLayout from "@/components/common/EmployeeLayout";
@@ -11,6 +11,7 @@ import { ApplyNoticeButton } from "@/components/noticeDetail/Buttons";
 import { useTimeCalculate } from "@/components/noticeDetail/Hooks";
 import NoticeApplyItem from "@/components/noticeDetail/NoticeApplyItem";
 import { getAccessTokenInStorage } from "@/helpers/auth";
+import { UserContext } from "@/providers/UserProvider";
 import { apiRouteUtils, PAGE_ROUTES } from "@/routes";
 
 function NoticeDetailApply() {
@@ -18,9 +19,17 @@ function NoticeDetailApply() {
     { id: string; data: any }[]
   >([]);
   const router = useRouter();
+  const user = useContext(UserContext);
   const { shopId, noticeId } = router.query;
   const normalizedShopId = String(shopId);
   const normalizedNoticeId = String(noticeId);
+
+  useEffect(() => {
+    if (user?.type === "employer") {
+      router.push("/shops");
+    }
+  }, [user, router]);
+
   const { data } = useQuery<any>({
     queryKey: ["notices", noticeId],
     queryFn: async () => {
