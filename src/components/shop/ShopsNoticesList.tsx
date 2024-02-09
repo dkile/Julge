@@ -81,7 +81,7 @@ export default function ShopsNoticesList({
           {itemList.map((item: any) => (
             <li key={item.item.id}>
               <Link
-                href={PAGE_ROUTES.parseShopNoticeApplicationsURL(
+                href={PAGE_ROUTES.parseShopNoticeDetailsURL(
                   shopData.id,
                   item.item.id,
                 )}

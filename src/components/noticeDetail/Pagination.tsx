@@ -25,12 +25,12 @@ function ApplyListPagination({
       <PaginationContent>
         <PaginationItem>
           <PaginationPrevious
-            href={`${PAGE_ROUTES.parseShopNoticeApplicationsURL(shopId, noticeId)}?limit=6&offset=${offset - 1}`}
+            href={`${PAGE_ROUTES.parseShopNoticeDetailsURL(shopId, noticeId)}?limit=6&offset=${offset - 1}`}
           />
         </PaginationItem>
         <PaginationItem>
           <PaginationLink
-            href={`${PAGE_ROUTES.parseShopNoticeApplicationsURL(shopId, noticeId)}?limit=6&offset=${offset}`}
+            href={`${PAGE_ROUTES.parseShopNoticeDetailsURL(shopId, noticeId)}?limit=6&offset=${offset}`}
           >
             <span className="text-[1.2rem] tablet:text-[1.4rem]">{offset}</span>
           </PaginationLink>
@@ -40,7 +40,7 @@ function ApplyListPagination({
         </PaginationItem>
         <PaginationItem>
           <PaginationNext
-            href={`${PAGE_ROUTES.parseShopNoticeApplicationsURL(shopId, noticeId)}?limit=6&offset=${offset + 1}`}
+            href={`${PAGE_ROUTES.parseShopNoticeDetailsURL(shopId, noticeId)}?limit=6&offset=${offset + 1}`}
           />
         </PaginationItem>
       </PaginationContent>

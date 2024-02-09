@@ -26,7 +26,7 @@ function RegisterModal({ form }: any) {
       <AlertDialogTrigger asChild>
         <div className="flex w-full items-center justify-center">
           <Button
-            type="button"
+            type="submit"
             onClick={handleOpen}
             disabled={!form.formState.isValid}
             className="flex h-[4.8rem] w-full items-center justify-center gap-[0.8rem] self-stretch rounded-md bg-primary px-[13.6rem] py-[1.4rem] tablet:w-[31.2rem]"
