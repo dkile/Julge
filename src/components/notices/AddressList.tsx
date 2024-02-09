@@ -11,11 +11,14 @@ export default function AddressList({ address, setAddress }: AddressListProps) {
 
   return (
     <div>
-      <ul>
+      <ul className="flex flex-wrap gap-[1rem]">
         {address.map((address: string) => (
-          <li className="w-[10rem] bg-red-10" key={address}>
-            {address}
-            <button onClick={() => handleAddress(address)}>{"X"}</button>
+          <li
+            onClick={() => handleAddress(address)}
+            className="w-auto cursor-pointer rounded-[2rem] bg-red-10 px-[0.8rem] py-[0.6rem] text-center text-[1.4rem] font-bold text-primary"
+            key={address}
+          >
+            {address} X
           </li>
         ))}
       </ul>

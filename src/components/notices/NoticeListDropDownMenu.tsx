@@ -49,7 +49,7 @@ export default function NoticeListDropdownMenu({
           variant="outline"
           role="combobox"
           aria-expanded={open}
-          className="w-[auto] justify-between bg-gray-10 text-[1.2rem] font-bold "
+          className="h-[3rem] rounded-[0.5rem] bg-gray-10 p-[1.2rem] text-[1.4rem] font-semibold"
         >
           {value
             ? frameworks.find((framework) => framework.value === value)?.label
@@ -57,11 +57,12 @@ export default function NoticeListDropdownMenu({
           <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
         </Button>
       </PopoverTrigger>
-      <PopoverContent className="w-[200px] p-0">
-        <Command>
-          <CommandGroup>
+      <PopoverContent className="w-[10.5rem] p-[0.8rem]">
+        <Command className="p-0">
+          <CommandGroup className="p-0">
             {frameworks.map((framework) => (
               <CommandItem
+                className=" h-[3rem] p-0 text-center text-[1.4rem] leading-[2.2rem]"
                 key={framework.value}
                 value={framework.value}
                 onSelect={(currentValue: string) => {

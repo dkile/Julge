@@ -1,4 +1,5 @@
 import AddressList from "@/components/notices/AddressList";
+import { ScrollArea } from "@/components/ui/scroll-area";
 
 const ADDRESS = [
   "서울시 강남구",
@@ -44,16 +45,22 @@ export default function AddressSelector({
   };
 
   return (
-    <div>
-      <ul className="border-[1px] border-solid">
-        {ADDRESS.map((item) => {
-          return (
-            <li onClick={() => handleAddAddress(item)} key={item}>
-              {item}
-            </li>
-          );
-        })}
-      </ul>
+    <div className="flex flex-col gap-[1.2rem]">
+      <ScrollArea className="h-[25.8rem] border-[1px] border-solid p-[0.5rem]">
+        <ul className="flex flex-wrap justify-between">
+          {ADDRESS.map((item) => {
+            return (
+              <li
+                className="w-[45%] cursor-pointer p-[0.5rem] text-center text-[1.4rem] hover:rounded-[0.8rem] hover:bg-red-10"
+                onClick={() => handleAddAddress(item)}
+                key={item}
+              >
+                {item}
+              </li>
+            );
+          })}
+        </ul>
+      </ScrollArea>
       <AddressList address={address} setAddress={setAddress} />
     </div>
   );

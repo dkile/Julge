@@ -16,8 +16,8 @@ interface CustomNoticeProps {
 
 export default function CustomNotice({ customNoticesList }: CustomNoticeProps) {
   return (
-    <div className="bg-red-10">
-      <ul className="mx-auto flex w-[35.1rem] flex-col gap-[1.6rem] pb-[4rem] pt-[4rem] tablet:w-[67.8rem] tablet:gap-[3.2rem] tablet:pb-[12rem] tablet:pt-[6rem] desktop:w-[96.4rem]">
+    <div className="w-[100%] bg-red-10">
+      <ul className="mx-auto flex w-[35.1rem] flex-col gap-[1.6rem] pb-[4rem] pt-[4rem] tablet:w-[67.8rem] tablet:gap-[3.2rem] tablet:pb-[6rem] tablet:pt-[6rem] desktop:w-[96.4rem]">
         <span className="text-[2rem] font-bold tablet:text-[2.8rem]">
           맞춤 공고
         </span>

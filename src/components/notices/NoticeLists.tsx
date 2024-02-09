@@ -112,20 +112,24 @@ export default function NoticesLists() {
       {!options.keyword && (
         <CustomNotice customNoticesList={customNoticesList} />
       )}
-      <div>
-        <ul className="mx-auto flex w-[35.1rem] flex-col gap-[1.6rem] pb-[8rem] pt-[4rem] tablet:w-[67.8rem] tablet:gap-[3.2rem] tablet:pb-[12rem] tablet:pt-[6rem] desktop:w-[96.4rem]">
-          <span className="text-[2rem] font-bold tablet:text-[2.8rem]">
-            {options.keyword ? (
-              <>
-                <span className="text-primary">{options.keyword}</span>에 대한
-                공고 목록
-              </>
-            ) : (
-              "전체 공고"
-            )}
-          </span>
-          <NoticeListDropdownMenu handleSort={handleSort} />
-          <NoticeListFilter setOptions={setOptions} />
+      <div className="pb-[8rem] pt-[4rem] tablet:pb-[6rem] tablet:pt-[6rem]">
+        <ul className="mx-auto flex w-[35.1rem] flex-col gap-[1.6rem] pb-[3rem] tablet:w-[67.8rem] tablet:gap-[3.2rem] tablet:pb-[4rem] tablet:pt-[6rem] desktop:w-[96.4rem]">
+          <div className="flex flex-col gap-[1.6rem] tablet:flex-row tablet:items-center tablet:justify-between">
+            <span className="text-[2rem] font-bold tablet:text-[2.8rem]">
+              {options.keyword ? (
+                <>
+                  <span className="text-primary">{options.keyword}</span>에 대한
+                  공고 목록
+                </>
+              ) : (
+                "전체 공고"
+              )}
+            </span>
+            <div className="flex gap-[1rem]">
+              <NoticeListDropdownMenu handleSort={handleSort} />
+              <NoticeListFilter setOptions={setOptions} />
+            </div>
+          </div>
           <div className="flex w-[35.1rem] flex-wrap justify-between gap-x-[0.9rem] gap-y-[1.6rem] tablet:w-[67.8rem] tablet:gap-y-[3.2rem] desktop:w-[96.4rem]">
             {noticesList &&
               noticesList.map((data: any) => (
@@ -145,8 +149,12 @@ export default function NoticesLists() {
               ))}
           </div>
         </ul>
+        <NoticeListPagination
+          handlePage={handlePage}
+          count={count}
+          page={page}
+        />
       </div>
-      <NoticeListPagination handlePage={handlePage} count={count} page={page} />
     </>
   );
 }
