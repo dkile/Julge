@@ -1,18 +1,13 @@
 import Link from "next/link";
+import { useRouter } from "next/router";
 import { useContext, useEffect, useState } from "react";
 
 import { getCustomNoticesListData, getNoticesListData } from "@/apis/notice";
+import CustomNotice from "@/components/notices/CustomNotice";
 import NoticeListDropdownMenu from "@/components/notices/NoticeListDropDownMenu";
 import NoticeListFilter from "@/components/notices/NoticeListFilter";
 import NoticeListPagination from "@/components/notices/NoticeListPagination";
 import ShopsNoticesListItem from "@/components/shop/ShopsNoticesListItem";
-import {
-  Carousel,
-  CarouselContent,
-  CarouselItem,
-  CarouselNext,
-  CarouselPrevious,
-} from "@/components/ui/carousel";
 import { UserContext } from "@/providers/UserProvider";
 import { PAGE_ROUTES } from "@/routes";
 
@@ -33,6 +28,8 @@ function getCurrentDateTime() {
 
 export default function NoticesLists() {
   const user = useContext<any>(UserContext);
+  const router = useRouter();
+  const { search } = router.query;
   const [page, setPage] = useState(1);
   const [noticesList, setNoticesList] = useState([]);
   const [customNoticesList, setCustomNoticesList] = useState([]);
@@ -45,7 +42,6 @@ export default function NoticesLists() {
     hourlyPayGte: 0,
     keyword: "",
   });
-
   useEffect(() => {
     const getData = async () => {
       const startsAtGte = getCurrentDateTime();
@@ -95,6 +91,14 @@ export default function NoticesLists() {
     getData();
   }, [options]);
 
+  useEffect(() => {
+    if (search) {
+      setOptions({ ...options, keyword: search as string });
+    } else {
+      setOptions({ ...options, keyword: "" });
+    }
+  }, [search]);
+
   const handlePage = (num: number) => {
     setPage(num);
   };
@@ -105,46 +109,20 @@ export default function NoticesLists() {
 
   return (
     <>
-      <div className="bg-red-10">
-        <ul className="mx-auto flex w-[35.1rem] flex-col gap-[1.6rem] pb-[8rem] pt-[4rem] tablet:w-[67.8rem] tablet:gap-[3.2rem] tablet:pb-[12rem] tablet:pt-[6rem] desktop:w-[96.4rem]">
-          <span className="text-[2rem] font-bold tablet:text-[2.8rem]">
-            맞춤 공고
-          </span>
-          <Carousel>
-            <div className="flex w-[35.1rem] flex-wrap justify-between gap-x-[0.9rem] gap-y-[1.6rem] tablet:w-[67.8rem] tablet:gap-y-[3.2rem] desktop:w-[96.4rem]">
-              <CarouselContent>
-                {customNoticesList &&
-                  customNoticesList.map((data: any) => (
-                    <>
-                      <CarouselItem className="basis-100">
-                        <li key={data.item.id}>
-                          <Link
-                            href={PAGE_ROUTES.parseNotciesApplyURL(
-                              data.item.shop.item.id,
-                              data.item.id,
-                            )}
-                          >
-                            <ShopsNoticesListItem
-                              item={data.item}
-                              shopData={data.item.shop.item}
-                            />
-                          </Link>
-                        </li>
-                      </CarouselItem>
-                    </>
-                  ))}
-              </CarouselContent>
-              <CarouselPrevious className="h-[24px] w-[24px]" />
-              <CarouselNext className="h-[24px] w-[24px]" />
-            </div>
-          </Carousel>
-        </ul>
-      </div>
-
+      {!options.keyword && (
+        <CustomNotice customNoticesList={customNoticesList} />
+      )}
       <div>
         <ul className="mx-auto flex w-[35.1rem] flex-col gap-[1.6rem] pb-[8rem] pt-[4rem] tablet:w-[67.8rem] tablet:gap-[3.2rem] tablet:pb-[12rem] tablet:pt-[6rem] desktop:w-[96.4rem]">
           <span className="text-[2rem] font-bold tablet:text-[2.8rem]">
-            전체 공고
+            {options.keyword ? (
+              <>
+                <span className="text-primary">{options.keyword}</span>에 대한
+                공고 목록
+              </>
+            ) : (
+              "전체 공고"
+            )}
           </span>
           <NoticeListDropdownMenu handleSort={handleSort} />
           <NoticeListFilter setOptions={setOptions} />

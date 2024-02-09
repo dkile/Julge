@@ -82,13 +82,15 @@ export const getNoticesListData = async (options: any, offset = 0) => {
   const addressOption = options.address
     ? "&address=" + options.address.join("&address=")
     : "";
+  const keywordOption = options.keyword ? `&keyword=${options.keyword}` : "";
   const apiURL =
     apiRouteUtils.NOTICES +
     `?offset=${offset}&limit=6` +
     sortOption +
     startsAtGteOption +
     hourlyPayGteOption +
-    addressOption;
+    addressOption +
+    keywordOption;
   try {
     const response = await fetcher.get(apiURL);
     const result = await response.json();
