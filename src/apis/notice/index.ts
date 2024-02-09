@@ -71,18 +71,24 @@ export const putNoticeRegistration = async (
     });
 };
 
-export const getNoticesListData = async (
-  offset = 0,
-  sort = "",
-  startsAt = "",
-) => {
-  const sortOption = sort ? `&sort=${sort}` : "";
-  const startsAtGte = startsAt ? `&startsAtGte=${startsAt}` : "";
+export const getNoticesListData = async (options: any, offset = 0) => {
+  const sortOption = options.sort ? `&sort=${options.sort}` : "";
+  const startsAtGteOption = options.startsAtGte
+    ? `&startsAtGte=${options.startsAtGte}`
+    : "";
+  const hourlyPayGteOption = options.hourlyPayGte
+    ? `&hourlyPayGte=${options.hourlyPayGte}`
+    : "";
+  const addressOption = options.address
+    ? "&address=" + options.address.join("&address=")
+    : "";
   const apiURL =
     apiRouteUtils.NOTICES +
     `?offset=${offset}&limit=6` +
     sortOption +
-    startsAtGte;
+    startsAtGteOption +
+    hourlyPayGteOption +
+    addressOption;
   try {
     const response = await fetcher.get(apiURL);
     const result = await response.json();
@@ -94,12 +100,12 @@ export const getNoticesListData = async (
 
 export const getCustomNoticesListData = async (address = "", startsAt = "") => {
   const startsAtGte = startsAt ? `&startsAtGte=${startsAt}` : "";
+  const apiURL =
+    apiRouteUtils.NOTICES +
+    `?offset=0&limit=10&address=${address}` +
+    startsAtGte;
   try {
-    const response = await fetcher.get(
-      apiRouteUtils.NOTICES +
-        `?offset=0&limit=10&address=${address}` +
-        startsAtGte,
-    );
+    const response = await fetcher.get(apiURL);
     const result = await response.json();
     return result;
   } catch (err: any) {

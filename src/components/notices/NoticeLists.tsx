@@ -1,10 +1,10 @@
 import Link from "next/link";
-import { Fragment, useContext, useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 
 import { getCustomNoticesListData, getNoticesListData } from "@/apis/notice";
 import NoticeListDropdownMenu from "@/components/notices/NoticeListDropDownMenu";
+import NoticeListFilter from "@/components/notices/NoticeListFilter";
 import NoticeListPagination from "@/components/notices/NoticeListPagination";
-import NoticeListPopover from "@/components/notices/NoticeListPopover";
 import ShopsNoticesListItem from "@/components/shop/ShopsNoticesListItem";
 import {
   Carousel,
@@ -31,40 +31,34 @@ function getCurrentDateTime() {
   return rfc3339DateTime;
 }
 
-//TODO : data get 할 시 쿼리 파라미터 옵션 객체로 변경(다음 필터 이슈에서 설정)
 export default function NoticesLists() {
   const user = useContext<any>(UserContext);
   const [page, setPage] = useState(1);
   const [noticesList, setNoticesList] = useState([]);
-  const [options, setOptions] = useState({
-    address: [],
-    count: 0,
-    limit: 6,
-    offset: 0,
-  });
   const [customNoticesList, setCustomNoticesList] = useState([]);
-  const [orderBy, setOrderBy] = useState("");
+
+  const [count, setCount] = useState(0);
+  const [options, setOptions] = useState({
+    sort: "",
+    address: [],
+    startsAtGte: "",
+    hourlyPayGte: 0,
+    keyword: "",
+  });
 
   useEffect(() => {
     const getData = async () => {
       const startsAtGte = getCurrentDateTime();
-      const resultAllNotices: any = await getNoticesListData(
-        options.offset,
-        orderBy,
-        startsAtGte,
-      );
+      const resultAllNotices: any = await getNoticesListData({
+        startsAtGte: startsAtGte,
+      });
       const resultCustomNotices: any = await getCustomNoticesListData(
         user?.address,
         startsAtGte,
       );
       setCustomNoticesList(resultCustomNotices.items);
       setNoticesList(resultAllNotices.items);
-      setOptions({
-        address: resultAllNotices.address,
-        count: resultAllNotices.count,
-        limit: 6,
-        offset: resultAllNotices.offset,
-      });
+      setCount(resultAllNotices.count);
     };
     getData();
   }, []);
@@ -73,10 +67,13 @@ export default function NoticesLists() {
     const getData = async () => {
       const newOffset = (page - 1) * 6;
       const startsAtGte = getCurrentDateTime();
+      let newOptions = options;
+      if (startsAtGte > options.startsAtGte) {
+        newOptions = { ...newOptions, startsAtGte: startsAtGte };
+      }
       const resultAllNotices: any = await getNoticesListData(
+        newOptions,
         newOffset,
-        orderBy,
-        startsAtGte,
       );
       setNoticesList(resultAllNotices.items);
     };
@@ -85,24 +82,25 @@ export default function NoticesLists() {
 
   useEffect(() => {
     const startsAtGte = getCurrentDateTime();
+    let newOptions = options;
+    if (startsAtGte > options.startsAtGte) {
+      newOptions = { ...newOptions, startsAtGte: startsAtGte };
+    }
     const getData = async () => {
-      const resultAllNotices: any = await getNoticesListData(
-        options.offset,
-        orderBy,
-        startsAtGte,
-      );
+      const resultAllNotices: any = await getNoticesListData(newOptions);
       setNoticesList(resultAllNotices.items);
+      setCount(resultAllNotices.count);
       setPage(1);
     };
     getData();
-  }, [orderBy]);
+  }, [options]);
 
   const handlePage = (num: number) => {
     setPage(num);
   };
 
-  const handleOrderBy = (value: string) => {
-    setOrderBy(value);
+  const handleSort = (value: string) => {
+    setOptions((prev: any) => ({ ...prev, sort: value }));
   };
 
   return (
@@ -148,8 +146,8 @@ export default function NoticesLists() {
           <span className="text-[2rem] font-bold tablet:text-[2.8rem]">
             전체 공고
           </span>
-          <NoticeListDropdownMenu handleOrderBy={handleOrderBy} />
-          <NoticeListPopover />
+          <NoticeListDropdownMenu handleSort={handleSort} />
+          <NoticeListFilter setOptions={setOptions} />
           <div className="flex w-[35.1rem] flex-wrap justify-between gap-x-[0.9rem] gap-y-[1.6rem] tablet:w-[67.8rem] tablet:gap-y-[3.2rem] desktop:w-[96.4rem]">
             {noticesList &&
               noticesList.map((data: any) => (
@@ -170,11 +168,7 @@ export default function NoticesLists() {
           </div>
         </ul>
       </div>
-      <NoticeListPagination
-        handlePage={handlePage}
-        count={options.count}
-        page={page}
-      />
+      <NoticeListPagination handlePage={handlePage} count={count} page={page} />
     </>
   );
 }
