@@ -1,5 +1,4 @@
 import useMyRegisterForm from "@/components/my/useMyRegisterForm";
-import { CheckRadioGroupItem } from "@/components/signup/CheckRadioGroupItem";
 import { Button } from "@/components/ui/button";
 import {
   Form,
@@ -10,7 +9,6 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
-import { RadioGroup } from "@/components/ui/radio-group";
 import {
   Select,
   SelectContent,
@@ -18,7 +16,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { cn } from "@/lib/utils";
+import { Textarea } from "@/components/ui/textarea";
 
 export default function RegisterForm() {
   const { form, onSubmit, rules, handlers } = useMyRegisterForm();
@@ -130,36 +128,13 @@ export default function RegisterForm() {
             rules={rules.bio}
             render={({ field }) => (
               <FormItem>
-                <FormLabel className="text-[1.6rem]">성별</FormLabel>
+                <FormLabel className="text-[1.6rem]">소개</FormLabel>
                 <FormControl>
-                  <RadioGroup
-                    onValueChange={field.onChange}
-                    defaultValue={field.value}
-                    className="flex gap-[1.6rem]"
-                  >
-                    <FormItem
-                      className={cn(
-                        "flex items-center justify-center gap-[1.2rem] space-y-0 rounded-[3.2rem] border-[0.1rem] border-gray-30 bg-white px-[4.2rem] py-[1.2rem]",
-                        field.value === "male" && "border-primary",
-                      )}
-                    >
-                      <FormControl>
-                        <CheckRadioGroupItem value="male" />
-                      </FormControl>
-                      <FormLabel className="text-[1.4rem]">남성</FormLabel>
-                    </FormItem>
-                    <FormItem
-                      className={cn(
-                        "flex items-center justify-center gap-[1.2rem] space-y-0 rounded-[3.2rem] border-[0.1rem] border-gray-30 bg-white px-[4.2rem] py-[1.2rem]",
-                        field.value === "female" && "border-primary",
-                      )}
-                    >
-                      <FormControl>
-                        <CheckRadioGroupItem value="female" />
-                      </FormControl>
-                      <FormLabel className="text-[1.4rem]">여성</FormLabel>
-                    </FormItem>
-                  </RadioGroup>
+                  <Textarea
+                    placeholder="간단한 소개를 입력해주세요"
+                    className="mt-[8px] h-[156px] resize-none rounded-[8px] p-[16px] focus-visible:ring-gray-40"
+                    {...field}
+                  />
                 </FormControl>
                 <FormMessage className="absolute text-[1.2rem]" />
               </FormItem>

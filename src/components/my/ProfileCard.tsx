@@ -11,6 +11,7 @@ interface Props {
     name: string;
     phone: string;
     address: string;
+    bio?: string;
   };
 }
 
@@ -42,6 +43,9 @@ export default function ProfileCard({ profile }: Props) {
           />
           선호 지역: {profile.address}
         </div>
+        <p className="mt-[16px] min-h-[24px] w-full text-wrap text-[1.4rem] text-black">
+          {profile.bio}
+        </p>
       </CardContent>
       <Button
         variant="link"

@@ -17,7 +17,12 @@ export default function My() {
 
   const profile =
     user && user.name && user.phone && user.address
-      ? { name: user.name, phone: user.phone, address: user.address }
+      ? {
+          name: user.name,
+          phone: user.phone,
+          address: user.address,
+          bio: user.bio,
+        }
       : undefined;
 
   return (
