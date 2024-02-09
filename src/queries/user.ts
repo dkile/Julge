@@ -1,8 +1,8 @@
-import { useMutation } from "@tanstack/react-query";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { useRouter } from "next/router";
 import { useContext } from "react";
 
-import { postUsers, putUser } from "@/apis/user";
+import { getUser, postUsers, putUser } from "@/apis/user";
 import { userPutRequestBody, UsersPostRequestBody } from "@/apis/user/schema";
 import { ConflictRequestError } from "@/helpers/error";
 import { ErrorDialogActionContext } from "@/providers/ErrorDialogProvider";
@@ -34,6 +34,7 @@ export const useSignup = () => {
 export const useMyRegister = () => {
   const user = useContext(UserContext);
   const router = useRouter();
+  const queryClient = useQueryClient();
   const { open: openErrorDialog } = useContext(ErrorDialogActionContext);
 
   const { mutate } = useMutation({
@@ -41,6 +42,9 @@ export const useMyRegister = () => {
       putUser(user!.id, { name, phone, address, bio }),
     onSuccess: () => {
       router.replace(PAGE_ROUTES.MY);
+      queryClient.invalidateQueries({
+        queryKey: ["user", user!.id],
+      });
     },
     onError: (err) => {
       openErrorDialog(err.message);
@@ -48,4 +52,17 @@ export const useMyRegister = () => {
   });
 
   return { mutate };
+};
+
+export const useUserQuery = () => {
+  const user = useContext(UserContext);
+
+  const { data, isLoading, error } = useQuery({
+    queryKey: ["user", user?.id],
+    queryFn: () => getUser(user?.id ?? ""),
+    select: (data) => data.user,
+    enabled: !!user,
+  });
+
+  return { user: data, isLoading, error };
 };
