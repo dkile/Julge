@@ -6,6 +6,7 @@ import EmployerLayout from "@/components/common/EmployerLayout";
 import EmptyDataCard from "@/components/shop/EmptyDataCard";
 import ShopDataCard from "@/components/shop/ShopDataCard";
 import ShopsNoticesList from "@/components/shop/ShopsNoticesList";
+import Loading from "@/components/ui/Loading";
 import { getAccessTokenInStorage } from "@/helpers/auth";
 import { UserContext } from "@/providers/UserProvider";
 import { PAGE_ROUTES } from "@/routes";
@@ -101,26 +102,31 @@ export default function Shop() {
   return (
     <EmployerLayout>
       {isLoading || isAccessChecking ? (
-        //TODO : loading 차후 구현
-        <div className="text-[60px]">로딩중</div>
+        <div className="pt-[25vh]">
+          <Loading />
+        </div>
       ) : (
         shopData && (
           <div>
             <ShopDataCard shopId={shopId} shopData={shopData} />
             {noticesListData?.items.length ? (
-              <ShopsNoticesList
-                shopData={shopData}
-                noticesListData={noticesListData}
-              />
+              <div className="bg-[#fafafa]">
+                <ShopsNoticesList
+                  shopData={shopData}
+                  noticesListData={noticesListData}
+                />
+              </div>
             ) : (
-              <EmptyDataCard
-                title="등록한 공고"
-                description="공고를 등록해 보세요."
-                buttonText="공고 등록하기"
-                buttonLink={PAGE_ROUTES.parseNoticeRegisterURL(
-                  shopId as string,
-                )}
-              />
+              <div className="bg-[#fafafa]">
+                <EmptyDataCard
+                  title="등록한 공고"
+                  description="공고를 등록해 보세요."
+                  buttonText="공고 등록하기"
+                  buttonLink={PAGE_ROUTES.parseNoticeRegisterURL(
+                    shopId as string,
+                  )}
+                />
+              </div>
             )}
           </div>
         )

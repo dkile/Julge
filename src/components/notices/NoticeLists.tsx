@@ -8,6 +8,7 @@ import NoticeListDropdownMenu from "@/components/notices/NoticeListDropDownMenu"
 import NoticeListFilter from "@/components/notices/NoticeListFilter";
 import NoticeListPagination from "@/components/notices/NoticeListPagination";
 import ShopsNoticesListItem from "@/components/shop/ShopsNoticesListItem";
+import Loading from "@/components/ui/Loading";
 import { UserContext } from "@/providers/UserProvider";
 import { PAGE_ROUTES } from "@/routes";
 
@@ -33,6 +34,7 @@ export default function NoticesLists() {
   const [page, setPage] = useState(1);
   const [noticesList, setNoticesList] = useState([]);
   const [customNoticesList, setCustomNoticesList] = useState([]);
+  const [isLoading, setIsLoading] = useState(true);
 
   const [count, setCount] = useState(0);
   const [options, setOptions] = useState({
@@ -55,6 +57,7 @@ export default function NoticesLists() {
       setCustomNoticesList(resultCustomNotices.items);
       setNoticesList(resultAllNotices.items);
       setCount(resultAllNotices.count);
+      setIsLoading(false);
     };
     getData();
   }, []);
@@ -107,7 +110,11 @@ export default function NoticesLists() {
     setOptions((prev: any) => ({ ...prev, sort: value }));
   };
 
-  return (
+  return isLoading ? (
+    <div className="pt-[25vh]">
+      <Loading />
+    </div>
+  ) : (
     <>
       {!options.keyword && (
         <CustomNotice customNoticesList={customNoticesList} />

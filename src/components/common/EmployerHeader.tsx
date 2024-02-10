@@ -13,7 +13,7 @@ export default function EmployerHeader() {
 
   return (
     <header className="m-auto flex max-w-[1088px] flex-wrap items-center justify-between gap-x-[32px] px-[20px] py-[12px]">
-      <Link href={PAGE_ROUTES.SHOPS} className="order-1 min-w-max p-[12px]">
+      <Link href={PAGE_ROUTES.NOTICES} className="order-1 min-w-max p-[12px]">
         <Image
           src="/icons/logo.svg"
           alt="로고:홈으로 이동"

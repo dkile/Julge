@@ -77,7 +77,7 @@ export default function ShopsNoticesList({
         <span className="text-[2rem] font-bold tablet:text-[2.8rem]">
           내가 등록한 공고
         </span>
-        <div className="flex w-[35.1rem] flex-wrap justify-between gap-x-[0.9rem] gap-y-[1.6rem] tablet:w-[67.8rem] tablet:gap-y-[3.2rem] desktop:w-[96.4rem]">
+        <div className="flex w-[35.1rem] flex-wrap gap-x-[0.9rem] gap-y-[1.6rem] tablet:w-[67.8rem] tablet:gap-x-[1.4rem] tablet:gap-y-[3.2rem] desktop:w-[96.4rem]">
           {itemList.map((item: any) => (
             <li key={item.item.id}>
               <Link

@@ -4,6 +4,7 @@ import { useContext, useEffect, useState } from "react";
 import { getUsersData } from "@/apis/shop";
 import EmployerLayout from "@/components/common/EmployerLayout";
 import EmptyDataCard from "@/components/shop/EmptyDataCard";
+import Loading from "@/components/ui/Loading";
 import { getAccessTokenInStorage } from "@/helpers/auth";
 import { UserContext } from "@/providers/UserProvider";
 import { PAGE_ROUTES } from "@/routes";
@@ -36,17 +37,21 @@ export default function ShopsDefaultPage() {
     }
   }, [router, user]);
 
-  return isLoading ? (
-    <div>임시로딩중</div>
-  ) : (
+  return (
     <>
       <EmployerLayout>
-        <EmptyDataCard
-          title="내 가게"
-          description="내 가게를 소개하고 공고도 등록해 보세요."
-          buttonText="가게 등록하기"
-          buttonLink={PAGE_ROUTES.SHOPS_REGISTER}
-        />
+        {isLoading ? (
+          <div className="pt-[25vh]">
+            <Loading />
+          </div>
+        ) : (
+          <EmptyDataCard
+            title="내 가게"
+            description="내 가게를 소개하고 공고도 등록해 보세요."
+            buttonText="가게 등록하기"
+            buttonLink={PAGE_ROUTES.SHOPS_REGISTER}
+          />
+        )}
       </EmployerLayout>
     </>
   );

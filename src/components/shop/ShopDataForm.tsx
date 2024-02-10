@@ -312,13 +312,17 @@ export default function ShopDataForm({
               </Button>
             </AlertDialogTrigger>
             {modalData && (
-              <AlertDialogContent>
+              <AlertDialogContent className="h-[22rem] w-[32.7rem] justify-center gap-0 rounded-[0.8rem] p-0 tablet:h-[25rem] tablet:w-[54rem]">
                 <AlertDialogHeader>
-                  <AlertDialogTitle>{modalData.msg}</AlertDialogTitle>
+                  <AlertDialogTitle className=" mt-[8.1rem] font-pretendard text-[1.6rem] font-[500] tablet:mt-[10.8rem] tablet:text-[1.8rem]">
+                    {modalData.msg}
+                  </AlertDialogTitle>
                 </AlertDialogHeader>
-                <AlertDialogFooter>
+                <AlertDialogFooter className="pb-[2.8rem] tablet:absolute tablet:bottom-[0] tablet:right-[2.8rem]">
                   <Link href={modalData.path}>
-                    <AlertDialogAction>확인</AlertDialogAction>
+                    <AlertDialogAction className="h-[4.2rem] w-[13.8rem] rounded-[0.8rem] font-pretendard text-[1.4rem] font-[500] tablet:text-[1.6rem]">
+                      확인
+                    </AlertDialogAction>
                   </Link>
                 </AlertDialogFooter>
               </AlertDialogContent>

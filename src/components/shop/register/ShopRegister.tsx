@@ -74,13 +74,15 @@ export default function ShopRegister() {
   }
 
   return (
-    <ShopDataForm
-      form={form}
-      onSubmit={onSubmit}
-      imgURL={imgURL}
-      handleInputImgFile={handleInputImgFile}
-      buttonText="등록하기"
-      modalData={modalData}
-    />
+    <div className="bg-[#fafafa]">
+      <ShopDataForm
+        form={form}
+        onSubmit={onSubmit}
+        imgURL={imgURL}
+        handleInputImgFile={handleInputImgFile}
+        buttonText="등록하기"
+        modalData={modalData}
+      />
+    </div>
   );
 }

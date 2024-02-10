@@ -4,6 +4,7 @@ import { useContext, useEffect, useState } from "react";
 import { getUsersData } from "@/apis/shop";
 import EmployerLayout from "@/components/common/EmployerLayout";
 import ShopRegister from "@/components/shop/register/ShopRegister";
+import Loading from "@/components/ui/Loading";
 import { getAccessTokenInStorage } from "@/helpers/auth";
 import { UserContext } from "@/providers/UserProvider";
 import { PAGE_ROUTES } from "@/routes";
@@ -37,7 +38,13 @@ export default function ShopRegist() {
 
   return (
     <EmployerLayout>
-      {isLoading ? <div>임시 로딩</div> : <ShopRegister />}
+      {isLoading ? (
+        <div className="pt-[25vh]">
+          <Loading />
+        </div>
+      ) : (
+        <ShopRegister />
+      )}
     </EmployerLayout>
   );
 }

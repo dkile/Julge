@@ -4,6 +4,7 @@ import { useContext, useEffect, useState } from "react";
 import { getShopsData, getUsersData } from "@/apis/shop";
 import EmployerLayout from "@/components/common/EmployerLayout";
 import ShopEditor from "@/components/shop/edit/ShopEditor";
+import Loading from "@/components/ui/Loading";
 import { getAccessTokenInStorage } from "@/helpers/auth";
 import { UserContext } from "@/providers/UserProvider";
 import { PAGE_ROUTES } from "@/routes";
@@ -56,5 +57,9 @@ export default function ShopEdit() {
     <EmployerLayout>
       <ShopEditor shopId={shopId} shopData={shopData} />
     </EmployerLayout>
-  ) : null;
+  ) : (
+    <div className="pt-[25vh]">
+      <Loading />
+    </div>
+  );
 }

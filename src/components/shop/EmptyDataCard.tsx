@@ -20,7 +20,7 @@ export default function EmptyDataCard({
       <span className="w-[100%] text-[2rem] font-bold text-black tablet:text-[2.8rem]">
         {title}
       </span>
-      <div className="flex w-[100%] flex-col items-center justify-center gap-[1.6rem] rounded-[12px] border-[1px] border-gray-20 px-[2.4rem] py-[6rem] tablet:gap-[2.4rem]">
+      <div className="flex w-[100%] flex-col items-center justify-center gap-[1.6rem] rounded-[12px] border-[1px] border-gray-20 bg-white px-[2.4rem] py-[6rem] tablet:gap-[2.4rem]">
         <span className="text-center text-[1.4rem] font-normal leading-[2.2rem] text-black tablet:text-[1.6rem] tablet:leading-[2.6rem]">
           {description}
         </span>
