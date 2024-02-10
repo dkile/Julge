@@ -31,10 +31,7 @@ function NoticeDetail() {
     queryKey: ["notice", noticeId],
     queryFn: async () => {
       const response = await fetcher.get(
-        apiRouteUtils.parseShopNoticeDetail(
-          normalizedShopId,
-          normalizedNoticeId,
-        ),
+        apiRouteUtils.parseNoticeApply(normalizedShopId, normalizedNoticeId),
       );
       if (!response.ok) {
         throw new Error("Network response was not ok");
@@ -42,12 +39,15 @@ function NoticeDetail() {
       return response.json();
     },
   });
-
   const shopOriginalData = data?.item?.shop?.item ?? {};
   const shopNoticeData = data?.item ?? {};
   const startsAt = shopNoticeData.startsAt;
   const workhour = shopNoticeData.workhour;
-  const applicationData = ApplicationList(offset);
+  const applicationData = ApplicationList(
+    normalizedShopId,
+    normalizedNoticeId,
+    offset,
+  );
   const [startDay, startTime, minute, endTime] = useTimeCalculate(
     startsAt,
     workhour,
@@ -106,7 +106,6 @@ function NoticeDetail() {
     updatedApplicants[applicationId].status = "rejected";
     setApplicants(updatedApplicants);
   };
-
   useEffect(() => {
     if (router.query.offset) {
       if (Array.isArray(router.query.offset)) {

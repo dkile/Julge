@@ -5,6 +5,7 @@ import { useRouter } from "next/router";
 import React, { useContext, useEffect, useState } from "react";
 
 import { fetcher } from "@/apis/fetcher";
+import { postNoticeApplication } from "@/apis/notice";
 import EmployeeLayout from "@/components/common/EmployeeLayout";
 import { HighHourlyWageBadge } from "@/components/noticeDetail/Badge";
 import { ApplyNoticeButton } from "@/components/noticeDetail/Buttons";
@@ -12,7 +13,6 @@ import { useTimeCalculate } from "@/components/noticeDetail/Hooks";
 import NoticeApplyItem from "@/components/noticeDetail/NoticeApplyItem";
 import { getAccessTokenInStorage } from "@/helpers/auth";
 import { UserContext } from "@/providers/UserProvider";
-import { useUserQuery } from "@/queries/user";
 import { apiRouteUtils, PAGE_ROUTES } from "@/routes";
 
 function NoticeDetailApply() {
@@ -25,22 +25,30 @@ function NoticeDetailApply() {
   const normalizedShopId = String(shopId);
   const normalizedNoticeId = String(noticeId);
 
-  const { userProfile }: any = useUserQuery();
-
   const profile =
-    userProfile && userProfile.name && userProfile.phone && userProfile.address
+    user && user.name && user.phone && user.address
       ? {
-          name: userProfile.name,
-          phone: userProfile.phone,
-          address: userProfile.address,
+          name: user.name,
+          phone: user.phone,
+          address: user.address,
+          bio: user.bio,
         }
       : undefined;
-
-  const handleApply = () => {
+  const handleApply = async () => {
     if (!profile) {
       alert("내 프로필을 먼저 등록해 주세요.");
       router.push("/my");
     } else {
+      try {
+        await postNoticeApplication(
+          profile,
+          normalizedShopId,
+          normalizedNoticeId,
+        );
+        alert("지원 신청이 성공적으로 완료되었습니다.");
+      } catch (error) {
+        alert("지원 신청 중 오류가 발생했습니다.");
+      }
     }
   };
 
@@ -236,7 +244,7 @@ function NoticeDetailApply() {
             {storedRecentNotices.map((notice: any) => (
               <div key={notice.id}>
                 <Link
-                  href={PAGE_ROUTES.parseShopNoticeDetailsURL(
+                  href={PAGE_ROUTES.parseNotciesApplyURL(
                     notice.shopdata.id,
                     notice.noticedata.id,
                   )}

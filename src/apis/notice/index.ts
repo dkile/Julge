@@ -2,10 +2,12 @@ import { HTTPError } from "ky";
 
 import { fetcher } from "@/apis/fetcher";
 import {
+  ApplicationPostRequestBody,
   NoticesPostRequestBody,
   NoticesPostResponse,
   noticesPostResponseSchema,
 } from "@/apis/notice/schema";
+import { applyPostResponseSchema } from "@/apis/user/schema";
 import { getAccessTokenInStorage } from "@/helpers/auth";
 import { apiRouteUtils } from "@/routes";
 
@@ -32,6 +34,38 @@ export const postNoticeRegistration = async (
     })
     .json()
     .then(noticesPostResponseSchema.parse)
+    .then((res) => res.item)
+    .catch((err: HTTPError) => {
+      throw err;
+    });
+};
+
+export const postNoticeApplication = async (
+  { name, phone, bio }: ApplicationPostRequestBody,
+  shopId: string,
+  noticeId: string,
+): Promise<any> => {
+  const token = getAccessTokenInStorage();
+  if (!token) {
+    throw new Error("Token not found");
+  }
+
+  return await fetcher
+    .post(
+      apiRouteUtils.parseNoticeApply(shopId as string, noticeId as string),
+      {
+        json: {
+          name,
+          phone,
+          bio,
+        },
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      },
+    )
+    .json()
+    .then(applyPostResponseSchema.parse)
     .then((res) => res.item)
     .catch((err: HTTPError) => {
       throw err;

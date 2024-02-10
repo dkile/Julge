@@ -7,6 +7,7 @@ import {
   paginationSchema,
   shopSchema,
 } from "@/apis/schema";
+import { applyPostResponseSchema } from "@/apis/user/schema";
 
 export const noticesPostResponseSchema = z
   .object({
@@ -23,6 +24,14 @@ export type NoticesPostRequestBody = {
   startsAt: string;
   workhour: number;
   description: string;
+};
+
+export type ApplicationPostResponse = z.infer<typeof applyPostResponseSchema>;
+
+export type ApplicationPostRequestBody = {
+  name: string;
+  phone: string;
+  bio?: string;
 };
 
 export const noticesGetResponseSchema = z

@@ -1,4 +1,8 @@
 export type User = {
+  bio?: string;
+  address?: string | null;
+  phone?: string | null;
+  name?: string | null;
   id: string;
   email: string;
   type: UserType;

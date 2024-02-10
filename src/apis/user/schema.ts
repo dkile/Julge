@@ -10,11 +10,23 @@ export const requiredUserSchema = userSchema.pick({
 });
 export type RequiredUser = z.infer<typeof requiredUserSchema>;
 
+export const requiredApplyUserSchema = userSchema.pick({
+  name: true,
+  phone: true,
+});
+
+export const applyPostResponseSchema = z
+  .object({
+    item: requiredApplyUserSchema,
+  })
+  .merge(linksSchema);
+
 export const usersPostResponseSchema = z
   .object({
     item: requiredUserSchema,
   })
   .merge(linksSchema);
+
 export type UsersPostResponse = z.infer<typeof usersPostResponseSchema>;
 
 export type UsersPostRequestBody = {

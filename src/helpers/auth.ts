@@ -18,6 +18,10 @@ export const mapUserDTOToUser = (udto: UserDTO): User => ({
   id: udto.id,
   email: udto.email,
   type: udto.type,
+  bio: udto.bio ?? "",
+  address: udto.address ?? "",
+  phone: udto.phone ?? "",
+  name: udto.name ?? "",
 });
 
 export const setAccessTokenInStorage = (token: string) => {
