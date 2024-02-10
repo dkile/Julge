@@ -15,14 +15,10 @@ import {
 } from "@/components/ui/alert-dialog";
 
 interface ApproveDialogProps {
-  applicationId: number | undefined;
-  handleApprove: (applicationId: number) => void;
+  handleApprove: () => void;
 }
 
-const ApproveDialog: React.FC<ApproveDialogProps> = ({
-  applicationId,
-  handleApprove,
-}) => {
+const ApproveDialog: React.FC<ApproveDialogProps> = ({ handleApprove }) => {
   return (
     <AlertDialog>
       <AlertDialogTrigger asChild>
@@ -63,9 +59,7 @@ const ApproveDialog: React.FC<ApproveDialogProps> = ({
             </span>
           </AlertDialogCancel>
           <AlertDialogAction
-            onClick={() =>
-              applicationId !== undefined && handleApprove(applicationId)
-            }
+            onClick={() => handleApprove()}
             className="h-[3.8rem] w-[8rem] rounded-[0.6rem] border-[0.1rem] border-primary bg-primary px-[2rem] py-[1rem]"
           >
             <span className="text-[1.4rem] font-bold not-italic leading-normal text-white">

@@ -1,6 +1,11 @@
 import { z } from "zod";
 
-import { linksSchema, shopSchema, userSchema } from "@/apis/schema";
+import {
+  applicationSchema,
+  linksSchema,
+  shopSchema,
+  userSchema,
+} from "@/apis/schema";
 import { Address } from "@/types/user";
 
 export const requiredUserSchema = userSchema.pick({
@@ -14,6 +19,16 @@ export const requiredApplyUserSchema = userSchema.pick({
   name: true,
   phone: true,
 });
+
+export const requiredApplyStatusSchema = applicationSchema.pick({
+  status: true,
+});
+
+export const applyPutResponseSchema = z
+  .object({
+    item: requiredApplyStatusSchema,
+  })
+  .merge(linksSchema);
 
 export const applyPostResponseSchema = z
   .object({

@@ -2,7 +2,7 @@ import { useQuery } from "@tanstack/react-query";
 import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/router";
-import React, { useContext, useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 
 import { fetcher } from "@/apis/fetcher";
 import { postNoticeApplication } from "@/apis/notice";
@@ -12,7 +12,7 @@ import { ApplyNoticeButton } from "@/components/noticeDetail/Buttons";
 import { useTimeCalculate } from "@/components/noticeDetail/Hooks";
 import NoticeApplyItem from "@/components/noticeDetail/NoticeApplyItem";
 import { getAccessTokenInStorage } from "@/helpers/auth";
-import { UserContext } from "@/providers/UserProvider";
+import { useUserQuery } from "@/queries/user";
 import { apiRouteUtils, PAGE_ROUTES } from "@/routes";
 
 function NoticeDetailApply() {
@@ -20,10 +20,15 @@ function NoticeDetailApply() {
     { id: string; data: any }[]
   >([]);
   const router = useRouter();
-  const user = useContext(UserContext);
   const { shopId, noticeId } = router.query;
   const normalizedShopId = String(shopId);
   const normalizedNoticeId = String(noticeId);
+
+  const { user } = useUserQuery();
+
+  useEffect(() => {
+    if (!user?.id) router.push(PAGE_ROUTES.SIGNIN);
+  }, [user?.id, router]);
 
   const profile =
     user && user.name && user.phone && user.address
@@ -34,6 +39,7 @@ function NoticeDetailApply() {
           bio: user.bio,
         }
       : undefined;
+
   const handleApply = async () => {
     if (!profile) {
       alert("내 프로필을 먼저 등록해 주세요.");
@@ -57,6 +63,13 @@ function NoticeDetailApply() {
       router.push("/shops");
     }
   }, [user, router]);
+
+  useEffect(() => {
+    if (!getAccessTokenInStorage()) {
+      router.push(PAGE_ROUTES.SIGNIN);
+      return;
+    }
+  }, [router, user]);
 
   const { data } = useQuery<any>({
     queryKey: ["notices", noticeId],

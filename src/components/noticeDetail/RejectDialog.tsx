@@ -15,14 +15,10 @@ import {
 } from "@/components/ui/alert-dialog";
 
 interface RejectDialogProps {
-  applicationId: number | undefined;
-  handleReject: (applicationId: number) => void;
+  handleReject: () => void;
 }
 
-const RejectDialog: React.FC<RejectDialogProps> = ({
-  applicationId,
-  handleReject,
-}) => {
+const RejectDialog: React.FC<RejectDialogProps> = ({ handleReject }) => {
   return (
     <AlertDialog>
       <AlertDialogTrigger asChild>
@@ -63,9 +59,7 @@ const RejectDialog: React.FC<RejectDialogProps> = ({
             </span>
           </AlertDialogCancel>
           <AlertDialogAction
-            onClick={() =>
-              applicationId !== undefined && handleReject(applicationId)
-            }
+            onClick={() => handleReject()}
             className="h-[3.8rem] w-[8rem] rounded-[0.6rem] border-[0.1rem] border-primary bg-primary px-[2rem] py-[1rem]"
           >
             <span className="text-[1.4rem] font-bold not-italic leading-normal text-white">

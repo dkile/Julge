@@ -41,7 +41,7 @@ export default function ShopEdit() {
       };
       getUserData();
     }
-  }, [user]);
+  }, [router, shopId, user]);
 
   useEffect(() => {
     if (typeof shopId === "string") {

@@ -84,7 +84,7 @@ export default function Shop() {
       };
       getUserData();
     }
-  }, [user]);
+  }, [router, shopId, user]);
 
   useEffect(() => {
     if (typeof shopId === "string") {

@@ -5,7 +5,7 @@ import { apiRouteUtils } from "@/routes";
 
 function ApplicationList(shopId: string, noticeId: string, offset: number) {
   const { data } = useQuery<any>({
-    queryKey: ["noticeApply", offset],
+    queryKey: ["noticeApply", shopId, noticeId],
     queryFn: async () => {
       const response = await fetcher.get(
         apiRouteUtils.parseShopNoticeApplications(shopId, noticeId, offset),

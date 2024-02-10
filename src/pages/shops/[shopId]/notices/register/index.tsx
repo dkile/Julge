@@ -32,7 +32,7 @@ function NoticeRegister() {
       router.push(PAGE_ROUTES.SIGNIN);
       return;
     }
-  }, [user]);
+  }, [router, user]);
 
   return (
     <EmployerLayout>

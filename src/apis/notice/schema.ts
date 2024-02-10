@@ -34,6 +34,10 @@ export type ApplicationPostRequestBody = {
   bio?: string;
 };
 
+export type ApplicationPutRequestBody = {
+  status: string;
+};
+
 export const noticesGetResponseSchema = z
   .object({
     items: z.array(

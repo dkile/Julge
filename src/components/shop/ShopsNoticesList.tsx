@@ -42,6 +42,7 @@ export default function ShopsNoticesList({
   const [newNoticesListData, setNewNoticesListData] = useState(noticesListData);
   const [itemList, setitemList] = useState(newNoticesListData.items);
 
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   const handleScroll = () => {
     if (
       window.innerHeight + document.documentElement.scrollTop ===
@@ -69,7 +70,7 @@ export default function ShopsNoticesList({
     return () => {
       window.removeEventListener("scroll", handleScroll);
     };
-  }, []);
+  }, [handleScroll]);
 
   return (
     <div>

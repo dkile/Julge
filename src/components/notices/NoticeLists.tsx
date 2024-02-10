@@ -60,7 +60,7 @@ export default function NoticesLists() {
       setIsLoading(false);
     };
     getData();
-  }, []);
+  }, [user?.address]);
 
   useEffect(() => {
     const getData = async () => {
@@ -77,7 +77,7 @@ export default function NoticesLists() {
       setNoticesList(resultAllNotices.items);
     };
     getData();
-  }, [page]);
+  }, [options, page]);
 
   useEffect(() => {
     const startsAtGte = getCurrentDateTime();

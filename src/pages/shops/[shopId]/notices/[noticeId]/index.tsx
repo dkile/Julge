@@ -4,8 +4,8 @@ import { useRouter } from "next/router";
 import React, { useContext, useEffect, useState } from "react";
 
 import { fetcher } from "@/apis/fetcher";
+import { putNoticeApplication } from "@/apis/notice";
 import EmployerLayout from "@/components/common/EmployerLayout";
-import ApplicationList from "@/components/noticeDetail/ApplicationList";
 import ApproveDialog from "@/components/noticeDetail/ApproveDialog";
 import {
   ApproveBadge,
@@ -22,16 +22,25 @@ import { apiRouteUtils, PAGE_ROUTES } from "@/routes";
 
 function NoticeDetail() {
   const user = useContext(UserContext);
+  const [showApproveBadge, setShowApproveBadge] = useState(true);
+  const [showRejectBadge, setShowRejectBadge] = useState(true);
   const router = useRouter();
-  const [offset, setOffset] = useState(1);
+  const [offset, setOffset] = useState(0);
   const { shopId, noticeId } = router.query;
   const normalizedShopId = String(shopId);
   const normalizedNoticeId = String(noticeId);
+  const [applicants, setApplicants] = useState<any[]>([]);
+  const [applicantStatus, setApplicantStatus] = useState<{
+    [id: string]: string;
+  }>({});
   const { data } = useQuery<any>({
     queryKey: ["notice", noticeId],
     queryFn: async () => {
       const response = await fetcher.get(
-        apiRouteUtils.parseNoticeApply(normalizedShopId, normalizedNoticeId),
+        apiRouteUtils.parseShopNoticeDetail(
+          normalizedShopId,
+          normalizedNoticeId,
+        ),
       );
       if (!response.ok) {
         throw new Error("Network response was not ok");
@@ -39,15 +48,32 @@ function NoticeDetail() {
       return response.json();
     },
   });
+
+  const { data: applicationData, refetch } = useQuery<any>({
+    queryKey: ["noticeApply", normalizedShopId, normalizedNoticeId, { offset }],
+    queryFn: async () => {
+      const response = await fetcher.get(
+        apiRouteUtils.parseShopNoticeApplications(
+          normalizedShopId,
+          normalizedNoticeId,
+          offset,
+        ),
+      );
+      if (!response.ok) {
+        throw new Error("Network response was not ok");
+      }
+      return response.json();
+    },
+  });
+
+  useEffect(() => {
+    refetch();
+  }, [offset, refetch, showApproveBadge, showRejectBadge]);
+
   const shopOriginalData = data?.item?.shop?.item ?? {};
   const shopNoticeData = data?.item ?? {};
   const startsAt = shopNoticeData.startsAt;
   const workhour = shopNoticeData.workhour;
-  const applicationData = ApplicationList(
-    normalizedShopId,
-    normalizedNoticeId,
-    offset,
-  );
   const [startDay, startTime, minute, endTime] = useTimeCalculate(
     startsAt,
     workhour,
@@ -86,26 +112,32 @@ function NoticeDetail() {
     }
   }
 
-  //TODO: 가게의 특정 공고의 지원 목록 조회하는 api를 구성하면 username과 status를 수정할 예정
-  //신청자 이름, 상태 data
-  const initialApplicants = applicationData?.items?.[0]?.item?.map(
-    (item: { user: { name: string | undefined }; status: any }) => ({
-      name: item.user.name,
-      status: item.status,
-    }),
-  );
-  const [applicants, setApplicants] = useState(initialApplicants);
-  const handleApprove = (applicationId: number) => {
-    const updatedApplicants = [...applicants];
-    updatedApplicants[applicationId].status = "accepted";
-    setApplicants(updatedApplicants);
+  const nextData: boolean = applicationData?.hasNext;
+
+  const handleApprove = async (id: string) => {
+    try {
+      await putNoticeApplication(
+        { status: "accepted" },
+        normalizedShopId,
+        normalizedNoticeId,
+        id,
+      );
+      setShowApproveBadge(!showApproveBadge);
+    } catch (error) {}
   };
 
-  const handleReject = (applicationId: number) => {
-    const updatedApplicants = [...applicants];
-    updatedApplicants[applicationId].status = "rejected";
-    setApplicants(updatedApplicants);
+  const handleReject = async (id: string) => {
+    try {
+      await putNoticeApplication(
+        { status: "rejected" },
+        normalizedShopId,
+        normalizedNoticeId,
+        id,
+      );
+      setShowRejectBadge(!showRejectBadge);
+    } catch (error) {}
   };
+
   useEffect(() => {
     if (router.query.offset) {
       if (Array.isArray(router.query.offset)) {
@@ -121,8 +153,47 @@ function NoticeDetail() {
       router.push(PAGE_ROUTES.SIGNIN);
       return;
     }
-  }, [user]);
+  }, [router, user]);
 
+  function handleSetOffset(newOffset: number): void {
+    throw new Error("Function not implemented.");
+  }
+  useEffect(() => {
+    if (applicationData?.items) {
+      const newApplicants = applicationData.items.map(
+        (item: {
+          item: {
+            id: string;
+            user: {
+              item: {
+                phone: string;
+                bio: string;
+                name: string;
+              };
+            };
+            status: string;
+          };
+        }) => ({
+          name: item.item.user.item.name,
+          bio: item.item.user.item.bio,
+          phone: item.item.user.item.phone,
+          status: item.item.status,
+          id: item.item.id,
+        }),
+      );
+      setApplicants(newApplicants);
+      const newStatuses: { [id: string]: string } = {};
+      newApplicants.forEach(
+        (applicant: { id: string | number; status: string }) => {
+          newStatuses[applicant.id] = applicant.status;
+        },
+      );
+      setApplicantStatus((prevStatus) => ({
+        ...prevStatus,
+        ...newStatuses,
+      }));
+    }
+  }, [applicationData]);
   return (
     <EmployerLayout>
       <div className="flex w-[35.1rem] flex-col items-center justify-center tablet:w-[74.4rem] desktop:w-[144rem]">
@@ -238,58 +309,47 @@ function NoticeDetail() {
                   상태
                 </span>
               </div>
-              {applicants?.map(
-                (
-                  applicant: {
-                    name: string | undefined;
-                    status: string;
-                    bio: string | undefined;
-                    phone: string | undefined;
-                  },
-                  applicationId: number | undefined,
-                ) => (
-                  <React.Fragment key={applicationId}>
-                    <div className="col-span-1 flex items-center gap-[1.2rem] self-stretch border-b-[0.1rem] border-r-[0.1rem] border-t-[0.1rem] border-gray-20 bg-white px-[0.8rem] py-[1.2rem]">
-                      <span className="text-black-50 scroll-auto text-[1.4rem] font-normal not-italic leading-[2.2rem] tablet:text-[1.6rem]">
-                        {applicant.name}
-                      </span>
-                    </div>
-                    <div className="hidden items-center gap-[1.2rem] border-b-[0.1rem] border-r-[0.1rem] bg-red-10 px-[0.8rem] py-[1.2rem] tablet:col-span-1 tablet:block">
-                      <span className="text-black-50 scroll-auto truncate text-[1.6rem] font-normal not-italic leading-[2.6rem]">
-                        {applicant.bio}
-                      </span>
-                    </div>
-                    <div className="hidden items-center gap-[1.2rem] border-b-[0.1rem] border-r-[0.1rem] bg-red-10 px-[0.8rem] py-[1.2rem] desktop:col-span-1 desktop:block">
-                      <span className="text-black-50 scroll-auto truncate text-[1.6rem] font-normal not-italic leading-[2.6rem]">
-                        {applicant.phone}
-                      </span>
-                    </div>
-                    <div className="col-span-1 flex items-center gap-[0.8rem] self-stretch border-b-[0.1rem] border-t-[0.1rem] border-gray-20 bg-white px-[0.8rem] py-[1.2rem] tablet:gap-[1.2rem]">
-                      {applicant.status === "pending" && (
-                        <ApproveDialog
-                          applicationId={applicationId}
-                          handleApprove={handleApprove}
-                        />
-                      )}
-                      {applicant.status === "pending" && (
-                        <RejectDialog
-                          applicationId={applicationId}
-                          handleReject={handleReject}
-                        />
-                      )}
-
-                      {applicant.status === "accepted" && <ApproveBadge />}
-                      {applicant.status === "rejected" && <RejectBadge />}
-                    </div>
-                  </React.Fragment>
-                ),
-              )}
+              {applicants.map((applicant) => (
+                <React.Fragment key={applicant.id}>
+                  <div className="col-span-1 flex items-center gap-[1.2rem] self-stretch border-b-[0.1rem] border-r-[0.1rem] border-t-[0.1rem] border-gray-20 bg-white px-[0.8rem] py-[1.2rem]">
+                    <span className="text-black-50 scroll-auto text-[1.4rem] font-normal not-italic leading-[2.2rem] tablet:text-[1.6rem]">
+                      {applicant.name}
+                    </span>
+                  </div>
+                  <div className="hidden items-center gap-[1.2rem] border-b-[0.1rem] border-r-[0.1rem] bg-white px-[0.8rem] py-[1.2rem] tablet:col-span-1 tablet:block">
+                    <span className="text-black-50 scroll-auto truncate text-[1.6rem] font-normal not-italic leading-[2.6rem]">
+                      {applicant.bio}
+                    </span>
+                  </div>
+                  <div className="hidden items-center gap-[1.2rem] border-b-[0.1rem] border-r-[0.1rem] bg-white px-[0.8rem] py-[1.2rem] desktop:col-span-1 desktop:block">
+                    <span className="text-black-50 scroll-auto truncate text-[1.6rem] font-normal not-italic leading-[2.6rem]">
+                      {applicant.phone}
+                    </span>
+                  </div>
+                  <div className="col-span-1 flex items-center gap-[0.8rem] self-stretch border-b-[0.1rem] border-t-[0.1rem] border-gray-20 bg-white px-[0.8rem] py-[1.2rem] tablet:gap-[1.2rem]">
+                    {applicant.status === "pending" && (
+                      <ApproveDialog
+                        handleApprove={() => handleApprove(applicant.id)}
+                      />
+                    )}
+                    {applicant.status === "pending" && (
+                      <RejectDialog
+                        handleReject={() => handleReject(applicant.id)}
+                      />
+                    )}
+                    {applicant.status === "accepted" && <ApproveBadge />}
+                    {applicant.status === "rejected" && <RejectBadge />}
+                  </div>
+                </React.Fragment>
+              ))}
             </div>
             <div className="flex h-[5.6rem] w-full items-center justify-center">
               <ApplyListPagination
                 offset={offset}
                 shopId={normalizedShopId}
                 noticeId={normalizedNoticeId}
+                setOffset={handleSetOffset}
+                nextData={nextData}
               />
             </div>
           </div>
