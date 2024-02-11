@@ -42,12 +42,13 @@ export default function NoticesLists() {
     address: [],
     startsAtGte: "",
     hourlyPayGte: 0,
-    keyword: "",
+    keyword: search ? (search as string) : "",
   });
   useEffect(() => {
     const getData = async () => {
       const startsAtGte = getCurrentDateTime();
       const resultAllNotices: any = await getNoticesListData({
+        ...options,
         startsAtGte: startsAtGte,
       });
       const resultCustomNotices: any = await getCustomNoticesListData(
@@ -60,7 +61,7 @@ export default function NoticesLists() {
       setIsLoading(false);
     };
     getData();
-  }, [user?.address]);
+  }, []);
 
   useEffect(() => {
     const getData = async () => {
@@ -77,7 +78,7 @@ export default function NoticesLists() {
       setNoticesList(resultAllNotices.items);
     };
     getData();
-  }, [options, page]);
+  }, [page]);
 
   useEffect(() => {
     const startsAtGte = getCurrentDateTime();
@@ -90,11 +91,13 @@ export default function NoticesLists() {
       setNoticesList(resultAllNotices.items);
       setCount(resultAllNotices.count);
       setPage(1);
+      setIsLoading(false);
     };
     getData();
   }, [options]);
 
   useEffect(() => {
+    setIsLoading(true);
     if (search) {
       setOptions({ ...options, keyword: search as string });
     } else {
@@ -125,8 +128,8 @@ export default function NoticesLists() {
             <span className="text-[2rem] font-bold tablet:text-[2.8rem]">
               {options.keyword ? (
                 <>
-                  <span className="text-primary">{options.keyword}</span>에 대한
-                  공고 목록
+                  <span className="text-primary">{options.keyword}</span>에 대한{" "}
+                  {count}개의 공고
                 </>
               ) : (
                 "전체 공고"
