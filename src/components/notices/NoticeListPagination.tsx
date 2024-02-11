@@ -1,11 +1,12 @@
+import { ChevronLeft, ChevronRight } from "lucide-react";
+
+import { Button } from "@/components/ui/button";
 import {
   Pagination,
   PaginationContent,
   PaginationEllipsis,
   PaginationItem,
   PaginationLink,
-  PaginationNext,
-  PaginationPrevious,
 } from "@/components/ui/pagination";
 
 interface NoticeListPagination {
@@ -36,7 +37,9 @@ export default function NoticeListPagination({
     <Pagination className="mb-[6rem]">
       <PaginationContent>
         <PaginationItem className="cursor-pointer" onClick={handlePrePageClick}>
-          <PaginationPrevious href="#" />
+          <Button variant="ghost">
+            <ChevronLeft className="h-4 w-4" />
+          </Button>
         </PaginationItem>
         {page > 1 && <PaginationEllipsis />}
         <PaginationItem className="cursor-pointer">
@@ -49,7 +52,9 @@ export default function NoticeListPagination({
           className="cursor-pointer"
           onClick={handleNextPageClick}
         >
-          <PaginationNext href="#" />
+          <Button variant="ghost">
+            <ChevronRight className="h-4 w-4" />
+          </Button>
         </PaginationItem>
       </PaginationContent>
     </Pagination>
