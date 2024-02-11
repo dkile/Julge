@@ -199,47 +199,28 @@ function NoticeDetailApply() {
   return (
     mounted && (
       <>
-    <EmployeeLayout>
-      <div className="flex w-full flex-col items-center justify-center tablet:w-[74.4rem] desktop:w-[144rem]">
-        <div className="flex w-full flex-col items-start gap-[1.2rem] bg-[#fafafa] px-[1.2rem] py-[4rem] tablet:w-full tablet:px-[3.2rem] tablet:py-[6rem] desktop:px-[23.8rem]">
-          <div className="flex w-full flex-col gap-[1.6rem] tablet:w-full">
-            <div className="inline-flex flex-col items-start gap-[0.8rem]">
-              <span className="text-[1.4rem] font-bold not-italic leading-normal text-primary tablet:text-[1.6rem]  ">
-                {shopOriginalData?.category}
-              </span>
-              <span className="text-[2rem] font-bold not-italic leading-normal text-black tablet:text-[2.8rem]">
-                {shopOriginalData?.name}
-              </span>
-            </div>
-            <div className="flex w-[35.1rem] flex-col items-start gap-[1.2rem] rounded-[1.2rem] border border-gray-20 bg-white p-[2rem] tablet:w-[68rem] tablet:gap-[1.6rem] tablet:p-[2.4rem] desktop:h-[35.6rem] desktop:w-[96.4rem] desktop:flex-row desktop:gap-[2rem]">
-              <div className="relative flex h-[15.8rem] w-[31.1rem] items-center justify-center tablet:h-[33.2rem] tablet:w-[63.2rem] desktop:h-[30.8rem] desktop:w-[55.4rem]">
-                <Image
-                  src={shopOriginalData?.imageUrl}
-                  layout="fill"
-                  objectFit="cover"
-                  alt="로고이미지"
-                />
-              </div>
-              <div className="flex flex-col items-start gap-[2.4rem] self-stretch tablet:pt-[1.6rem] desktop:w-[34.6rem] desktop:pt-[1.6rem]">
-                <div className="flex flex-col items-start gap-[0.8rem] self-stretch tablet:gap-[1.2rem]">
-                  <div className="flex flex-col items-start gap-[0.8rem]">
-                    <span className="text-[1.4rem] font-bold not-italic leading-normal text-primary tablet:text-[1.6rem]  ">
-                      시급
-                    </span>
-                    <div className="flex w-full items-center gap-[0.4rem]">
-                      <span className="text-[2.4rem] font-bold not-italic leading-normal tracking-[0.048rem] text-black tablet:text-[2.8rem]">
-                        {shopNoticeData?.hourlyPay}원
-                      </span>
-                      {hourlyPay > originalHourlyPay && (
-                        <HighHourlyWageBadge
-                          className={""}
-                          increasePercentage={0}
-                          {...badgeProps}
-                        />
-                      )}
-                    </div>
+        <EmployeeLayout>
+          <div className="flex w-full flex-col items-center justify-center tablet:w-[74.4rem] desktop:w-[144rem]">
+            <div className="flex w-full flex-col items-start gap-[1.2rem] bg-[#fafafa] px-[1.2rem] py-[4rem] tablet:w-full tablet:px-[3.2rem] tablet:py-[6rem] desktop:px-[23.8rem]">
+              <div className="flex w-full flex-col gap-[1.6rem] tablet:w-full">
+                <div className="inline-flex flex-col items-start gap-[0.8rem]">
+                  <span className="text-[1.4rem] font-bold not-italic leading-normal text-primary tablet:text-[1.6rem]  ">
+                    {shopOriginalData?.category}
+                  </span>
+                  <span className="text-[2rem] font-bold not-italic leading-normal text-black tablet:text-[2.8rem]">
+                    {shopOriginalData?.name}
+                  </span>
+                </div>
+                <div className="flex w-[35.1rem] flex-col items-start gap-[1.2rem] rounded-[1.2rem] border border-gray-20 bg-white p-[2rem] tablet:w-[68rem] tablet:gap-[1.6rem] tablet:p-[2.4rem] desktop:h-[35.6rem] desktop:w-[96.4rem] desktop:flex-row desktop:gap-[2rem]">
+                  <div className="relative flex h-[15.8rem] w-[31.1rem] items-center justify-center tablet:h-[33.2rem] tablet:w-[63.2rem] desktop:h-[30.8rem] desktop:w-[55.4rem]">
+                    <Image
+                      src={shopOriginalData?.imageUrl}
+                      layout="fill"
+                      objectFit="cover"
+                      alt="로고이미지"
+                    />
                   </div>
-                  <div className="flex flex-col items-start gap-[2.4rem] self-stretch">
+                  <div className="flex flex-col items-start gap-[2.4rem] self-stretch tablet:pt-[1.6rem] desktop:w-[34.6rem] desktop:pt-[1.6rem]">
                     <div className="flex flex-col items-start gap-[0.8rem] self-stretch tablet:gap-[1.2rem]">
                       <div className="flex flex-col items-start gap-[0.8rem]">
                         <span className="text-[1.4rem] font-bold not-italic leading-normal text-primary tablet:text-[1.6rem]  ">
@@ -302,34 +283,36 @@ function NoticeDetailApply() {
                     )}
                   </div>
                 </div>
-            <div className="flex h-[15.3rem] w-full flex-col items-start gap-[0.8rem] rounded-[1.2rem] bg-gray-10 p-[2rem] tablet:h-[14.8rem] tablet:p-[3.2rem]">
-              <span className="text-black-50 scroll-auto text-[1.4rem] font-bold not-italic leading-[2.2rem] tablet:text-[1.6rem]">
-                공고 설명
-              </span>
-              <span className="text-black-50 scroll-auto text-[1.4rem] font-normal not-italic leading-[2.2rem] tablet:text-[1.6rem]">
-                {shopNoticeData?.description}
-              </span>
+                <div className="flex h-[15.3rem] w-full flex-col items-start gap-[0.8rem] rounded-[1.2rem] bg-gray-10 p-[2rem] tablet:h-[14.8rem] tablet:p-[3.2rem]">
+                  <span className="text-black-50 scroll-auto text-[1.4rem] font-bold not-italic leading-[2.2rem] tablet:text-[1.6rem]">
+                    공고 설명
+                  </span>
+                  <span className="text-black-50 scroll-auto text-[1.4rem] font-normal not-italic leading-[2.2rem] tablet:text-[1.6rem]">
+                    {shopNoticeData?.description}
+                  </span>
+                </div>
+              </div>
             </div>
-          </div>
-        </div>
-        <div className="flex w-full flex-col items-start gap-[1.6rem] bg-[#fafafa] px-[1.2rem] pb-[8rem] pt-[4rem] tablet:gap-[3.2rem] tablet:px-[3.2rem] tablet:py-[6rem] desktop:px-[23.8rem] desktop:pb-[12rem] desktop:pt-[6rem]">
-          <h1 className="text-[2rem] font-bold not-italic leading-normal text-black tablet:text-[2.8rem]">
-            최근에 본 공고
-          </h1>
-          <div className="grid grid-cols-2 gap-x-[0.8rem] gap-y-[1.6rem] tablet:gap-x-[1.4rem] tablet:gap-y-[3.2rem] desktop:grid-cols-3">
-            {storedRecentNotices.map((notice: any) => (
-              <div key={notice.id}>
-                <Link
-                  href={PAGE_ROUTES.parseNotciesApplyURL(
-                    notice.shopdata.id,
-                    notice.noticedata.id,
-                  )}
-                >
-                  <NoticeApplyItem
-                    item={notice.noticedata}
-                    shopData={notice.shopdata}
-                  />
-                </Link>
+            <div className="flex w-full flex-col items-start gap-[1.6rem] bg-[#fafafa] px-[1.2rem] pb-[8rem] pt-[4rem] tablet:gap-[3.2rem] tablet:px-[3.2rem] tablet:py-[6rem] desktop:px-[23.8rem] desktop:pb-[12rem] desktop:pt-[6rem]">
+              <h1 className="text-[2rem] font-bold not-italic leading-normal text-black tablet:text-[2.8rem]">
+                최근에 본 공고
+              </h1>
+              <div className="grid grid-cols-2 gap-x-[0.8rem] gap-y-[1.6rem] tablet:gap-x-[1.4rem] tablet:gap-y-[3.2rem] desktop:grid-cols-3">
+                {storedRecentNotices.map((notice: any) => (
+                  <div key={notice.id}>
+                    <Link
+                      href={PAGE_ROUTES.parseNotciesApplyURL(
+                        notice.shopdata.id,
+                        notice.noticedata.id,
+                      )}
+                    >
+                      <NoticeApplyItem
+                        item={notice.noticedata}
+                        shopData={notice.shopdata}
+                      />
+                    </Link>
+                  </div>
+                ))}
               </div>
             </div>
           </div>
