@@ -26,23 +26,21 @@ export default function CustomNotice({ customNoticesList }: CustomNoticeProps) {
             <CarouselContent>
               {customNoticesList &&
                 customNoticesList.map((data: any) => (
-                  <>
-                    <CarouselItem className="basis-100">
-                      <li key={data.item.id}>
-                        <Link
-                          href={PAGE_ROUTES.parseNotciesApplyURL(
-                            data.item.shop.item.id,
-                            data.item.id,
-                          )}
-                        >
-                          <ShopsNoticesListItem
-                            item={data.item}
-                            shopData={data.item.shop.item}
-                          />
-                        </Link>
-                      </li>
-                    </CarouselItem>
-                  </>
+                  <CarouselItem key={data.id} className="basis-100">
+                    <li key={data.item.id}>
+                      <Link
+                        href={PAGE_ROUTES.parseNotciesApplyURL(
+                          data.item.shop.item.id,
+                          data.item.id,
+                        )}
+                      >
+                        <ShopsNoticesListItem
+                          item={data.item}
+                          shopData={data.item.shop.item}
+                        />
+                      </Link>
+                    </li>
+                  </CarouselItem>
                 ))}
             </CarouselContent>
             <CarouselPrevious className="h-[24px] w-[24px]" />

@@ -39,6 +39,7 @@ export const apiRouteUtils = {
     `shops/${shopId}/notices/${noticeId}/applications?limit=5&offset=${offset}`,
   parseShopNewNoticesURL: (shopId: string, options: OptionsType) =>
     `shops/${shopId}/notices?offset=${options.offset}&limit=${options.limit}`,
+  parseApplicationsURL: (userId: string) => `users/${userId}/applications`,
   parseNoticeApply: (shopId: string, noticeId: string) =>
     `shops/${shopId}/notices/${noticeId}/applications`,
   parseNoticePutApply: (

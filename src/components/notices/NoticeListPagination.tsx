@@ -36,18 +36,20 @@ export default function NoticeListPagination({
     <Pagination className="mb-[6rem]">
       <PaginationContent>
         <PaginationItem className="cursor-pointer" onClick={handlePrePageClick}>
-          <PaginationPrevious />
+          <PaginationPrevious href="#" />
         </PaginationItem>
         {page > 1 && <PaginationEllipsis />}
         <PaginationItem className="cursor-pointer">
-          <PaginationLink isActive>{page}</PaginationLink>
+          <PaginationLink href="#" isActive>
+            {page}
+          </PaginationLink>
         </PaginationItem>
         {page < pageCount && <PaginationEllipsis />}
         <PaginationItem
           className="cursor-pointer"
           onClick={handleNextPageClick}
         >
-          <PaginationNext />
+          <PaginationNext href="#" />
         </PaginationItem>
       </PaginationContent>
     </Pagination>
