@@ -3,12 +3,12 @@ import { useQuery } from "@tanstack/react-query";
 import { fetcher } from "@/apis/fetcher";
 import { apiRouteUtils } from "@/routes";
 
-function ApplicationList(shopId: string, noticeId: string, offset: number) {
+function ApplicationList(shopId: string, noticeId: string) {
   const { data } = useQuery<any>({
-    queryKey: ["noticeApply", shopId, noticeId],
+    queryKey: ["noticeApplyList", shopId, noticeId],
     queryFn: async () => {
       const response = await fetcher.get(
-        apiRouteUtils.parseShopNoticeApplications(shopId, noticeId, offset),
+        apiRouteUtils.parseNoticeApply(shopId, noticeId),
       );
       if (!response.ok) {
         throw new Error("Network response was not ok");

@@ -23,14 +23,27 @@ export const EditNoticeButton: React.FC<EditNoticeButtonProps> = ({
   );
 };
 
-export const ApplyNoticeButton = ({ handleApply }: any) => {
+export const ApplyNoticeButton = ({ onClick }: any) => {
   return (
     <Button
-      onClick={handleApply}
+      onClick={onClick}
       className="h-[3.8rem] w-full rounded-[0.6rem] border-[0.1rem] border-primary bg-primary px-[2rem] py-[1rem] tablet:h-[4.8rem]"
     >
       <span className="text-center text-[1.4rem] font-bold not-italic leading-normal text-white tablet:text-[1.6rem]">
         신청하기
+      </span>
+    </Button>
+  );
+};
+
+export const CancelApplyButton = ({ onClick }: any) => {
+  return (
+    <Button
+      onClick={onClick}
+      className="h-[3.8rem] w-full rounded-[0.6rem] border-[0.1rem] border-primary bg-white px-[2rem] py-[1rem] tablet:h-[4.8rem]"
+    >
+      <span className="text-center text-[1.4rem] font-bold not-italic leading-normal text-primary tablet:text-[1.6rem]">
+        취소하기
       </span>
     </Button>
   );

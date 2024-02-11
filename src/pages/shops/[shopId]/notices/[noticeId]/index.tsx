@@ -309,39 +309,41 @@ function NoticeDetail() {
                   상태
                 </span>
               </div>
-              {applicants.map((applicant) => (
-                <React.Fragment key={applicant.id}>
-                  <div className="col-span-1 flex items-center gap-[1.2rem] self-stretch border-b-[0.1rem] border-r-[0.1rem] border-t-[0.1rem] border-gray-20 bg-white px-[0.8rem] py-[1.2rem]">
-                    <span className="text-black-50 scroll-auto text-[1.4rem] font-normal not-italic leading-[2.2rem] tablet:text-[1.6rem]">
-                      {applicant.name}
-                    </span>
-                  </div>
-                  <div className="hidden items-center gap-[1.2rem] border-b-[0.1rem] border-r-[0.1rem] bg-white px-[0.8rem] py-[1.2rem] tablet:col-span-1 tablet:block">
-                    <span className="text-black-50 scroll-auto truncate text-[1.6rem] font-normal not-italic leading-[2.6rem]">
-                      {applicant.bio}
-                    </span>
-                  </div>
-                  <div className="hidden items-center gap-[1.2rem] border-b-[0.1rem] border-r-[0.1rem] bg-white px-[0.8rem] py-[1.2rem] desktop:col-span-1 desktop:block">
-                    <span className="text-black-50 scroll-auto truncate text-[1.6rem] font-normal not-italic leading-[2.6rem]">
-                      {applicant.phone}
-                    </span>
-                  </div>
-                  <div className="col-span-1 flex items-center gap-[0.8rem] self-stretch border-b-[0.1rem] border-t-[0.1rem] border-gray-20 bg-white px-[0.8rem] py-[1.2rem] tablet:gap-[1.2rem]">
-                    {applicant.status === "pending" && (
-                      <ApproveDialog
-                        handleApprove={() => handleApprove(applicant.id)}
-                      />
-                    )}
-                    {applicant.status === "pending" && (
-                      <RejectDialog
-                        handleReject={() => handleReject(applicant.id)}
-                      />
-                    )}
-                    {applicant.status === "accepted" && <ApproveBadge />}
-                    {applicant.status === "rejected" && <RejectBadge />}
-                  </div>
-                </React.Fragment>
-              ))}
+              {applicants
+                .filter((applicant) => applicant.status !== "canceled")
+                .map((applicant) => (
+                  <React.Fragment key={applicant.id}>
+                    <div className="col-span-1 flex items-center gap-[1.2rem] self-stretch border-b-[0.1rem] border-r-[0.1rem] border-t-[0.1rem] border-gray-20 bg-white px-[0.8rem] py-[1.2rem]">
+                      <span className="text-black-50 scroll-auto text-[1.4rem] font-normal not-italic leading-[2.2rem] tablet:text-[1.6rem]">
+                        {applicant.name}
+                      </span>
+                    </div>
+                    <div className="hidden items-center gap-[1.2rem] border-b-[0.1rem] border-r-[0.1rem] bg-white px-[0.8rem] py-[1.2rem] tablet:col-span-1 tablet:block">
+                      <span className="text-black-50 scroll-auto truncate text-[1.6rem] font-normal not-italic leading-[2.6rem]">
+                        {applicant.bio}
+                      </span>
+                    </div>
+                    <div className="hidden items-center gap-[1.2rem] border-b-[0.1rem] border-r-[0.1rem] bg-white px-[0.8rem] py-[1.2rem] desktop:col-span-1 desktop:block">
+                      <span className="text-black-50 scroll-auto truncate text-[1.6rem] font-normal not-italic leading-[2.6rem]">
+                        {applicant.phone}
+                      </span>
+                    </div>
+                    <div className="col-span-1 flex items-center gap-[0.8rem] self-stretch border-b-[0.1rem] border-t-[0.1rem] border-gray-20 bg-white px-[0.8rem] py-[1.2rem] tablet:gap-[1.2rem]">
+                      {applicant.status === "pending" && (
+                        <ApproveDialog
+                          handleApprove={() => handleApprove(applicant.id)}
+                        />
+                      )}
+                      {applicant.status === "pending" && (
+                        <RejectDialog
+                          handleReject={() => handleReject(applicant.id)}
+                        />
+                      )}
+                      {applicant.status === "accepted" && <ApproveBadge />}
+                      {applicant.status === "rejected" && <RejectBadge />}
+                    </div>
+                  </React.Fragment>
+                ))}
             </div>
             <div className="flex h-[5.6rem] w-full items-center justify-center">
               <ApplyListPagination
