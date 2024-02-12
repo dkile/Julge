@@ -33,7 +33,10 @@ export default function ApplicationList() {
   if (!data) return;
 
   const maxPaginationLength = 7;
-  const totalPageLength = Math.ceil(data.count / maxPaginationLength);
+  const totalPageLength =
+    data.count % pageLength
+      ? data.count / pageLength + 1
+      : data.count / pageLength;
   const paginationLength = Math.min(totalPageLength, maxPaginationLength);
   const isFirstPagination = currentPage <= paginationLength;
   const isLastPagination =
@@ -59,7 +62,7 @@ export default function ApplicationList() {
             </TableHead>
           </TableRow>
         </TableHeader>
-        <TableBody className="border-b-[1px]">
+        <TableBody className="h-[212.5px] border-b-[1px]">
           {applicationList.map(({ item: application }) => (
             <TableRow key={application.id} className="flex text-[1.4rem]">
               <TableCell className="line-clamp-2 flex w-full items-center text-ellipsis px-[12px] py-[12px] leading-[1.25]">
@@ -91,7 +94,10 @@ export default function ApplicationList() {
           {currentPagination.map((page) => (
             <PaginationItem key={page}>
               <PaginationLink
-                className="flex h-[32px] w-[32px] items-center justify-center rounded-[8px] border-0 text-[1.4rem]"
+                className={cn(
+                  "flex h-[32px] w-[32px] items-center justify-center rounded-[8px] border-0 text-[1.4rem]",
+                  { "focus:bg-red-30 focus:text-white": page === currentPage },
+                )}
                 href={{
                   pathname: PAGE_ROUTES.MY,
                   query: {
@@ -109,7 +115,9 @@ export default function ApplicationList() {
             <PaginationNext
               className={cn(
                 "flex h-[32px] w-[32px] items-center justify-center rounded-[8px] border-0 text-[1.4rem]",
-                { "pointer-events-none text-gray-30": isLastPagination },
+                {
+                  "pointer-events-none text-gray-30": isLastPagination,
+                },
               )}
               href={{
                 pathname: PAGE_ROUTES.MY,

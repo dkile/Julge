@@ -15,7 +15,7 @@ export const useApplicationListQuery = ({
 }: ApplicationListQueryProps) => {
   const user = useContext(UserContext);
   const { data, isLoading, error } = useQuery({
-    queryKey: ["application", user?.id],
+    queryKey: ["application", user?.id, offset],
     queryFn: () => getApplicationList(user!.id, { offset, limit }),
     enabled: !!user,
   });
