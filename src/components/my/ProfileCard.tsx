@@ -52,7 +52,7 @@ export default function ProfileCard({ profile }: Props) {
         asChild
         className="absolute right-[8px] top-[16px]"
       >
-        <Link href={PAGE_ROUTES.MY_REGISTER}>
+        <Link href={PAGE_ROUTES.MY_EDIT}>
           <Edit className="h-[24px] w-[24px] text-red-30" />
         </Link>
       </Button>
