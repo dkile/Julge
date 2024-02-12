@@ -11,25 +11,36 @@ import {
 } from "@/components/ui/popover";
 
 interface NoticeListFilterProps {
+  options: {
+    sort: string;
+    address: string[];
+    startsAtGte: string;
+    hourlyPayGte: number;
+  };
   setOptions: (value: any) => void;
 }
 
 export default function NoticeListFilter({
   setOptions,
+  options,
 }: NoticeListFilterProps) {
-  const [address, setAddress] = useState<string[]>([]);
-  const [startsAtDate, setStartAtDate] = useState("");
-  const [hourlyPayGte, setHourlyPayGte] = useState(0);
+  const [address, setAddress] = useState(options.address);
+  let startsAtDate = "";
+  let hourlyPayGte = 0;
   const [optionCount, setOptionCount] = useState(0);
 
   const handleStartAtDate = (e: any) => {
     if (e.target.value) {
-      setStartAtDate(e.target.value);
+      startsAtDate = e.target.value;
     }
   };
 
+  const handleResetAddress = () => {
+    setAddress(options.address);
+  };
+
   const handlePay = (e: any) => {
-    setHourlyPayGte(e.target.value);
+    hourlyPayGte = e.target.value;
   };
 
   const handleDecideButton = () => {
@@ -44,14 +55,26 @@ export default function NoticeListFilter({
     );
   };
 
+  const handleResetButton = () => {
+    setOptions({
+      address: [],
+      startsAtGte: "",
+      hourlyPayGte: "",
+    });
+    setOptionCount(0);
+  };
+
   return (
-    <Popover>
+    <Popover onOpenChange={handleResetAddress}>
       <PopoverTrigger asChild>
         <Button className="h-[3rem] rounded-[0.5rem] bg-red-30 p-[1.2rem] text-[1.4rem] font-semibold text-white">
           상세 필터 {`(${optionCount})`}
         </Button>
       </PopoverTrigger>
-      <PopoverContent className="flex w-[37.1rem] flex-col gap-[1.2rem] tablet:absolute tablet:right-[-50px]">
+      <PopoverContent
+        avoidCollisions={false}
+        className="flex w-[37.1rem] flex-col gap-[1.2rem] tablet:absolute tablet:right-[-50px]"
+      >
         <div className="mb-[2.4rem] flex flex-col gap-[1.2rem]">
           <span className="text-[1.6rem] leading-[2.6rem]">위치</span>
           <AddressSelector address={address} setAddress={setAddress} />
@@ -59,7 +82,7 @@ export default function NoticeListFilter({
         <div className="mb-[2.4rem] flex flex-col gap-[1.2rem]">
           <span className="text-[1.6rem] leading-[2.6rem]">시작일</span>
           <Input
-            defaultValue={startsAtDate}
+            defaultValue={options.startsAtGte}
             onBlur={handleStartAtDate}
             type="date"
           />
@@ -69,7 +92,7 @@ export default function NoticeListFilter({
           <div className="flex items-center gap-[1.2rem]">
             <div className="relative w-[50%]">
               <Input
-                defaultValue={hourlyPayGte}
+                defaultValue={options.hourlyPayGte}
                 onBlur={handlePay}
                 type="number"
               />
@@ -81,8 +104,11 @@ export default function NoticeListFilter({
           </div>
         </div>
         <div className="flex justify-between py-[1.6rem]">
-          <PopoverClose className="flex w-[8.2rem] items-center justify-center rounded-[0.6rem] border border-primary py-[1.4rem] text-[1.6rem] font-bold text-primary ">
-            취소
+          <PopoverClose
+            onClick={handleResetButton}
+            className="flex w-[8.2rem] items-center justify-center rounded-[0.6rem] border border-primary py-[1.4rem] text-[1.6rem] font-bold text-primary "
+          >
+            초기화
           </PopoverClose>
           <PopoverClose
             onClick={handleDecideButton}

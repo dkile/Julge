@@ -1,4 +1,4 @@
-import { createContext, PropsWithChildren, useState } from "react";
+import { createContext, PropsWithChildren, useCallback, useState } from "react";
 
 import { useDialog } from "@/hooks/useDialog";
 
@@ -23,10 +23,13 @@ export default function ErrorDialogProvider({
   const { opened, open: openDialog, close, toggle } = useDialog(initialOpened);
   const [errorMessage, setErrorMessage] = useState("");
 
-  const open = (errorMessage: string) => {
-    setErrorMessage(errorMessage);
-    openDialog();
-  };
+  const open = useCallback(
+    (errorMessage: string) => {
+      setErrorMessage(errorMessage);
+      openDialog();
+    },
+    [openDialog],
+  );
 
   return (
     <ErrorDialogContext.Provider value={{ opened, errorMessage }}>

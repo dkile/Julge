@@ -46,7 +46,7 @@ export default function AddressSelector({
 
   return (
     <div className="flex flex-col gap-[1.2rem]">
-      <ScrollArea className="h-[25.8rem] border-[1px] border-solid p-[0.5rem]">
+      <ScrollArea className="h-[19.8rem] border-[1px] border-solid p-[0.5rem]">
         <ul className="flex flex-wrap justify-between">
           {ADDRESS.map((item) => {
             return (
