@@ -5,9 +5,22 @@ import { useNoticeEdit } from "@/queries/shop";
 import { FormRules } from "@/types/form";
 import { NoticeRegistFormField } from "@/types/shop";
 
-export default function useNoticeEditForm(shopId: string, noticeId: string) {
-  const form = useForm<NoticeRegistFormField>({
-    values: { hourlyPay: 0, startsAt: "", workhour: 0, description: "" },
+export default function useNoticeEditForm(
+  shopId: string,
+  noticeId: string,
+  currentNoticeData: any,
+) {
+  const formValues = currentNoticeData
+    ? {
+        hourlyPay: currentNoticeData.hourlyPay,
+        startsAt: currentNoticeData.startsAt,
+        workhour: currentNoticeData.workhour,
+        description: currentNoticeData.description,
+      }
+    : {};
+
+  const form = useForm<any>({
+    values: formValues,
   });
   const { mutate } = useNoticeEdit(shopId, noticeId);
 

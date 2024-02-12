@@ -31,7 +31,7 @@ export default function ShopDataCard({ shopId, shopData }: ShopDataCardProps) {
           <span className="text-[2rem] font-bold tablet:text-[2.8rem] desktop:text-[3.4rem]">
             내 가게
           </span>
-          <Card className="flex w-[35.1rem] flex-col rounded-[0.8rem] border-none bg-red-10 p-[2rem] tablet:w-[68rem] tablet:p-[2.4rem] desktop:w-[96.4rem] desktop:flex-row desktop:justify-between">
+          <Card className="flex w-[35.1rem] flex-col rounded-[0.8rem] border-none bg-red-10 p-[2rem] tablet:w-[68rem] tablet:p-[2.4rem] desktop:w-[96.4rem] desktop:flex-row desktop:justify-between desktop:gap-[3.5rem]">
             <div className="flex h-[17.8rem] w-[31.1rem] items-center overflow-hidden rounded-[1.2rem] tablet:h-[36rem] tablet:w-[63.2rem] desktop:h-[30.8rem] desktop:w-[53.9rem]">
               <Image
                 className="object-cover tablet:h-[36rem]  tablet:w-[63.2rem] desktop:h-[30.8rem] desktop:w-[53.9rem]"

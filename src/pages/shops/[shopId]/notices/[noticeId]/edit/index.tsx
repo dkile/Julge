@@ -1,7 +1,9 @@
+import { useQuery } from "@tanstack/react-query";
 import Image from "next/image";
 import { useRouter } from "next/router";
 import { useContext, useEffect } from "react";
 
+import { fetcher } from "@/apis/fetcher";
 import EmployerLayout from "@/components/common/EmployerLayout";
 import RegisterModal from "@/components/noticeRegister/Modal";
 import { Button } from "@/components/ui/button";
@@ -18,7 +20,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { getAccessTokenInStorage } from "@/helpers/auth";
 import useNoticeEditForm from "@/hooks/useNoticeEditForm";
 import { UserContext } from "@/providers/UserProvider";
-import { PAGE_ROUTES } from "@/routes";
+import { apiRouteUtils, PAGE_ROUTES } from "@/routes";
 
 function NoticeEdit() {
   const user = useContext(UserContext);
@@ -26,9 +28,23 @@ function NoticeEdit() {
   const { shopId, noticeId } = router.query;
   const parsedShopId = shopId as string;
   const parsedNoticeId = noticeId as string;
+  const { data } = useQuery<any>({
+    queryKey: ["notice", noticeId],
+    queryFn: async () => {
+      const response = await fetcher.get(
+        apiRouteUtils.parseShopNoticeDetail(parsedShopId, parsedNoticeId),
+      );
+      if (!response.ok) {
+        throw new Error("Network response was not ok");
+      }
+      return response.json();
+    },
+  });
+  const currentNoticeData = data?.item;
   const { form, onSubmit, rules, handlers } = useNoticeEditForm(
     parsedShopId,
     parsedNoticeId,
+    currentNoticeData,
   );
 
   useEffect(() => {
@@ -187,7 +203,7 @@ function NoticeEdit() {
                         />
                       </div>
                     </div>
-                    <RegisterModal form={form} parsedShopId={parsedShopId} />
+                    <RegisterModal form={form} />
                   </div>
                 </div>
               </div>

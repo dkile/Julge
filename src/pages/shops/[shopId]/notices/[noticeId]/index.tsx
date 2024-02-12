@@ -207,12 +207,12 @@ function NoticeDetail() {
                 {shopOriginalData?.name}
               </span>
             </div>
-            <div className="flex w-[35.1rem] flex-col items-start gap-[1.2rem] rounded-[1.2rem] border border-gray-20 bg-white p-[2rem] tablet:w-[68rem] tablet:gap-[1.6rem] tablet:p-[2.4rem] desktop:h-[35.6rem] desktop:w-[96.4rem] desktop:flex-row">
-              <div className="relative flex h-[15.8rem] w-[31.1rem] items-center justify-center tablet:h-[33.2rem] tablet:w-[63.2rem] desktop:h-[30.8rem] desktop:w-[55.4rem]">
+            <div className="flex w-[35.1rem] flex-col items-start gap-[1.2rem] rounded-[1.2rem] border border-gray-20 bg-white p-[2rem] tablet:w-[68rem] tablet:gap-[1.6rem] tablet:p-[2.4rem] desktop:h-[35.6rem] desktop:w-[96.4rem] desktop:flex-row desktop:gap-[3.5rem]">
+              <div className="relative flex h-[15.8rem] w-[31.1rem] items-center justify-center overflow-hidden rounded-[1.2rem] tablet:h-[33.2rem] tablet:w-[63.2rem] desktop:h-[30.8rem] desktop:w-[55.4rem]">
                 <Image
                   src={shopOriginalData?.imageUrl}
                   layout="fill"
-                  objectFit="contain"
+                  objectFit="cover"
                   alt="로고이미지"
                 />
               </div>
