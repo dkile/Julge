@@ -8,11 +8,14 @@ import {
   removeAccessTokenInStorage,
   setAccessTokenInStorage,
 } from "@/helpers/auth";
+import { Shop } from "@/types/shop";
 import { User } from "@/types/user";
 
-export const UserContext = createContext<User | null>(null);
+type Employer = User & { shop: Shop | null };
+
+export const UserContext = createContext<Employer | null>(null);
 export const UserActionContext = createContext({
-  login: (_token: string, _user: User) => {},
+  login: (_token: string) => {},
   logout: () => {},
   setProfile: (
     _profile: Pick<User, "name" | "phone" | "address" | "bio">,
@@ -24,7 +27,7 @@ export type JWTPayload = {
 };
 
 export default function UserProvider({ children }: PropsWithChildren) {
-  const [user, setUser] = useState<User | null>(null);
+  const [user, setUser] = useState<Employer | null>(null);
   const token = getAccessTokenInStorage();
   fetcher.setAccessToken(token);
   let userId = "";
@@ -36,17 +39,16 @@ export default function UserProvider({ children }: PropsWithChildren) {
     if (!userId) return;
 
     const fetchUser = async () => {
-      const { user } = await getUser(userId);
-      setUser(user);
+      const { user, shop } = await getUser(userId);
+      setUser({ ...user, shop });
     };
 
     fetchUser();
   }, [userId]);
 
-  const login = (token: string, user: User) => {
+  const login = (token: string) => {
     setAccessTokenInStorage(token);
     fetcher.setAccessToken(token);
-    setUser(user);
   };
 
   const logout = () => {
