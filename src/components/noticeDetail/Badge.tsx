@@ -28,6 +28,19 @@ export const RejectBadge = () => {
   );
 };
 
+export const CancelBadge = () => {
+  return (
+    <Badge
+      variant="secondary"
+      className="flex items-center rounded-[2rem] bg-gray-400 px-[1rem] py-[0.6rem]"
+    >
+      <span className="text-[1.2rem] font-normal not-italic leading-[1.6rem] text-gray-900 tablet:text-[1.4rem] tablet:font-bold">
+        취소됨
+      </span>
+    </Badge>
+  );
+};
+
 export const HighHourlyWageBadge = (props: {
   className: string;
   increasePercentage: number;

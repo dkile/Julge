@@ -14,6 +14,9 @@ export const UserContext = createContext<User | null>(null);
 export const UserActionContext = createContext({
   login: (_token: string, _user: User) => {},
   logout: () => {},
+  setProfile: (
+    _profile: Pick<User, "name" | "phone" | "address" | "bio">,
+  ) => {},
 });
 
 export type JWTPayload = {
@@ -52,9 +55,19 @@ export default function UserProvider({ children }: PropsWithChildren) {
     setUser(null);
   };
 
+  const setProfile = ({
+    name,
+    phone,
+    address,
+    bio,
+  }: Pick<User, "name" | "phone" | "address" | "bio">) => {
+    if (!user) return;
+    setUser({ ...user, name, phone, address, bio });
+  };
+
   return (
     <UserContext.Provider value={user}>
-      <UserActionContext.Provider value={{ login, logout }}>
+      <UserActionContext.Provider value={{ login, logout, setProfile }}>
         {children}
       </UserActionContext.Provider>
     </UserContext.Provider>

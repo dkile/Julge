@@ -1,8 +1,8 @@
 export type User = {
   bio?: string;
-  address?: string | null;
-  phone?: string | null;
-  name?: string | null;
+  address?: string;
+  phone?: string;
+  name?: string;
   id: string;
   email: string;
   type: UserType;

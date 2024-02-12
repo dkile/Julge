@@ -1,17 +1,17 @@
 import { useRouter } from "next/router";
-import { useEffect } from "react";
+import { useContext, useEffect } from "react";
 
 import EmployeeLayout from "@/components/common/EmployeeLayout";
 import ApplicationList from "@/components/my/ApplicationList";
 import EmptyProfileCard from "@/components/my/EmptyProfileCard";
 import ProfileCard from "@/components/my/ProfileCard";
 import { getAccessTokenInStorage } from "@/helpers/auth";
-import { useUserQuery } from "@/queries/user";
+import { UserContext } from "@/providers/UserProvider";
 import { PAGE_ROUTES } from "@/routes";
 
 export default function My() {
   const router = useRouter();
-  const { user } = useUserQuery();
+  const user = useContext(UserContext);
 
   useEffect(() => {
     if (!getAccessTokenInStorage()) router.push(PAGE_ROUTES.SIGNIN);

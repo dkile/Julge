@@ -16,6 +16,7 @@ import { HighHourlyWageBadge } from "@/components/noticeDetail/Badge";
 import { ApplyNoticeButton } from "@/components/noticeDetail/Buttons";
 import NoticeApplyItem from "@/components/noticeDetail/NoticeApplyItem";
 import { calculateTime } from "@/components/noticeDetail/timeCalculate";
+import Loading from "@/components/ui/Loading";
 import { getAccessTokenInStorage } from "@/helpers/auth";
 import { UserContext } from "@/providers/UserProvider";
 import { useUserQuery } from "@/queries/user";
@@ -30,7 +31,7 @@ function NoticeDetailApply() {
   const { shopId, noticeId } = router.query;
   const normalizedShopId = String(shopId);
   const normalizedNoticeId = String(noticeId);
-  const { data } = useQuery<any>({
+  const { data, isLoading } = useQuery<any>({
     queryKey: ["notices", normalizedNoticeId],
     queryFn: async () => getNoticeDetail(normalizedShopId, normalizedNoticeId),
     enabled: !!noticeId && !!shopId,
@@ -69,7 +70,12 @@ function NoticeDetailApply() {
 
     setRecentNotices(updatedRecentNotices);
   }, [noticeId, shop, notice, router]);
-
+  if (isLoading)
+    return (
+      <div className="pt-[25vh]">
+        <Loading />
+      </div>
+    );
   if (!data) return;
 
   return (

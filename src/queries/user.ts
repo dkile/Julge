@@ -6,7 +6,7 @@ import { getUser, postUsers, putUser } from "@/apis/user";
 import { userPutRequestBody, UsersPostRequestBody } from "@/apis/user/schema";
 import { ConflictRequestError } from "@/helpers/error";
 import { ErrorDialogActionContext } from "@/providers/ErrorDialogProvider";
-import { UserContext } from "@/providers/UserProvider";
+import { UserActionContext, UserContext } from "@/providers/UserProvider";
 import { PAGE_ROUTES } from "@/routes";
 
 export const useSignup = () => {
@@ -33,6 +33,7 @@ export const useSignup = () => {
 
 export const useMyRegister = () => {
   const user = useContext(UserContext);
+  const { setProfile } = useContext(UserActionContext);
   const router = useRouter();
   const queryClient = useQueryClient();
   const { open: openErrorDialog } = useContext(ErrorDialogActionContext);
@@ -40,11 +41,12 @@ export const useMyRegister = () => {
   const { mutate } = useMutation({
     mutationFn: ({ name, phone, address, bio }: userPutRequestBody) =>
       putUser(user!.id, { name, phone, address, bio }),
-    onSuccess: () => {
+    onSuccess: ({ item: user }) => {
       router.replace(PAGE_ROUTES.MY);
       queryClient.invalidateQueries({
         queryKey: ["user", user!.id],
       });
+      setProfile(user);
     },
     onError: (err) => {
       openErrorDialog(err.message);

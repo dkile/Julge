@@ -54,6 +54,7 @@ export const putUser = async (userId: string, body: userPutRequestBody) =>
       json: body,
     })
     .json()
+    .then(userGetResponseSchema.parse)
     .catch((err: HTTPError) => {
       throw err;
     });
