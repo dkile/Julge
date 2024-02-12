@@ -17,8 +17,8 @@ import {
   ApplyNoticeButton,
   DisableApplyButton,
 } from "@/components/noticeDetail/Buttons";
-import NoticeApplyItem from "@/components/noticeDetail/NoticeApplyItem";
 import { calculateTime } from "@/components/noticeDetail/timeCalculate";
+import ShopsNoticesListItem from "@/components/shop/ShopsNoticesListItems";
 import Loading from "@/components/ui/Loading";
 import { getAccessTokenInStorage } from "@/helpers/auth";
 import { UserContext } from "@/providers/UserProvider";
@@ -318,7 +318,7 @@ function RecentNoticeList({
                   notice.noticedata?.id,
                 )}
               >
-                <NoticeApplyItem
+                <ShopsNoticesListItem
                   item={notice.noticedata}
                   shopData={notice.shopdata}
                 />

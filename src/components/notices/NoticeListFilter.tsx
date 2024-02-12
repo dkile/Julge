@@ -113,7 +113,7 @@ export default function NoticeListFilter({
           </PopoverClose>
           <PopoverClose
             onClick={handleDecideButton}
-            className="flex w-[26rem] items-center justify-center rounded-[0.6rem] bg-primary py-[1.4rem] text-[1.6rem] font-bold text-white "
+            className="flex w-[24rem] items-center justify-center rounded-[0.6rem] bg-primary py-[1.4rem] text-[1.6rem] font-bold text-white "
           >
             확인
           </PopoverClose>

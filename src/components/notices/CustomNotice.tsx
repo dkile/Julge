@@ -77,7 +77,7 @@ export default function CustomNotice({ user }: CustomNoticeProps) {
               <CarouselNext className="right-[-20px] h-[40px] w-[40px]" />
             </div>
           ) : (
-            <div className="mx-auto flex h-[200px] w-[250px] items-center text-center text-[2rem] font-bold text-gray-20">
+            <div className="mx-auto flex h-[200px] w-[250px] items-center text-center text-[2rem] font-bold text-red-50">
               조건에 맞는 공고가 없습니다
             </div>
           )}

@@ -102,7 +102,7 @@ export default function ApplicationPagination({
               <TableCell className="line-clamp-2 hidden w-full items-center text-ellipsis border-b-[1px] border-r-[1px] border-gray-20 px-[12px] py-[12px] leading-[1.25] text-black desktop:block">
                 {application.user.item.phone}
               </TableCell>
-              <TableCell className="flex w-full items-center border-b-[1px] px-[12px] py-[12px]">
+              <TableCell className="flex w-full items-center gap-[1rem] border-b-[1px] px-[12px] py-[12px]">
                 {application.status === "canceled" && <CancelBadge />}
                 {application.status === "pending" && (
                   <ApproveDialog
@@ -130,10 +130,7 @@ export default function ApplicationPagination({
                 { "pointer-events-none text-gray-30": isFirstPagination },
               )}
               href={{
-                pathname: PAGE_ROUTES.parseShopNoticeDetailsURL(
-                  shopId,
-                  noticeId,
-                ),
+                pathname: PAGE_ROUTES.parseShopNoticeDetailsURL(noticeId),
                 query: {
                   page: currentPagination.at(0)! - 1,
                 },
@@ -148,10 +145,7 @@ export default function ApplicationPagination({
                   { "focus:bg-red-30 focus:text-white": page === currentPage },
                 )}
                 href={{
-                  pathname: PAGE_ROUTES.parseShopNoticeDetailsURL(
-                    shopId,
-                    noticeId,
-                  ),
+                  pathname: PAGE_ROUTES.parseShopNoticeDetailsURL(noticeId),
                   query: {
                     page: page,
                   },
@@ -172,10 +166,7 @@ export default function ApplicationPagination({
                 },
               )}
               href={{
-                pathname: PAGE_ROUTES.parseShopNoticeDetailsURL(
-                  shopId,
-                  noticeId,
-                ),
+                pathname: PAGE_ROUTES.parseShopNoticeDetailsURL(noticeId),
                 query: {
                   page: currentPagination.at(-1)! + 1,
                 },

@@ -19,7 +19,7 @@ interface ShopsNoticesListItemProps {
   };
 }
 
-const calculateColor = (num: number) => {
+export const calculateColor = (num: number) => {
   if (num >= 40) return "red-40";
   else if (num >= 30) return "red-30";
   else if (num >= 20) return "red-20";

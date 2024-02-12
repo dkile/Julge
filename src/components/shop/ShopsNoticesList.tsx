@@ -81,12 +81,7 @@ export default function ShopsNoticesList({
         <div className="flex w-[35.1rem] flex-wrap gap-x-[0.9rem] gap-y-[1.6rem] tablet:w-[67.8rem] tablet:gap-x-[1.4rem] tablet:gap-y-[3.2rem] desktop:w-[96.4rem]">
           {itemList.map((item: any) => (
             <li key={item.item.id}>
-              <Link
-                href={PAGE_ROUTES.parseShopNoticeDetailsURL(
-                  shopData.id,
-                  item.item.id,
-                )}
-              >
+              <Link href={PAGE_ROUTES.parseShopNoticeDetailsURL(item.item.id)}>
                 <ShopsNoticesListItem item={item.item} shopData={shopData} />
               </Link>
             </li>
