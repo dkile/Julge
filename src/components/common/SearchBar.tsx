@@ -10,9 +10,9 @@ export default function SearchBar() {
   const handleEnterPressed = (e: KeyboardEvent<HTMLInputElement>) => {
     if (e.key === "Enter")
       router.push({
-        pathname: PAGE_ROUTES.NOTICES,
+        pathname: PAGE_ROUTES.NOTICES_SEARCH,
         query: {
-          search: (e.target as HTMLInputElement).value,
+          keyword: (e.target as HTMLInputElement).value,
         },
       });
   };

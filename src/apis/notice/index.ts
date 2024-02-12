@@ -146,8 +146,8 @@ export const getCustomNoticesListData = async (address = "", startsAt = "") => {
     startsAtGte;
   try {
     const response = await fetcher.get(apiURL);
-    const result = await response.json();
-    return result;
+    const result: any = await response.json();
+    return result.items;
   } catch (err: any) {
     throw err;
   }

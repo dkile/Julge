@@ -11,13 +11,13 @@ import {
 
 interface NoticeListPagination {
   count: number;
-  handlePage: (num: number) => void;
+  onChangePage: (num: number) => void;
   page: number;
 }
 
 export default function NoticeListPagination({
   count,
-  handlePage,
+  onChangePage: handlePage,
   page,
 }: NoticeListPagination) {
   const pageCount = Math.ceil(count / 6);

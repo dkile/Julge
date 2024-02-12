@@ -2,6 +2,7 @@ export const PAGE_ROUTES = {
   SIGNUP: "/signup",
   SIGNIN: "/signin",
   NOTICES: "/notices",
+  NOTICES_SEARCH: "/notices/search",
   NOTICES_DETAIL: (shopId: string) => `/shops/${shopId}/notices`,
   SHOPS_REGISTER: "/shops/register",
   SHOPS: "/shops",
