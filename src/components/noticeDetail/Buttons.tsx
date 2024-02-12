@@ -74,3 +74,13 @@ export const ApproveButton = ({ onClick }: any) => {
     </Button>
   );
 };
+
+export const DisableApplyButton = () => {
+  return (
+    <Button className="h-[3.8rem] w-full cursor-none rounded-[0.6rem] border-[0.1rem] border-gray-40 bg-gray-40 px-[2rem] py-[1rem] tablet:h-[4.8rem]">
+      <span className="text-center text-[1.4rem] font-bold not-italic leading-normal text-white tablet:text-[1.6rem]">
+        신청 불가
+      </span>
+    </Button>
+  );
+};

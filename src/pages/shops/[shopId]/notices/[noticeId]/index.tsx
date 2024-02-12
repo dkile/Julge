@@ -38,7 +38,6 @@ function NoticeDetail() {
       return response.json();
     },
   });
-
   const shopOriginalData = data?.item?.shop?.item ?? {};
   const shopNoticeData = data?.item ?? {};
   const startsAt = shopNoticeData.startsAt;

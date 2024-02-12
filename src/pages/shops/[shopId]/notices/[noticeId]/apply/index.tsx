@@ -13,7 +13,10 @@ import EmployeeLayout from "@/components/common/EmployeeLayout";
 import CancelDialog from "@/components/noticeApply/CancelDialog";
 import ProfileRegistDialog from "@/components/noticeApply/ProfileRegistDialog";
 import { HighHourlyWageBadge } from "@/components/noticeDetail/Badge";
-import { ApplyNoticeButton } from "@/components/noticeDetail/Buttons";
+import {
+  ApplyNoticeButton,
+  DisableApplyButton,
+} from "@/components/noticeDetail/Buttons";
 import NoticeApplyItem from "@/components/noticeDetail/NoticeApplyItem";
 import { calculateTime } from "@/components/noticeDetail/timeCalculate";
 import Loading from "@/components/ui/Loading";
@@ -190,12 +193,30 @@ function NoticeDetail({
         </div>
         <div className="flex w-[35.1rem] flex-col items-start gap-[1.2rem] rounded-[1.2rem] border border-gray-20 bg-white p-[2rem] tablet:w-[68rem] tablet:gap-[1.6rem] tablet:p-[2.4rem] desktop:h-[35.6rem] desktop:w-[96.4rem] desktop:flex-row desktop:gap-[2rem]">
           <div className="relative flex h-[15.8rem] w-[31.1rem] items-center justify-center overflow-hidden rounded-[12px] tablet:h-[33.2rem] tablet:w-[63.2rem] desktop:h-[30.8rem] desktop:w-[55.4rem]">
-            <Image
-              src={shop.imageUrl}
-              layout="fill"
-              objectFit="cover"
-              alt="로고이미지"
-            />
+            {notice.closed ? (
+              <>
+                <div className="absolute inset-0 z-10 flex h-full w-full items-center justify-center bg-[#000000B2]">
+                  <p className="text-[2.8rem] font-bold text-white">
+                    마감 완료
+                  </p>
+                </div>
+                <div className="absolute inset-0">
+                  <Image
+                    src={shop.imageUrl}
+                    layout="fill"
+                    objectFit="cover"
+                    alt="로고이미지"
+                  />
+                </div>
+              </>
+            ) : (
+              <Image
+                src={shop.imageUrl}
+                layout="fill"
+                objectFit="cover"
+                alt="로고이미지"
+              />
+            )}
           </div>
           <div className="flex flex-col items-start gap-[2.4rem] self-stretch tablet:pt-[1.6rem] desktop:w-[34.6rem] desktop:pt-[1.6rem]">
             <div className="flex flex-col items-start gap-[0.8rem] self-stretch tablet:gap-[1.2rem]">
@@ -207,7 +228,9 @@ function NoticeDetail({
                   <span className="text-[2.4rem] font-bold not-italic leading-normal tracking-[0.048rem] text-black tablet:text-[2.8rem]">
                     {notice.hourlyPay}원
                   </span>
-                  {notice.hourlyPay > shop.originalHourlyPay && (
+                  {!(
+                    notice.hourlyPay > shop.originalHourlyPay || notice.closed
+                  ) && (
                     <HighHourlyWageBadge
                       className={""}
                       increasePercentage={0}
@@ -227,7 +250,7 @@ function NoticeDetail({
                 </div>
                 <span className="text-[1.4rem] font-normal not-italic leading-[2.2rem] text-gray-50 tablet:text-[1.6rem]">
                   {startDay} {startTime}:{minute}~{endTime}:{minute}(
-                  {shop.workhour}
+                  {notice.workhour}
                   시간)
                 </span>
               </div>
@@ -248,7 +271,9 @@ function NoticeDetail({
                 {shop.description}
               </span>
             </div>
-            {currentUserApplication?.status === "pending" ? (
+            {notice.closed ? (
+              <DisableApplyButton />
+            ) : currentUserApplication?.status === "pending" ? (
               <CancelDialog handleCancel={handleCancel} />
             ) : (
               <ApplyNoticeButton onClick={handleApply} />
