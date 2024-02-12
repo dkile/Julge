@@ -69,37 +69,40 @@ export default function ApplicationPagination({
   );
 
   return data.count ? (
-    <div className="overflow-hidden rounded-[8px] border-[1px] border-gray-10 desktop:w-full">
+    <div className="overflow-hidden rounded-[8px] border-[1px] border-gray-20 desktop:w-full">
       <Table>
         <TableHeader className="bg-red-10">
-          <TableRow className="flex text-[1.2rem]">
-            <TableHead className="flex h-max w-full items-center px-[12px] py-[12px]">
+          <TableRow className="flex text-[1.2rem] tablet:text-[1.4rem]">
+            <TableHead className="flex h-max w-full items-center border-r-[1px] border-gray-20 px-[12px] py-[12px] text-black">
               신청자
             </TableHead>
-            <TableHead className="flex h-max w-full items-center px-[12px] py-[12px]">
+            <TableHead className="hidden h-max w-full items-center border-r-[1px] border-gray-20 px-[12px] py-[12px] text-black tablet:block">
               소개
             </TableHead>
-            <TableHead className="flex h-max w-full items-center px-[12px] py-[12px]">
+            <TableHead className="hidden h-max w-full items-center border-r-[1px] border-gray-20 px-[12px] py-[12px] text-black desktop:block">
               전화번호
             </TableHead>
-            <TableHead className="flex h-max w-full items-center px-[12px] py-[12px]">
+            <TableHead className="flex h-max w-full items-center px-[12px] py-[12px] text-black">
               상태
             </TableHead>
           </TableRow>
         </TableHeader>
         <TableBody className="h-[212.5px] border-b-[1px]">
           {applicationList.map(({ item: application }: any) => (
-            <TableRow key={application.id} className="flex text-[1.4rem]">
-              <TableCell className="line-clamp-2 flex w-full items-center text-ellipsis px-[12px] py-[12px] leading-[1.25]">
+            <TableRow
+              key={application.id}
+              className="flex text-[1.4rem] tablet:text-[1.6rem]"
+            >
+              <TableCell className="line-clamp-2 flex w-full items-center text-ellipsis border-b-[1px] border-r-[1px] border-gray-20 px-[12px] py-[12px] leading-[1.25] text-black">
                 {application.user.item.name}
               </TableCell>
-              <TableCell className="line-clamp-2 flex w-full items-center text-ellipsis px-[12px] py-[12px] leading-[1.25]">
+              <TableCell className="line-clamp-2 hidden w-full items-center text-ellipsis border-b-[1px] border-r-[1px] border-gray-20 px-[12px] py-[12px] leading-[1.25] text-black tablet:block">
                 {application.user.item.bio}
               </TableCell>
-              <TableCell className="line-clamp-2 flex w-full items-center text-ellipsis px-[12px] py-[12px] leading-[1.25]">
+              <TableCell className="line-clamp-2 hidden w-full items-center text-ellipsis border-b-[1px] border-r-[1px] border-gray-20 px-[12px] py-[12px] leading-[1.25] text-black desktop:block">
                 {application.user.item.phone}
               </TableCell>
-              <TableCell className="flex w-full items-center px-[12px] py-[12px]">
+              <TableCell className="flex w-full items-center border-b-[1px] px-[12px] py-[12px]">
                 {application.status === "canceled" && <CancelBadge />}
                 {application.status === "pending" && (
                   <ApproveDialog
