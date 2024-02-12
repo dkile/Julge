@@ -27,7 +27,7 @@ export default function ShopDataCard({ shopId, shopData }: ShopDataCardProps) {
   return (
     <>
       {typeof shopId === "string" && (
-        <div className="mx-auto flex w-[35.1rem] flex-col gap-[1.6rem] px-[1.2rem] py-[4rem] tablet:mt-[6rem] tablet:w-[68rem] tablet:gap-[2.4rem] desktop:w-[96.4rem]">
+        <div className="mx-auto flex w-[35.1rem] flex-col gap-[1.6rem] py-[4rem] tablet:mt-[6rem] tablet:w-[68rem] tablet:gap-[2.4rem] desktop:w-[96.4rem]">
           <span className="text-[2rem] font-bold tablet:text-[2.8rem] desktop:text-[3.4rem]">
             내 가게
           </span>

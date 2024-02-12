@@ -72,8 +72,8 @@ export default function CustomNotice({ user }: CustomNoticeProps) {
                 </CarouselItem>
               ))}
             </CarouselContent>
-            <CarouselPrevious className="h-[24px] w-[24px]" />
-            <CarouselNext className="h-[24px] w-[24px]" />
+            <CarouselPrevious className="left-[-20px] h-[40px] w-[40px]" />
+            <CarouselNext className="right-[-20px] h-[40px] w-[40px]" />
           </div>
         </Carousel>
       </ul>

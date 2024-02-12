@@ -14,7 +14,7 @@ export default function Notices() {
   return (
     <ErrorDialogProvider>
       <Layout>
-        <CustomNotice user={user} />
+        {user?.type === "employee" && <CustomNotice user={user} />}
         <NoticesLists />
       </Layout>
     </ErrorDialogProvider>
