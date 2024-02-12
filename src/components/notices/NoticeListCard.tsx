@@ -2,7 +2,7 @@ import Image from "next/image";
 import { useRouter } from "next/router";
 
 import { colorCalculate, riseRate } from "@/components/notices/util";
-import { timeCalculate } from "@/components/shop/ShopsNoticesListItem";
+import { calculateTime } from "@/components/shop/ShopsNoticesListItems";
 import {
   Card,
   CardContent,
@@ -28,7 +28,7 @@ export default function NoticeListCard({ item }: any) {
 
   const { startsAt, workhour, hourlyPay }: any = item;
 
-  const [startDay, startTime, minute, endTime] = timeCalculate(
+  const [startDay, startTime, minute, endTime] = calculateTime(
     startsAt,
     workhour,
   );

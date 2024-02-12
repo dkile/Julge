@@ -20,6 +20,7 @@ const config = {
     "fill-red-20",
     "fill-red-30",
     "fill-red-40",
+    "fill-gray-30",
   ],
   darkMode: ["class"],
   content: [

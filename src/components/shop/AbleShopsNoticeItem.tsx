@@ -10,7 +10,7 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 
-interface ShopsNoticesListItemProps {
+interface AbleShopsNoticeItemProps {
   shopData: {
     name: string;
     imageUrl: string;
@@ -25,44 +25,23 @@ interface ShopsNoticesListItemProps {
     description: string;
     closed: boolean;
   };
+  times: {
+    startDay: string;
+    startTime: string;
+    minute: string;
+    endTime: string;
+  };
+  color: string;
+  riseRate: number;
 }
 
-const colorCalculate = (num: number) => {
-  if (num >= 40) return "red-40";
-  else if (num >= 30) return "red-30";
-  else if (num >= 20) return "red-20";
-  else return "red-10";
-};
-
-export const timeCalculate = (time: string, workhour: number) => {
-  if (!time) {
-    return ["", "", "", ""];
-  }
-  const startDay = time.split("T")[0];
-  const startTime = time.split("T")[1].split(":")[0];
-  const minute = time.split("T")[1].split(":")[1];
-  const endTimeCal =
-    +startTime + +workhour >= 24
-      ? +startTime + +workhour - 24
-      : +startTime + +workhour;
-  const endTime = 10 > endTimeCal ? "0" + endTimeCal : endTimeCal;
-
-  return [startDay, startTime, minute, endTime];
-};
-
-export default function ShopsNoticesListItem({
-  item,
+export default function AbleShopsNoticeItem({
   shopData,
-}: ShopsNoticesListItemProps) {
-  const riseRate = Math.floor(
-    (item.hourlyPay / shopData.originalHourlyPay - 1) * 100,
-  );
-  const [startDay, startTime, minute, endTime] = timeCalculate(
-    item.startsAt,
-    item.workhour,
-  );
-  const color = colorCalculate(riseRate);
-
+  times,
+  item,
+  color,
+  riseRate,
+}: AbleShopsNoticeItemProps) {
   return (
     <div>
       <Card className="w-[17.1rem] overflow-hidden rounded-[1.2rem] p-[1.2rem] tablet:w-[33.2rem] tablet:p-[1.6rem] desktop:w-[31.2rem]">
@@ -89,8 +68,9 @@ export default function ShopsNoticesListItem({
                 height={16}
               />
               <CardDescription className="text-[1.2rem] leading-[1.6rem] text-gray-50 tablet:text-[1.4rem] tablet:leading-[2.2rem]">
-                {startDay} <br className="tablet:hidden" />
-                {startTime}:{minute}~{endTime}:{minute} ({item.workhour}
+                {times.startDay} <br className="tablet:hidden" />
+                {times.startTime}:{times.minute}~{times.endTime}:{times.minute}{" "}
+                ({item.workhour}
                 시간)
               </CardDescription>
             </div>

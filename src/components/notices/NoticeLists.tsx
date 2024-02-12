@@ -7,7 +7,7 @@ import ErrorDialog from "@/components/common/ErrorDialog";
 import NoticeListFilter from "@/components/notices/NoticeListFilter";
 import NoticeListPagination from "@/components/notices/NoticeListPagination";
 import NoticeListSortMenu from "@/components/notices/NoticeListSortMenu";
-import ShopsNoticesListItem from "@/components/shop/ShopsNoticesListItem";
+import ShopsNoticesListItem from "@/components/shop/ShopsNoticesListItems";
 import Loading from "@/components/ui/Loading";
 import { getCurrentDateTime } from "@/helpers/date";
 import { ErrorDialogActionContext } from "@/providers/ErrorDialogProvider";
@@ -86,7 +86,7 @@ export default function NoticesLists() {
             <span className="text-[2rem] font-bold tablet:text-[2.8rem]">
               {keyword ? (
                 <>
-                  <span className="text-primary">{keyword}</span>에 대한{" "}
+                  <span className="text-primary">{keyword}</span> <br />
                   {noticeListResponse.count}개의 공고
                 </>
               ) : (
@@ -99,7 +99,7 @@ export default function NoticesLists() {
             </div>
           </div>
           <div className="flex w-[35.1rem] flex-wrap gap-x-[0.9rem] gap-y-[1.6rem] tablet:w-[67.8rem] tablet:gap-x-[1.2rem] tablet:gap-y-[3.2rem] desktop:w-[96.4rem]">
-            {noticeList &&
+            {noticeList.length ? (
               noticeList.map((data: any) => (
                 <li key={data.item.id}>
                   <Link
@@ -114,7 +114,12 @@ export default function NoticesLists() {
                     />
                   </Link>
                 </li>
-              ))}
+              ))
+            ) : (
+              <div className="mx-auto flex h-[200px] w-[200px] items-center text-center text-[1.6rem] font-bold text-gray-30">
+                조건에 맞는 공고가 없습니다
+              </div>
+            )}
           </div>
         </ul>
         <NoticeListPagination

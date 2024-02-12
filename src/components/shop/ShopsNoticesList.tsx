@@ -2,7 +2,7 @@ import Link from "next/link";
 import { useEffect, useState } from "react";
 
 import { getNewNoticesListData } from "@/apis/shop";
-import ShopsNoticesListItem from "@/components/shop/ShopsNoticesListItem";
+import ShopsNoticesListItem from "@/components/shop/ShopsNoticesListItems";
 import { PAGE_ROUTES } from "@/routes";
 
 interface ShopsNoticesListProps {
