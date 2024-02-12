@@ -25,9 +25,9 @@ export type Shop = z.infer<typeof shopSchema>;
 
 export const noticeSchema = z.object({
   id: z.string(),
-  hourlyPay: z.number(),
+  hourlyPay: z.number().or(z.string()),
   startsAt: z.string(),
-  workhour: z.number(),
+  workhour: z.number().or(z.string()),
   description: z.string(),
   closed: z.boolean(),
 });
