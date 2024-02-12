@@ -72,8 +72,9 @@ export default function NoticeListFilter({
         </Button>
       </PopoverTrigger>
       <PopoverContent
+        align="end"
         avoidCollisions={false}
-        className="flex w-[37.1rem] flex-col gap-[1.2rem] tablet:absolute tablet:right-[-50px]"
+        className="flex w-[35.1rem] flex-col gap-[1.2rem] tablet:absolute tablet:right-[-50px]"
       >
         <div className="mb-[2.4rem] flex flex-col gap-[1.2rem]">
           <span className="text-[1.6rem] leading-[2.6rem]">위치</span>

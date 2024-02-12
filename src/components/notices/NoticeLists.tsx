@@ -53,7 +53,11 @@ export default function NoticesLists() {
         setNoticeListResponse(resultAllNotices);
         setIsLoading(false);
       } catch (err: any) {
-        openValidationErrorDialog(err.message);
+        if (err.response.status === 400) {
+          openValidationErrorDialog("이전 공고는 볼 수 없습니다");
+        } else {
+          openValidationErrorDialog(err.message);
+        }
       }
     };
     getData();
@@ -78,7 +82,7 @@ export default function NoticesLists() {
     <>
       <div className="pb-[8rem] pt-[4rem] tablet:pb-[6rem] tablet:pt-[6rem]">
         <ul className="mx-auto flex min-h-[80rem] w-[35.1rem] flex-col gap-[1.6rem] pb-[3rem] tablet:w-[67.8rem] tablet:gap-[3.2rem] tablet:pb-[4rem] tablet:pt-[6rem] desktop:w-[96.4rem]">
-          <div className="flex flex-col gap-[1.6rem] tablet:flex-row tablet:items-center tablet:justify-between">
+          <div className="flex justify-between gap-[1.6rem] tablet:flex-row tablet:items-center tablet:justify-between">
             <span className="text-[2rem] font-bold tablet:text-[2.8rem]">
               {keyword ? (
                 <>
