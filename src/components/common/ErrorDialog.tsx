@@ -22,18 +22,18 @@ export default function ErrorDialog() {
     <Dialog open={opened} onOpenChange={toggle}>
       <DialogContent
         className={cn(
-          "flex h-[22.4rem] flex-col items-center justify-end gap-[4.8rem] rounded-[0.8rem] p-[3.2rem]",
+          "h-[22rem] w-[32.7rem] justify-center gap-0 rounded-[0.8rem] p-0 tablet:h-[25rem] tablet:w-[54rem]",
           fontPretendard.variable,
         )}
       >
-        <DialogDescription className="text-[1.6rem] text-black">
+        <DialogDescription className="mt-[8.1rem] font-pretendard text-[1.6rem] font-[500] tablet:mt-[10.8rem] tablet:text-[1.8rem]">
           {errorMessage}
         </DialogDescription>
-        <DialogFooter>
+        <DialogFooter className="mx-auto pb-[2.8rem] tablet:absolute tablet:bottom-[0] tablet:right-[2.8rem]">
           <Button
             type="button"
             onClick={close}
-            className="h-[4.2rem] w-[13.8rem] rounded-[0.6rem] font-pretendard text-[1.4rem]"
+            className="h-[4.2rem] w-[13.8rem] rounded-[0.8rem] font-pretendard text-[1.4rem] font-[500] tablet:text-[1.6rem]"
           >
             확인
           </Button>
