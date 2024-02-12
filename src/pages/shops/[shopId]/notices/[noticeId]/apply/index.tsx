@@ -4,118 +4,117 @@ import Link from "next/link";
 import { useRouter } from "next/router";
 import React, { useContext, useEffect, useState } from "react";
 
-import { fetcher } from "@/apis/fetcher";
-import { postNoticeApplication, putNoticeApplication } from "@/apis/notice";
+import {
+  getNoticeDetail,
+  postNoticeApplication,
+  putNoticeApplication,
+} from "@/apis/notice";
 import EmployeeLayout from "@/components/common/EmployeeLayout";
 import CancelDialog from "@/components/noticeApply/CancelDialog";
 import ProfileRegistDialog from "@/components/noticeApply/ProfileRegistDialog";
-import ApplicationList from "@/components/noticeDetail/ApplicationList";
 import { HighHourlyWageBadge } from "@/components/noticeDetail/Badge";
-import { useTimeCalculate } from "@/components/noticeDetail/Hooks";
+import { ApplyNoticeButton } from "@/components/noticeDetail/Buttons";
 import NoticeApplyItem from "@/components/noticeDetail/NoticeApplyItem";
+import { calculateTime } from "@/components/noticeDetail/timeCalculate";
 import { getAccessTokenInStorage } from "@/helpers/auth";
 import { UserContext } from "@/providers/UserProvider";
 import { useUserQuery } from "@/queries/user";
-import { apiRouteUtils, PAGE_ROUTES } from "@/routes";
+import { PAGE_ROUTES } from "@/routes";
 
 function NoticeDetailApply() {
-  const [mounted, setMounted] = useState<boolean>(false);
   const [recentNotices, setRecentNotices] = useState<
     { id: string; data: any }[]
   >([]);
+  const userProfile = useContext(UserContext);
   const router = useRouter();
   const { shopId, noticeId } = router.query;
   const normalizedShopId = String(shopId);
   const normalizedNoticeId = String(noticeId);
-
-  const { user } = useUserQuery();
-  const userProfile = useContext(UserContext);
-  const userId = userProfile?.id;
-
-  useEffect(() => {
-    setMounted(true);
-  }, []);
-
-  useEffect(() => {
-    if (!user?.id) router.push(PAGE_ROUTES.SIGNIN);
-  }, [user?.id, router]);
-
-  const profile =
-    user && user.name && user.phone && user.address
-      ? {
-          name: user.name,
-          phone: user.phone,
-          address: user.address,
-          bio: user.bio,
-        }
-      : undefined;
-
-  const applyList = ApplicationList(normalizedShopId, normalizedNoticeId);
-
-  const canceledItem = applyList?.items.find(
-    (cancelItem: { item: { user: { item: { id: string | undefined } } } }) => {
-      return cancelItem.item.user.item.id === userId;
-    },
-  );
-  const applyStatus = canceledItem?.item.status;
-
-  const cancelId = canceledItem?.item.id;
-  const pagingProfileRegist = () => {
-    router.push("/my");
-  };
-
-  const handleApply = async () => {
-    if (profile) {
-      try {
-        await postNoticeApplication(
-          profile,
-          normalizedShopId,
-          normalizedNoticeId,
-        );
-        alert("지원 신청이 성공적으로 완료되었습니다.");
-      } catch (error) {
-        alert("지원 신청 중 오류가 발생했습니다.");
-      }
-    }
-  };
-
-  const { data, refetch } = useQuery<any>({
-    queryKey: ["notices", noticeId],
-    queryFn: async () => {
-      if (!noticeId || !shopNoticeData) {
-        return; // 또는 적절한 기본값을 반환할 수 있도록 수정
-      }
-
-      const response = await fetcher.get(
-        apiRouteUtils.parseShopNoticeDetail(
-          normalizedShopId,
-          normalizedNoticeId,
-        ),
-      );
-      if (!response.ok) {
-        throw new Error("Network response was not ok");
-      }
-      return response.json();
-    },
+  const { data } = useQuery<any>({
+    queryKey: ["notices", normalizedNoticeId],
+    queryFn: async () => getNoticeDetail(normalizedShopId, normalizedNoticeId),
+    enabled: !!noticeId && !!shopId,
   });
-  const applicationStatus = data?.item?.currentUserApplication?.item.status;
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  const shopOriginalData = data?.item?.shop?.item ?? {};
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  const shopNoticeData = data?.item ?? {};
-  const startsAt = shopNoticeData.startsAt;
-  const workhour = shopNoticeData.workhour;
-  const [startDay, startTime, minute, endTime] = useTimeCalculate(
-    startsAt,
-    workhour,
-  );
-  const originalHourlyPay = shopOriginalData.originalHourlyPay;
-  const hourlyPay = shopNoticeData.hourlyPay;
+  const { item: notice } = data || {};
+  const shop = notice?.shop?.item;
 
+  useEffect(() => {
+    if (!getAccessTokenInStorage()) router.push(PAGE_ROUTES.SIGNIN);
+  }, [router, userProfile]);
+
+  useEffect(() => {
+    if (userProfile?.type === "employer") {
+      router.push("/shops");
+    }
+  }, [userProfile?.type, router]);
+
+  let storedRecentNotices: any[] = [];
+  if (typeof window !== "undefined") {
+    const notices = localStorage.getItem("recentNotices");
+    if (notices) storedRecentNotices = JSON.parse(notices);
+  }
+  useEffect(() => {
+    const updatedRecentNotices = [
+      {
+        id: noticeId as string,
+        noticedata: notice,
+        shopdata: shop,
+      },
+      ...storedRecentNotices
+        .filter((item: any) => item.id !== noticeId)
+        .slice(0, 6),
+    ];
+
+    localStorage.setItem("recentNotices", JSON.stringify(updatedRecentNotices));
+
+    setRecentNotices(updatedRecentNotices);
+  }, [noticeId, shop, notice, router]);
+
+  if (!data) return;
+
+  return (
+    <>
+      <EmployeeLayout>
+        <div className="flex w-full flex-col items-center justify-center tablet:w-[74.4rem] desktop:w-[144rem]">
+          <NoticeDetail
+            shopId={normalizedShopId}
+            noticeId={normalizedNoticeId}
+            notice={notice}
+            shop={shop}
+          />
+          <RecentNoticeList storedRecentNotices={storedRecentNotices} />
+        </div>
+      </EmployeeLayout>
+    </>
+  );
+}
+
+function NoticeDetail({
+  shopId,
+  noticeId,
+  notice,
+  shop,
+}: {
+  shopId: string;
+  noticeId: string;
+  notice: any;
+  shop: any;
+}) {
+  const router = useRouter();
+  const { user } = useUserQuery();
+  const [showModal, setShowModal] = useState(false);
+  const currentUserApplication = notice.currentUserApplication?.item;
+
+  // badge
+  const [startDay, startTime, minute, endTime] = calculateTime(
+    notice.startsAt,
+    notice.workhour,
+  );
   let increasePercentage: number | undefined;
-  if (hourlyPay > originalHourlyPay) {
+  if (notice.hourlyPay > shop.originalHourlyPay) {
     increasePercentage = Math.round(
-      ((hourlyPay - originalHourlyPay) / originalHourlyPay) * 100,
+      ((notice.hourlyPay - shop.originalHourlyPay) / shop.originalHourlyPay) *
+        100,
     );
   }
   let badgeProps =
@@ -134,191 +133,170 @@ function NoticeDetailApply() {
           increasePercentage: Number(increasePercentage.toFixed(0)),
         }
       : {};
+  //
 
-  useEffect(() => {
-    if (!getAccessTokenInStorage()) {
-      router.push(PAGE_ROUTES.SIGNIN);
+  const profile =
+    user && user.name && user.phone && user.address
+      ? {
+          name: user.name,
+          phone: user.phone,
+          address: user.address,
+          bio: user.bio,
+        }
+      : undefined;
+
+  const handleApply = async () => {
+    if (!profile) {
+      setShowModal(true);
       return;
     }
-
-    if (!noticeId || !shopNoticeData) {
-      return; // noticeId 또는 shopNoticeData가 없는 경우에는 더 이상 처리하지 않음
+    try {
+      await postNoticeApplication(profile, shopId, noticeId);
+      alert("지원 신청이 성공적으로 완료되었습니다.");
+      router.reload();
+    } catch (error) {
+      alert("지원 신청 중 오류가 발생했습니다.");
     }
-
-    // 이전에 저장된 최근에 본 공고 목록을 로컬 스토리지에서 가져옴
-    const storedRecentNotices = JSON.parse(
-      localStorage.getItem("recentNotices") || "[]",
-    );
-
-    // 클릭한 공고를 최근에 본 공고 목록에 추가
-    const updatedRecentNotices = [
-      {
-        id: noticeId as string,
-        noticedata: shopNoticeData,
-        shopdata: shopOriginalData,
-      },
-      ...storedRecentNotices
-        .filter((item: any) => item.id !== noticeId)
-        .slice(0, 5), // 최근 6개만 유지하도록 수정
-    ];
-
-    // 최근에 본 공고 목록을 로컬 스토리지에 저장
-    localStorage.setItem("recentNotices", JSON.stringify(updatedRecentNotices));
-
-    // 최근에 본 공고 목록 상태 업데이트
-    setRecentNotices(updatedRecentNotices);
-  }, [noticeId, shopNoticeData, router, shopOriginalData]);
-
-  let storedRecentNotices = [];
-  if (typeof window !== "undefined") {
-    const notices = localStorage.getItem("recentNotices");
-    if (notices) storedRecentNotices = JSON.parse(notices);
-  }
+  };
 
   const handleCancel = async () => {
     try {
       await putNoticeApplication(
         { status: "canceled" },
-        normalizedShopId,
-        normalizedNoticeId,
-        cancelId,
+        shopId,
+        noticeId,
+        currentUserApplication.id,
       );
+      router.reload();
     } catch (error) {}
   };
 
-  useEffect(() => {
-    if (user?.type === "employer") {
-      router.push("/shops");
-    }
-  }, [user, router]);
-
-  useEffect(() => {
-    refetch();
-  }, [refetch, applyStatus, applicationStatus]);
-
   return (
-    mounted && (
-      <>
-        <EmployeeLayout>
-          <div className="flex w-full flex-col items-center justify-center tablet:w-[74.4rem] desktop:w-[144rem]">
-            <div className="flex w-full flex-col items-start gap-[1.2rem] bg-[#fafafa] px-[1.2rem] py-[4rem] tablet:w-full tablet:px-[3.2rem] tablet:py-[6rem] desktop:px-[23.8rem]">
-              <div className="flex w-full flex-col gap-[1.6rem] tablet:w-full">
-                <div className="inline-flex flex-col items-start gap-[0.8rem]">
-                  <span className="text-[1.4rem] font-bold not-italic leading-normal text-primary tablet:text-[1.6rem]  ">
-                    {shopOriginalData?.category}
-                  </span>
-                  <span className="text-[2rem] font-bold not-italic leading-normal text-black tablet:text-[2.8rem]">
-                    {shopOriginalData?.name}
-                  </span>
-                </div>
-                <div className="flex w-[35.1rem] flex-col items-start gap-[1.2rem] rounded-[1.2rem] border border-gray-20 bg-white p-[2rem] tablet:w-[68rem] tablet:gap-[1.6rem] tablet:p-[2.4rem] desktop:h-[35.6rem] desktop:w-[96.4rem] desktop:flex-row desktop:gap-[2rem]">
-                  <div className="relative flex h-[15.8rem] w-[31.1rem] items-center justify-center tablet:h-[33.2rem] tablet:w-[63.2rem] desktop:h-[30.8rem] desktop:w-[55.4rem]">
-                    <Image
-                      src={shopOriginalData?.imageUrl}
-                      layout="fill"
-                      objectFit="cover"
-                      alt="로고이미지"
-                    />
-                  </div>
-                  <div className="flex flex-col items-start gap-[2.4rem] self-stretch tablet:pt-[1.6rem] desktop:w-[34.6rem] desktop:pt-[1.6rem]">
-                    <div className="flex flex-col items-start gap-[0.8rem] self-stretch tablet:gap-[1.2rem]">
-                      <div className="flex flex-col items-start gap-[0.8rem]">
-                        <span className="text-[1.4rem] font-bold not-italic leading-normal text-primary tablet:text-[1.6rem]  ">
-                          시급
-                        </span>
-                        <div className="flex w-full items-center gap-[0.4rem]">
-                          <span className="text-[2.4rem] font-bold not-italic leading-normal tracking-[0.048rem] text-black tablet:text-[2.8rem]">
-                            {shopNoticeData?.hourlyPay}원
-                          </span>
-                          {hourlyPay > originalHourlyPay && (
-                            <HighHourlyWageBadge
-                              className={""}
-                              increasePercentage={0}
-                              {...badgeProps}
-                            />
-                          )}
-                        </div>
-                      </div>
-                      <div className="flex items-center gap-[0.6rem]">
-                        <div className="relative flex h-[1.6rem] w-[1.6rem] items-center justify-center">
-                          <Image
-                            src="/icons/clock.svg"
-                            alt="시간 아이콘"
-                            layout="fill"
-                            objectFit="contain"
-                          />
-                        </div>
-                        <span className="text-[1.4rem] font-normal not-italic leading-[2.2rem] text-gray-50 tablet:text-[1.6rem]">
-                          {startDay} {startTime}:{minute}~{endTime}:{minute}(
-                          {shopOriginalData?.workhour}
-                          시간)
-                        </span>
-                      </div>
-                      <div className="flex items-center gap-[0.6rem]">
-                        <div className="relative flex h-[1.6rem] w-[1.6rem] items-center justify-center">
-                          <Image
-                            src="/icons/point.svg"
-                            alt="장소 아이콘"
-                            layout="fill"
-                            objectFit="contain"
-                          />
-                        </div>
-                        <span className="text-[1.4rem] font-normal not-italic leading-[2.2rem] text-gray-50 tablet:text-[1.6rem]">
-                          {shopOriginalData?.address1}{" "}
-                          {shopOriginalData?.address2}
-                        </span>
-                      </div>
-                      <span className="text-black-50 h-[6.6rem] scroll-auto text-[1.4rem] font-normal not-italic leading-[2.2rem] tablet:text-[1.6rem]">
-                        {shopOriginalData?.description}
-                      </span>
-                    </div>
-                    {applyStatus === "pending" ? (
-                      <CancelDialog handleCancel={handleCancel} />
-                    ) : (
-                      <ProfileRegistDialog
-                        handleApply={handleApply}
-                        profile={profile}
-                        pagingProfileRegist={pagingProfileRegist}
-                      />
-                    )}
-                  </div>
-                </div>
-                <div className="flex h-[15.3rem] w-full flex-col items-start gap-[0.8rem] rounded-[1.2rem] bg-gray-10 p-[2rem] tablet:h-[14.8rem] tablet:p-[3.2rem]">
-                  <span className="text-black-50 scroll-auto text-[1.4rem] font-bold not-italic leading-[2.2rem] tablet:text-[1.6rem]">
-                    공고 설명
-                  </span>
-                  <span className="text-black-50 scroll-auto text-[1.4rem] font-normal not-italic leading-[2.2rem] tablet:text-[1.6rem]">
-                    {shopNoticeData?.description}
-                  </span>
-                </div>
-              </div>
-            </div>
-            <div className="flex w-full flex-col items-start gap-[1.6rem] bg-[#fafafa] px-[1.2rem] pb-[8rem] pt-[4rem] tablet:gap-[3.2rem] tablet:px-[3.2rem] tablet:py-[6rem] desktop:px-[23.8rem] desktop:pb-[12rem] desktop:pt-[6rem]">
-              <h1 className="text-[2rem] font-bold not-italic leading-normal text-black tablet:text-[2.8rem]">
-                최근에 본 공고
-              </h1>
-              <div className="grid grid-cols-2 gap-x-[0.8rem] gap-y-[1.6rem] tablet:gap-x-[1.4rem] tablet:gap-y-[3.2rem] desktop:grid-cols-3">
-                {storedRecentNotices.map((notice: any) => (
-                  <div key={notice.id}>
-                    <Link
-                      href={PAGE_ROUTES.parseNotciesApplyURL(
-                        notice.shopdata.id,
-                        notice.noticedata.id,
-                      )}
-                    >
-                      <NoticeApplyItem
-                        item={notice.noticedata}
-                        shopData={notice.shopdata}
-                      />
-                    </Link>
-                  </div>
-                ))}
-              </div>
-            </div>
+    <div className="flex w-full flex-col items-start gap-[1.2rem] bg-[#fafafa] px-[1.2rem] py-[4rem] tablet:w-full tablet:px-[3.2rem] tablet:py-[6rem] desktop:px-[23.8rem]">
+      <div className="flex w-full flex-col gap-[1.6rem] tablet:w-full">
+        <div className="inline-flex flex-col items-start gap-[0.8rem]">
+          <span className="text-[1.4rem] font-bold not-italic leading-normal text-primary tablet:text-[1.6rem]  ">
+            {shop.category}
+          </span>
+          <span className="text-[2rem] font-bold not-italic leading-normal text-black tablet:text-[2.8rem]">
+            {shop.name}
+          </span>
+        </div>
+        <div className="flex w-[35.1rem] flex-col items-start gap-[1.2rem] rounded-[1.2rem] border border-gray-20 bg-white p-[2rem] tablet:w-[68rem] tablet:gap-[1.6rem] tablet:p-[2.4rem] desktop:h-[35.6rem] desktop:w-[96.4rem] desktop:flex-row desktop:gap-[2rem]">
+          <div className="relative flex h-[15.8rem] w-[31.1rem] items-center justify-center overflow-hidden rounded-[12px] tablet:h-[33.2rem] tablet:w-[63.2rem] desktop:h-[30.8rem] desktop:w-[55.4rem]">
+            <Image
+              src={shop.imageUrl}
+              layout="fill"
+              objectFit="cover"
+              alt="로고이미지"
+            />
           </div>
-        </EmployeeLayout>
-      </>
-    )
+          <div className="flex flex-col items-start gap-[2.4rem] self-stretch tablet:pt-[1.6rem] desktop:w-[34.6rem] desktop:pt-[1.6rem]">
+            <div className="flex flex-col items-start gap-[0.8rem] self-stretch tablet:gap-[1.2rem]">
+              <div className="flex flex-col items-start gap-[0.8rem]">
+                <span className="text-[1.4rem] font-bold not-italic leading-normal text-primary tablet:text-[1.6rem]  ">
+                  시급
+                </span>
+                <div className="flex w-full items-center gap-[0.4rem]">
+                  <span className="text-[2.4rem] font-bold not-italic leading-normal tracking-[0.048rem] text-black tablet:text-[2.8rem]">
+                    {notice.hourlyPay}원
+                  </span>
+                  {notice.hourlyPay > shop.originalHourlyPay && (
+                    <HighHourlyWageBadge
+                      className={""}
+                      increasePercentage={0}
+                      {...badgeProps}
+                    />
+                  )}
+                </div>
+              </div>
+              <div className="flex items-center gap-[0.6rem]">
+                <div className="relative flex h-[1.6rem] w-[1.6rem] items-center justify-center">
+                  <Image
+                    src="/icons/clock.svg"
+                    alt="시간 아이콘"
+                    layout="fill"
+                    objectFit="contain"
+                  />
+                </div>
+                <span className="text-[1.4rem] font-normal not-italic leading-[2.2rem] text-gray-50 tablet:text-[1.6rem]">
+                  {startDay} {startTime}:{minute}~{endTime}:{minute}(
+                  {shop.workhour}
+                  시간)
+                </span>
+              </div>
+              <div className="flex items-center gap-[0.6rem]">
+                <div className="relative flex h-[1.6rem] w-[1.6rem] items-center justify-center">
+                  <Image
+                    src="/icons/point.svg"
+                    alt="장소 아이콘"
+                    layout="fill"
+                    objectFit="contain"
+                  />
+                </div>
+                <span className="text-[1.4rem] font-normal not-italic leading-[2.2rem] text-gray-50 tablet:text-[1.6rem]">
+                  {shop.address1} {shop.address2}
+                </span>
+              </div>
+              <span className="text-black-50 h-[6.6rem] scroll-auto text-[1.4rem] font-normal not-italic leading-[2.2rem] tablet:text-[1.6rem]">
+                {shop.description}
+              </span>
+            </div>
+            {currentUserApplication?.status === "pending" ? (
+              <CancelDialog handleCancel={handleCancel} />
+            ) : (
+              <ApplyNoticeButton onClick={handleApply} />
+            )}
+          </div>
+        </div>
+        <div className="flex h-[15.3rem] w-full flex-col items-start gap-[0.8rem] rounded-[1.2rem] bg-gray-10 p-[2rem] tablet:h-[14.8rem] tablet:p-[3.2rem]">
+          <span className="text-black-50 scroll-auto text-[1.4rem] font-bold not-italic leading-[2.2rem] tablet:text-[1.6rem]">
+            공고 설명
+          </span>
+          <span className="text-black-50 scroll-auto text-[1.4rem] font-normal not-italic leading-[2.2rem] tablet:text-[1.6rem]">
+            {notice.description}
+          </span>
+        </div>
+      </div>
+      <ProfileRegistDialog
+        opened={showModal}
+        onOpenChange={() => setShowModal((sm) => !sm)}
+      />
+    </div>
+  );
+}
+
+function RecentNoticeList({
+  storedRecentNotices,
+}: {
+  storedRecentNotices: any[];
+}) {
+  return (
+    <div className="flex w-full flex-col items-start gap-[1.6rem] bg-[#fafafa] px-[1.2rem] pb-[8rem] pt-[4rem] tablet:gap-[3.2rem] tablet:px-[3.2rem] tablet:py-[6rem] desktop:px-[23.8rem] desktop:pb-[12rem] desktop:pt-[6rem]">
+      <h2 className="text-[2rem] font-bold not-italic leading-normal text-black tablet:text-[2.8rem]">
+        최근에 본 공고
+      </h2>
+      <div className="grid grid-cols-2 gap-x-[0.8rem] gap-y-[1.6rem] tablet:gap-x-[1.4rem] tablet:gap-y-[3.2rem] desktop:grid-cols-3">
+        {storedRecentNotices.map((notice: any) => {
+          if (!notice.noticedata || !notice.shopdata) return null; // 데이터가 없는 경우 건너뜁니다.
+          return (
+            <div key={notice.id}>
+              <Link
+                href={PAGE_ROUTES.parseNotciesApplyURL(
+                  notice.shopdata?.id,
+                  notice.noticedata?.id,
+                )}
+              >
+                <NoticeApplyItem
+                  item={notice.noticedata}
+                  shopData={notice.shopdata}
+                />
+              </Link>
+            </div>
+          );
+        })}
+      </div>
+    </div>
   );
 }
 

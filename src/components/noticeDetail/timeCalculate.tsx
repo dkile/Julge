@@ -1,4 +1,4 @@
-export const useTimeCalculate = (time: string, workhour: number) => {
+export const calculateTime = (time: string, workhour: number) => {
   if (!time) {
     // time이 유효하지 않은 경우 빈 배열을 반환합니다.
     return ["", "", "", ""];

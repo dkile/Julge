@@ -187,3 +187,13 @@ export const putNoticeApplication = async (
       throw err;
     });
 };
+
+export const getNoticeDetail = async (shopId: string, noticeId: string) => {
+  const response = await fetcher.get(
+    apiRouteUtils.parseShopNoticeDetail(shopId, noticeId),
+  );
+  if (!response.ok) {
+    throw new Error("Network response was not ok");
+  }
+  return response.json();
+};

@@ -13,7 +13,7 @@ import {
   RejectBadge,
 } from "@/components/noticeDetail/Badge";
 import { EditNoticeButton } from "@/components/noticeDetail/Buttons";
-import { useTimeCalculate } from "@/components/noticeDetail/Hooks";
+import { timeCalculate } from "@/components/noticeDetail/NoticeApplyItem";
 import ApplyListPagination from "@/components/noticeDetail/Pagination";
 import RejectDialog from "@/components/noticeDetail/RejectDialog";
 import { getAccessTokenInStorage } from "@/helpers/auth";
@@ -74,7 +74,7 @@ function NoticeDetail() {
   const shopNoticeData = data?.item ?? {};
   const startsAt = shopNoticeData.startsAt;
   const workhour = shopNoticeData.workhour;
-  const [startDay, startTime, minute, endTime] = useTimeCalculate(
+  const [startDay, startTime, minute, endTime] = timeCalculate(
     startsAt,
     workhour,
   );
