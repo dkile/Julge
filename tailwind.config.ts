@@ -32,6 +32,7 @@ const config = {
   prefix: "",
   theme: {
     screens: {
+      mobile: "375px",
       tablet: "744px",
       desktop: "1200px",
     },
