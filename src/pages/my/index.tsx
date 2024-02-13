@@ -15,7 +15,10 @@ export default function My() {
 
   useEffect(() => {
     if (!getAccessTokenInStorage()) router.push(PAGE_ROUTES.SIGNIN);
-  }, [router]);
+    if (user?.type === "employer") {
+      router.push(PAGE_ROUTES.NOTICES);
+    }
+  }, [router, user?.type]);
 
   const profile =
     user && user.name && user.phone && user.address
