@@ -17,7 +17,7 @@ interface Props {
 
 export default function ProfileCard({ profile }: Props) {
   return (
-    <Card className="relative rounded-[8px] border-0 bg-red-10 p-[8px]">
+    <Card className="relative max-w-[664px] rounded-[8px] border-0 bg-red-10 p-[8px]">
       <CardHeader>
         <div className="text-[1.4rem] font-bold text-red-40">이름</div>
         <div className="text-[2.4rem] font-bold text-black">{profile.name}</div>

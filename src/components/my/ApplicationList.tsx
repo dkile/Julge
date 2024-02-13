@@ -1,6 +1,7 @@
 import { useRouter } from "next/router";
 
 import EmptyApplicationCard from "@/components/my/EmptyApplicationCard";
+import { calculateTime } from "@/components/noticeDetail/timeCalculate";
 import {
   Pagination,
   PaginationContent,
@@ -49,6 +50,17 @@ export default function ApplicationList() {
       1,
   );
 
+  const formatTime = (startsAt: string, workhour: number) => {
+    const [startDay, startTime, minute, endTime] = calculateTime(
+      startsAt,
+      workhour,
+    );
+
+    return `${startDay} ${startTime}:${minute}~${endTime}:${minute}(
+      ${workhour}
+      시간)`;
+  };
+
   return data.count ? (
     <div className="overflow-hidden rounded-[8px] border-[1px] border-gray-10">
       <Table>
@@ -56,6 +68,12 @@ export default function ApplicationList() {
           <TableRow className="flex text-[1.2rem]">
             <TableHead className="flex h-max w-full items-center px-[12px] py-[12px]">
               가게
+            </TableHead>
+            <TableHead className="hidden h-max w-full items-center px-[12px] py-[12px] mobile:flex">
+              일자
+            </TableHead>
+            <TableHead className="hidden h-max w-full items-center px-[12px] py-[12px] tablet:flex">
+              시급
             </TableHead>
             <TableHead className="flex h-max w-full items-center px-[12px] py-[12px]">
               상태
@@ -67,6 +85,15 @@ export default function ApplicationList() {
             <TableRow key={application.id} className="flex text-[1.4rem]">
               <TableCell className="line-clamp-2 flex w-full items-center text-ellipsis px-[12px] py-[12px] leading-[1.25]">
                 {application.shop.item.name}
+              </TableCell>
+              <TableCell className="line-clamp-2 hidden w-full items-center text-ellipsis px-[12px] py-[12px] leading-[1.25] mobile:flex">
+                {formatTime(
+                  application.notice.item.startsAt,
+                  Number(application.notice.item.workhour),
+                )}
+              </TableCell>
+              <TableCell className="line-clamp-2 hidden w-full items-center text-ellipsis px-[12px] py-[12px] leading-[1.25] tablet:flex">
+                {application.notice.item.hourlyPay}원
               </TableCell>
               <TableCell className="flex w-full items-center px-[12px] py-[12px]">
                 <Badge status={application.status} />

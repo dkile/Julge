@@ -20,7 +20,7 @@ export default function MyRegister() {
   return (
     <ErrorDialogProvider>
       <EmployeeLayout>
-        <section className="h-[calc(100dvh-125px)] px-[16px] py-[40px]">
+        <section className="mx-auto h-[calc(100dvh-125px)] max-w-[664px] px-[16px] py-[40px]">
           <RegisterForm />
         </section>
         <ErrorDialog />

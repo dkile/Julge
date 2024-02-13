@@ -6,7 +6,7 @@ import { PAGE_ROUTES } from "@/routes";
 
 export default function EmptyProfileCard() {
   return (
-    <Card className="flex flex-col items-center justify-center gap-[16px] rounded-[8px] py-[60px]">
+    <Card className="flex max-w-[664px] flex-col items-center justify-center gap-[16px] rounded-[8px] py-[60px]">
       <CardDescription className="text-[1.4rem] text-black">
         내 프로필을 등록하고 원하는 가게에 지원해보세요.
       </CardDescription>

@@ -32,7 +32,7 @@ export default function My() {
 
   return (
     <EmployeeLayout>
-      <section className="w-full px-[16px] py-[40px]">
+      <section className="mx-auto w-full max-w-[1048px] px-[16px] py-[40px]">
         <header>
           <h2 className="text-[2rem] font-bold">내 프로필</h2>
         </header>
@@ -41,7 +41,7 @@ export default function My() {
         </div>
       </section>
       {profile ? (
-        <section className="w-full px-[16px] py-[40px]">
+        <section className="mx-auto w-full max-w-[1048px] px-[16px] py-[40px]">
           <header>
             <h2 className="text-[2rem] font-bold">신청 내역</h2>
           </header>
