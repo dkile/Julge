@@ -130,7 +130,10 @@ export default function ApplicationPagination({
                 { "pointer-events-none text-gray-30": isFirstPagination },
               )}
               href={{
-                pathname: PAGE_ROUTES.parseShopNoticeDetailsURL(noticeId),
+                pathname: PAGE_ROUTES.parseShopNoticeDetailsURL(
+                  shopId,
+                  noticeId,
+                ),
                 query: {
                   page: currentPagination.at(0)! - 1,
                 },
@@ -145,7 +148,10 @@ export default function ApplicationPagination({
                   { "focus:bg-red-30 focus:text-white": page === currentPage },
                 )}
                 href={{
-                  pathname: PAGE_ROUTES.parseShopNoticeDetailsURL(noticeId),
+                  pathname: PAGE_ROUTES.parseShopNoticeDetailsURL(
+                    shopId,
+                    noticeId,
+                  ),
                   query: {
                     page: page,
                   },
@@ -166,7 +172,10 @@ export default function ApplicationPagination({
                 },
               )}
               href={{
-                pathname: PAGE_ROUTES.parseShopNoticeDetailsURL(noticeId),
+                pathname: PAGE_ROUTES.parseShopNoticeDetailsURL(
+                  shopId,
+                  noticeId,
+                ),
                 query: {
                   page: currentPagination.at(-1)! + 1,
                 },

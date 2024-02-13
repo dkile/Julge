@@ -17,10 +17,9 @@ import { apiRouteUtils, PAGE_ROUTES } from "@/routes";
 
 function NoticeDetail() {
   const user = useContext(UserContext);
-  const shopId = user?.shop?.id;
   const router = useRouter();
   const [offset, setOffset] = useState(0);
-  const { noticeId } = router.query;
+  const { shopId, noticeId } = router.query;
   const normalizedShopId = String(shopId);
   const normalizedNoticeId = String(noticeId);
   const { data, isLoading } = useQuery<any>({

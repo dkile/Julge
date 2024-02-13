@@ -43,14 +43,14 @@ function ApplyListPagination({
       <PaginationContent>
         <PaginationItem>
           <PaginationPrevious
-            href={`${PAGE_ROUTES.parseShopNoticeDetailsURL(noticeId)}?limit=5&offset=${offset - 5}`}
+            href={`${PAGE_ROUTES.parseShopNoticeDetailsURL(shopId, noticeId)}?limit=5&offset=${offset - 5}`}
             onClick={handlePreviousClick}
             isActive={!isFirstPage}
           />
         </PaginationItem>
         <PaginationItem>
           <PaginationLink
-            href={`${PAGE_ROUTES.parseShopNoticeDetailsURL(noticeId)}?limit=5&offset=${offset}`}
+            href={`${PAGE_ROUTES.parseShopNoticeDetailsURL(shopId, noticeId)}?limit=5&offset=${offset}`}
           >
             <span className="text-[1.2rem] tablet:text-[1.4rem]">
               {offset / 5 + 1}
@@ -62,7 +62,7 @@ function ApplyListPagination({
         </PaginationItem>
         <PaginationItem>
           <PaginationNext
-            href={`${PAGE_ROUTES.parseShopNoticeDetailsURL(noticeId)}?limit=5&offset=${offset + 5}`}
+            href={`${PAGE_ROUTES.parseShopNoticeDetailsURL(shopId, noticeId)}?limit=5&offset=${offset + 5}`}
             onClick={handleNextClick}
             isActive={!isLastPage}
           />
