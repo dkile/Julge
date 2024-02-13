@@ -190,8 +190,8 @@ function NoticeDetail({
             {shop.name}
           </span>
         </div>
-        <div className="flex w-[35.1rem] flex-col items-start gap-[1.2rem] rounded-[1.2rem] border border-gray-20 bg-white p-[2rem] tablet:w-[68rem] tablet:gap-[1.6rem] tablet:p-[2.4rem] desktop:h-[35.6rem] desktop:w-[96.4rem] desktop:flex-row desktop:gap-[2rem]">
-          <div className="relative flex h-[15.8rem] w-[31.1rem] items-center justify-center overflow-hidden rounded-[12px] tablet:h-[33.2rem] tablet:w-[63.2rem] desktop:h-[30.8rem] desktop:w-[55.4rem]">
+        <div className="flex w-full flex-col items-start gap-[1.2rem] rounded-[1.2rem] border border-gray-20 bg-white p-[2rem] tablet:w-[68rem] tablet:gap-[1.6rem] tablet:p-[2.4rem] desktop:h-[35.6rem] desktop:w-[96.4rem] desktop:flex-row desktop:gap-[2rem]">
+          <div className="relative flex h-[15.8rem] w-full items-center justify-center overflow-hidden rounded-[12px] tablet:h-[33.2rem] tablet:w-[63.2rem] desktop:h-[30.8rem] desktop:w-[55.4rem]">
             {notice.closed ? (
               <>
                 <div className="absolute inset-0 z-10 flex h-full w-full items-center justify-center bg-[#000000B2]">
@@ -306,9 +306,9 @@ function RecentNoticeList({
       <h2 className="text-[2rem] font-bold not-italic leading-normal text-black tablet:text-[2.8rem]">
         최근에 본 공고
       </h2>
-      <div className="grid grid-cols-2 gap-x-[0.8rem] gap-y-[1.6rem] tablet:gap-x-[1.4rem] tablet:gap-y-[3.2rem] desktop:grid-cols-3">
+      <div className="grid w-full grid-cols-2 gap-x-[0.8rem] gap-y-[1.6rem] tablet:gap-x-[1.4rem] tablet:gap-y-[3.2rem] desktop:grid-cols-3">
         {storedRecentNotices.map((notice: any) => {
-          if (!notice.noticedata || !notice.shopdata) return null; // 데이터가 없는 경우 건너뜁니다.
+          if (!notice.noticedata || !notice.shopdata) return null;
           return (
             <div key={notice.id}>
               <Link

@@ -43,7 +43,7 @@ export default function AbleShopsNoticeItem({
   riseRate,
 }: AbleShopsNoticeItemProps) {
   return (
-    <div>
+    <div className="flex items-center justify-center">
       <Card className="w-[17.1rem] overflow-hidden rounded-[1.2rem] p-[1.2rem] tablet:w-[33.2rem] tablet:p-[1.6rem] desktop:w-[31.2rem]">
         <CardHeader className="mb-[1.2rem] h-[8.4rem] w-[14.7rem] rounded-[1.2rem] p-0 tablet:mb-[2rem] tablet:h-[17.1rem] tablet:w-[30rem] desktop:h-[16rem] desktop:w-[28rem]">
           <Image
