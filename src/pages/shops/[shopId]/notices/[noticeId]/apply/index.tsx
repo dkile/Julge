@@ -1,4 +1,4 @@
-import { useQuery } from "@tanstack/react-query";
+import { useQuery, useQueryClient } from "@tanstack/react-query";
 import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/router";
@@ -26,9 +26,6 @@ import { useUserQuery } from "@/queries/user";
 import { PAGE_ROUTES } from "@/routes";
 
 function NoticeDetailApply() {
-  const [recentNotices, setRecentNotices] = useState<
-    { id: string; data: any }[]
-  >([]);
   const userProfile = useContext(UserContext);
   const router = useRouter();
   const { shopId, noticeId } = router.query;
@@ -57,22 +54,20 @@ function NoticeDetailApply() {
     const notices = localStorage.getItem("recentNotices");
     if (notices) storedRecentNotices = JSON.parse(notices);
   }
-  useEffect(() => {
-    const updatedRecentNotices = [
-      {
-        id: noticeId as string,
-        noticedata: notice,
-        shopdata: shop,
-      },
-      ...storedRecentNotices
-        .filter((item: any) => item.id !== noticeId)
-        .slice(0, 6),
-    ];
+  const updatedRecentNotices = [
+    {
+      id: noticeId as string,
+      noticedata: notice,
+      shopdata: shop,
+    },
+    ...storedRecentNotices
+      .filter((item: any) => item.id !== noticeId)
+      .slice(0, 6),
+  ];
 
+  if (typeof window !== "undefined")
     localStorage.setItem("recentNotices", JSON.stringify(updatedRecentNotices));
 
-    setRecentNotices(updatedRecentNotices);
-  }, [noticeId, shop, notice, router]);
   if (isLoading)
     return (
       <div className="pt-[25vh]">
@@ -113,6 +108,7 @@ function NoticeDetail({
   const { user } = useUserQuery();
   const [showModal, setShowModal] = useState(false);
   const currentUserApplication = notice.currentUserApplication?.item;
+  const queryClient = useQueryClient();
 
   // badge
   const [startDay, startTime, minute, endTime] = calculateTime(
@@ -162,6 +158,9 @@ function NoticeDetail({
     try {
       await postNoticeApplication(profile, shopId, noticeId);
       alert("지원 신청이 성공적으로 완료되었습니다.");
+      queryClient.invalidateQueries({
+        queryKey: ["notices", noticeId],
+      });
       router.reload();
     } catch (error) {
       alert("지원 신청 중 오류가 발생했습니다.");
