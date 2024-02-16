@@ -79,7 +79,7 @@ function NoticeDetailApply() {
   return (
     <>
       <EmployeeLayout>
-        <div className="flex w-full flex-col items-center justify-center tablet:w-[74.4rem] desktop:w-[144rem]">
+        <div className="flex w-full flex-col items-center justify-center tablet:w-full desktop:w-[144rem]">
           <NoticeDetail
             shopId={normalizedShopId}
             noticeId={normalizedNoticeId}
@@ -190,8 +190,8 @@ function NoticeDetail({
             {shop.name}
           </span>
         </div>
-        <div className="flex w-full flex-col items-start gap-[1.2rem] rounded-[1.2rem] border border-gray-20 bg-white p-[2rem] tablet:w-[68rem] tablet:gap-[1.6rem] tablet:p-[2.4rem] desktop:h-[35.6rem] desktop:w-[96.4rem] desktop:flex-row desktop:gap-[2rem]">
-          <div className="relative flex h-[15.8rem] w-full items-center justify-center overflow-hidden rounded-[12px] tablet:h-[33.2rem] tablet:w-[63.2rem] desktop:h-[30.8rem] desktop:w-[55.4rem]">
+        <div className="flex w-full flex-col items-start gap-[1.2rem] rounded-[1.2rem] border border-gray-20 bg-white p-[2rem] tablet:gap-[1.6rem] tablet:p-[2.4rem] desktop:h-[35.6rem] desktop:flex-row desktop:gap-[2rem]">
+          <div className="relative flex h-[15.8rem] w-full items-center justify-center overflow-hidden rounded-[12px] tablet:h-[33.2rem] desktop:h-[30.8rem] desktop:w-[55.4rem]">
             {notice.closed ? (
               <>
                 <div className="absolute inset-0 z-10 flex h-full w-full items-center justify-center bg-[#000000B2]">
