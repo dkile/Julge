@@ -2,6 +2,7 @@ import { PopoverClose } from "@radix-ui/react-popover";
 import { useState } from "react";
 
 import AddressSelector from "@/components/notices/AddressSelector";
+import { getData } from "@/components/notices/NoticeLists";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import {
@@ -17,12 +18,20 @@ interface NoticeListFilterProps {
     startsAtGte: string;
     hourlyPayGte: number;
   };
-  setOptions: (value: any) => void;
+  keyword: string;
+  offset: number;
+  setNoticeListResponse: (value: any) => void;
+  openValidationErrorDialog: (value: string) => void;
+  setIsLoading: (value: boolean) => void;
 }
 
 export default function NoticeListFilter({
-  setOptions,
   options,
+  keyword,
+  offset,
+  setNoticeListResponse,
+  openValidationErrorDialog,
+  setIsLoading,
 }: NoticeListFilterProps) {
   const [address, setAddress] = useState(options.address);
   let startsAtDate = "";
@@ -44,23 +53,40 @@ export default function NoticeListFilter({
   };
 
   const handleDecideButton = () => {
-    setOptions((prev: any) => ({
-      ...prev,
-      address: address,
-      startsAtGte: startsAtDate ? startsAtDate + "T00:00:00Z" : "",
-      hourlyPayGte: hourlyPayGte,
-    }));
+    getData(
+      {
+        ...options,
+        address: address,
+        startsAtGte: startsAtDate ? startsAtDate + "T00:00:00Z" : "",
+        hourlyPayGte: hourlyPayGte,
+      },
+      keyword as string,
+      offset,
+      setNoticeListResponse,
+      openValidationErrorDialog,
+      setIsLoading,
+    );
+
     setOptionCount(
       address.length + (startsAtDate ? 1 : 0) + (hourlyPayGte ? 1 : 0),
     );
   };
 
   const handleResetButton = () => {
-    setOptions({
-      address: [],
-      startsAtGte: "",
-      hourlyPayGte: "",
-    });
+    getData(
+      {
+        ...options,
+        address: [],
+        startsAtGte: "",
+        hourlyPayGte: "",
+      },
+      keyword as string,
+      offset,
+      setNoticeListResponse,
+      openValidationErrorDialog,
+      setIsLoading,
+    );
+
     setOptionCount(0);
   };
 

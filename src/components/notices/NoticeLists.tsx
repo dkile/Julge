@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { useRouter } from "next/router";
-import { useContext, useEffect, useState } from "react";
+import { useContext, useState } from "react";
 
 import { getNoticesListData } from "@/apis/notice";
 import ErrorDialog from "@/components/common/ErrorDialog";
@@ -13,20 +13,50 @@ import { getCurrentDateTime } from "@/helpers/date";
 import { ErrorDialogActionContext } from "@/providers/ErrorDialogProvider";
 import { PAGE_ROUTES } from "@/routes";
 
+export const getData = async (
+  options: any,
+  keyword: string,
+  offset: number,
+  setNoticeListResponse: (value: any) => void,
+  openValidationErrorDialog: (value: string) => void,
+  setIsLoading: (value: boolean) => void,
+) => {
+  try {
+    const startsAtGte = options.startsAtGte
+      ? options.startsAtGte
+      : getCurrentDateTime();
+    const resultAllNotices: any = await getNoticesListData(
+      { ...options, keyword: keyword, startsAtGte: startsAtGte },
+      offset,
+    );
+    setNoticeListResponse(resultAllNotices);
+    setIsLoading(false);
+  } catch (err: any) {
+    if (err.response.status === 400) {
+      openValidationErrorDialog("이전 공고는 볼 수 없습니다");
+    } else {
+      openValidationErrorDialog(err.message);
+    }
+  }
+};
+
+type NoticeListResponseType = {
+  offset: number;
+  limit: number;
+  count: number;
+  hasNext: boolean;
+  address: [];
+  keyword: undefined;
+  items: [];
+  links: [];
+};
+
 export default function NoticesLists() {
   const router = useRouter();
   const { keyword } = router.query;
   const [page, setPage] = useState(1);
-  const [noticeListResponse, setNoticeListResponse] = useState({
-    offset: 0,
-    limit: 0,
-    count: 0,
-    hasNext: false,
-    address: [],
-    keyword: undefined,
-    items: [],
-    links: [],
-  });
+  const [noticeListResponse, setNoticeListResponse] =
+    useState<NoticeListResponseType | null>(null);
   const [isLoading, setIsLoading] = useState(true);
   const { open: openValidationErrorDialog } = useContext(
     ErrorDialogActionContext,
@@ -40,39 +70,43 @@ export default function NoticesLists() {
   });
   const offset = (page - 1) * 6;
 
-  useEffect(() => {
-    const getData = async () => {
-      try {
-        const startsAtGte = options.startsAtGte
-          ? options.startsAtGte
-          : getCurrentDateTime();
-        const resultAllNotices: any = await getNoticesListData(
-          { ...options, keyword: keyword, startsAtGte: startsAtGte },
-          offset,
-        );
-        setNoticeListResponse(resultAllNotices);
-        setIsLoading(false);
-      } catch (err: any) {
-        if (err.response.status === 400) {
-          openValidationErrorDialog("이전 공고는 볼 수 없습니다");
-        } else {
-          openValidationErrorDialog(err.message);
-        }
-      }
-    };
-    getData();
-  }, [options, keyword, offset, openValidationErrorDialog]);
+  if (!noticeListResponse) {
+    getData(
+      options,
+      keyword as string,
+      offset,
+      setNoticeListResponse,
+      openValidationErrorDialog,
+      setIsLoading,
+    );
+  }
 
   const handlePage = (num: number) => {
     setPage(num);
+    getData(
+      options,
+      keyword as string,
+      offset,
+      setNoticeListResponse,
+      openValidationErrorDialog,
+      setIsLoading,
+    );
   };
 
   const handleChangeSort = (value: string) => {
     setOptions((prev: any) => ({ ...prev, sort: value }));
+    getData(
+      options,
+      keyword as string,
+      offset,
+      setNoticeListResponse,
+      openValidationErrorDialog,
+      setIsLoading,
+    );
     setPage(1);
   };
 
-  const noticeList = noticeListResponse.items;
+  const noticeList = noticeListResponse?.items;
 
   return isLoading ? (
     <div className="pt-[25vh]">
@@ -87,7 +121,7 @@ export default function NoticesLists() {
               {keyword ? (
                 <>
                   <span className="text-primary">{keyword}</span> <br />
-                  {noticeListResponse.count}개의 공고
+                  {noticeListResponse?.count}개의 공고
                 </>
               ) : (
                 "전체 공고"
@@ -95,11 +129,18 @@ export default function NoticesLists() {
             </span>
             <div className="flex gap-[1rem]">
               <NoticeListSortMenu onChangeSort={handleChangeSort} />
-              <NoticeListFilter options={options} setOptions={setOptions} />
+              <NoticeListFilter
+                keyword={keyword as string}
+                offset={offset}
+                setNoticeListResponse={setNoticeListResponse}
+                openValidationErrorDialog={openValidationErrorDialog}
+                setIsLoading={setIsLoading}
+                options={options}
+              />
             </div>
           </div>
           <div className="flex w-[35.1rem] flex-wrap gap-x-[0.9rem] gap-y-[1.6rem] tablet:w-[67.8rem] tablet:gap-x-[1.2rem] tablet:gap-y-[3.2rem] desktop:w-[96.4rem]">
-            {noticeList.length ? (
+            {noticeList?.length ? (
               noticeList.map((data: any) => (
                 <li key={data.item.id}>
                   <Link
@@ -122,11 +163,13 @@ export default function NoticesLists() {
             )}
           </div>
         </ul>
-        <NoticeListPagination
-          onChangePage={handlePage}
-          count={noticeListResponse.count}
-          page={page}
-        />
+        {noticeListResponse && (
+          <NoticeListPagination
+            onChangePage={handlePage}
+            count={noticeListResponse.count}
+            page={page}
+          />
+        )}
       </div>
       <ErrorDialog />
     </>

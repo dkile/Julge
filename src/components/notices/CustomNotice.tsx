@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 
 import { getCustomNoticesListData } from "@/apis/notice";
 import ShopsNoticesListItem from "@/components/shop/ShopsNoticesListItems";
@@ -30,9 +30,10 @@ interface CustomNoticeProps {
 
 export default function CustomNotice({ user }: CustomNoticeProps) {
   const [customNoticesList, setCustomNoticesList] = useState<
-    CustomNoticesListType[]
-  >([]);
-  useEffect(() => {
+    CustomNoticesListType[] | null
+  >(null);
+
+  if (!customNoticesList) {
     const curretTime = getCurrentDateTime();
     const getData = async () => {
       const responseData = await getCustomNoticesListData(
@@ -42,7 +43,7 @@ export default function CustomNotice({ user }: CustomNoticeProps) {
       setCustomNoticesList(responseData);
     };
     getData();
-  }, [user?.address]);
+  }
 
   return (
     <div className="w-[100%] bg-red-10">
@@ -51,7 +52,7 @@ export default function CustomNotice({ user }: CustomNoticeProps) {
           맞춤 공고
         </span>
         <Carousel>
-          {customNoticesList.length ? (
+          {customNoticesList ? (
             <div className="flex w-[35.1rem] flex-wrap justify-between gap-x-[0.9rem] gap-y-[1.6rem] tablet:w-[67.8rem] tablet:gap-y-[3.2rem] desktop:w-[96.4rem]">
               <CarouselContent>
                 {customNoticesList.map((data: any) => (
