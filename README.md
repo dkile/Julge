@@ -110,7 +110,8 @@ https://github.com/S2-P3-T5/Julge/assets/129366303/8812e22b-532b-488b-82b1-3eeac
 ### 내 프로필 페이지
 ![image](https://github.com/S2-P3-T5/Julge/assets/129366303/ad67c3e2-407e-4ede-be28-61a490f6d73e)
 
-- 프로필 수정하기 기능
+
+### 내 프로필 수정하기 페이지
 https://github.com/S2-P3-T5/Julge/assets/129366303/c4a4afe2-8099-4a04-ae16-50812fab48ff
 
 ### 내 가게 정보 상세 페이지
