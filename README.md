@@ -5,7 +5,7 @@
 > 개발 기간: 2024. 1.17 ~ 2.13
 
 
-URL: https://rolling-team9.netlify.app/](https://julge.vercel.app/
+URL: https://julge.vercel.app
 
 
 ## 💡프로젝트 소개
