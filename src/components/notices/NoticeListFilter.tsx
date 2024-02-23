@@ -2,7 +2,6 @@ import { PopoverClose } from "@radix-ui/react-popover";
 import { useState } from "react";
 
 import AddressSelector from "@/components/notices/AddressSelector";
-import { getData } from "@/components/notices/NoticeLists";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import {
@@ -18,20 +17,12 @@ interface NoticeListFilterProps {
     startsAtGte: string;
     hourlyPayGte: number;
   };
-  keyword: string;
-  offset: number;
-  setNoticeListResponse: (value: any) => void;
-  openValidationErrorDialog: (value: string) => void;
-  setIsLoading: (value: boolean) => void;
+  setOptions: (value: any) => void;
 }
 
 export default function NoticeListFilter({
+  setOptions,
   options,
-  keyword,
-  offset,
-  setNoticeListResponse,
-  openValidationErrorDialog,
-  setIsLoading,
 }: NoticeListFilterProps) {
   const [address, setAddress] = useState(options.address);
   let startsAtDate = "";
@@ -53,40 +44,23 @@ export default function NoticeListFilter({
   };
 
   const handleDecideButton = () => {
-    getData(
-      {
-        ...options,
-        address: address,
-        startsAtGte: startsAtDate ? startsAtDate + "T00:00:00Z" : "",
-        hourlyPayGte: hourlyPayGte,
-      },
-      keyword as string,
-      offset,
-      setNoticeListResponse,
-      openValidationErrorDialog,
-      setIsLoading,
-    );
-
+    setOptions((prev: any) => ({
+      ...prev,
+      address: address,
+      startsAtGte: startsAtDate ? startsAtDate + "T00:00:00Z" : "",
+      hourlyPayGte: hourlyPayGte,
+    }));
     setOptionCount(
       address.length + (startsAtDate ? 1 : 0) + (hourlyPayGte ? 1 : 0),
     );
   };
 
   const handleResetButton = () => {
-    getData(
-      {
-        ...options,
-        address: [],
-        startsAtGte: "",
-        hourlyPayGte: "",
-      },
-      keyword as string,
-      offset,
-      setNoticeListResponse,
-      openValidationErrorDialog,
-      setIsLoading,
-    );
-
+    setOptions({
+      address: [],
+      startsAtGte: "",
+      hourlyPayGte: "",
+    });
     setOptionCount(0);
   };
 

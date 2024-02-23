@@ -62,7 +62,6 @@ export default function Shop() {
   const router = useRouter();
   const { shopId } = router.query;
 
-  // router.push는 한 번 마운트 된 이후에 사용가능하다고 해서 useEffect사용,
   useEffect(() => {
     if (!getAccessTokenInStorage()) {
       router.push(PAGE_ROUTES.SIGNIN);
@@ -73,32 +72,32 @@ export default function Shop() {
       router.push(PAGE_ROUTES.NOTICES);
       return;
     }
-  }, []);
 
-  if (!shopData) {
-    (async () => {
-      // TODO : result type 재설정
-      const shopDataApiResult: any = await getShopsData(shopId as string);
-      setShopData(shopDataApiResult.item);
-      const noticesListApiResult: any = await getNoticesListData(
-        shopId as string,
-      );
-      setNoticesListData(noticesListApiResult);
-      setIsLoading(false);
-    })();
-  }
+    if (user) {
+      const getUserData = async () => {
+        const response: any = await getUsersData(user.id);
+        if (!response.item.shop || response.item.shop.item.id !== shopId) {
+          router.push(PAGE_ROUTES.SHOPS);
+          return;
+        }
+        setIsAccessChecking(false);
+      };
+      getUserData();
+    }
+  }, [router, shopId, user]);
 
-  if (user) {
-    const getUserData = async () => {
-      const response: any = await getUsersData(user.id);
-      if (!response.item.shop || response.item.shop.item.id !== shopId) {
-        router.push(PAGE_ROUTES.SHOPS);
-        return;
-      }
-      setIsAccessChecking(false);
-    };
-    getUserData();
-  }
+  useEffect(() => {
+    if (typeof shopId === "string") {
+      (async () => {
+        // TODO : result type 재설정
+        const shopDataApiResult: any = await getShopsData(shopId);
+        setShopData(shopDataApiResult.item);
+        const noticesListApiResult: any = await getNoticesListData(shopId);
+        setNoticesListData(noticesListApiResult);
+        setIsLoading(false);
+      })();
+    }
+  }, [shopId]);
 
   return (
     <EmployerLayout>
