@@ -73,16 +73,16 @@ export default function ApplicationList({
       <Table>
         <TableHeader className="bg-red-10">
           <TableRow className="flex text-[1.2rem] tablet:text-[1.4rem]">
-            <TableHead className="flex h-max w-full items-center border-r-[1px] border-gray-20 px-[12px] py-[12px] text-black">
+            <TableHead className="flex h-max w-full items-center border-r-[1px] border-gray-20 px-[12px] py-[12px] text-black tablet:w-1/3 desktop:w-1/4">
               신청자
             </TableHead>
-            <TableHead className="hidden h-max w-full items-center border-r-[1px] border-gray-20 px-[12px] py-[12px] text-black tablet:block">
+            <TableHead className="hidden h-max w-full items-center border-r-[1px] border-gray-20 px-[12px] py-[12px] text-black tablet:block tablet:w-1/3 desktop:w-1/4">
               소개
             </TableHead>
-            <TableHead className="hidden h-max w-full items-center border-r-[1px] border-gray-20 px-[12px] py-[12px] text-black desktop:block">
+            <TableHead className="hidden h-max w-full items-center border-r-[1px] border-gray-20 px-[12px] py-[12px] text-black desktop:block desktop:w-1/4">
               전화번호
             </TableHead>
-            <TableHead className="flex h-max w-full items-center px-[12px] py-[12px] text-black">
+            <TableHead className="flex h-max w-full items-center px-[12px] py-[12px] text-black tablet:w-1/3 desktop:w-1/4">
               상태
             </TableHead>
           </TableRow>
@@ -93,20 +93,20 @@ export default function ApplicationList({
               key={application.id}
               className="flex text-[1.4rem] tablet:text-[1.6rem]"
             >
-              <TableCell className="line-clamp-2 flex w-full items-center text-ellipsis border-b-[1px] border-r-[1px] border-gray-20 px-[12px] py-[12px] leading-[1.25] text-black">
+              <TableCell className="line-clamp-2 flex w-full items-center text-ellipsis border-b-[1px] border-r-[1px] border-gray-20 px-[12px] py-[12px] leading-[1.25] text-black tablet:w-1/3 desktop:w-1/4">
                 {application.user.item.name}
               </TableCell>
-              <TableCell className="line-clamp-2 hidden w-full items-center text-ellipsis border-b-[1px] border-r-[1px] border-gray-20 px-[12px] py-[12px] leading-[1.25] text-black tablet:block">
+              <TableCell className="line-clamp-2 hidden h-[6.3rem] w-full items-center text-ellipsis border-b-[1px] border-r-[1px] border-gray-20 px-[12px] py-[12px] leading-[1.25] text-black tablet:block tablet:w-1/3 desktop:w-1/4">
                 <div className="desktop:translate-y-[1rem]">
                   {application.user.item.bio}
                 </div>
               </TableCell>
-              <TableCell className="line-clamp-2 hidden w-full items-center text-ellipsis border-b-[1px] border-r-[1px] border-gray-20 px-[12px] py-[12px] leading-[1.25] text-black desktop:block">
+              <TableCell className="line-clamp-2 hidden w-full items-center text-ellipsis border-b-[1px] border-r-[1px] border-gray-20 px-[12px] py-[12px] leading-[1.25] text-black desktop:block desktop:w-1/4">
                 <div className="translate-y-[1rem]">
                   {application.user.item.phone}
                 </div>
               </TableCell>
-              <TableCell className="flex w-full items-center gap-[1rem] border-b-[1px] px-[12px] py-[12px]">
+              <TableCell className="flex w-full items-center justify-center gap-[1rem] border-b-[1px] px-[12px] py-[12px] tablet:w-1/3 desktop:w-1/4">
                 {application.status === "canceled" && <CancelBadge />}
                 {application.status === "pending" && (
                   <ApproveDialog
