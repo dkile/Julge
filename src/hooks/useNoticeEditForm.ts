@@ -4,6 +4,17 @@ import { errorMessage } from "@/helpers/validation";
 import { useNoticeEdit } from "@/queries/shop";
 import { FormRules } from "@/types/form";
 import { NoticeRegistFormField } from "@/types/shop";
+export interface Handlers {
+  hourlyPay: {
+    onBlur: () => void;
+  };
+  startsAt: {
+    onBlur: () => void;
+  };
+  workhour: {
+    onBlur: () => void;
+  };
+}
 
 export default function useNoticeEditForm(
   shopId: string,
@@ -75,7 +86,7 @@ export default function useNoticeEditForm(
     },
   };
 
-  const handlers = {
+  const handlers: Handlers = {
     hourlyPay: {
       onBlur: () => {
         form.trigger("hourlyPay");
