@@ -52,7 +52,7 @@ export default function CustomNotice({ user }: CustomNoticeProps) {
           맞춤 공고
         </span>
         <Carousel>
-          {customNoticesList ? (
+          {customNoticesList?.length ? (
             <div className="flex w-[35.1rem] flex-wrap justify-between gap-x-[0.9rem] gap-y-[1.6rem] tablet:w-[67.8rem] tablet:gap-y-[3.2rem] desktop:w-[96.4rem]">
               <CarouselContent>
                 {customNoticesList.map((data: any) => (
