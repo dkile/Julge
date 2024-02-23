@@ -97,10 +97,14 @@ export default function ApplicationList({
                 {application.user.item.name}
               </TableCell>
               <TableCell className="line-clamp-2 hidden w-full items-center text-ellipsis border-b-[1px] border-r-[1px] border-gray-20 px-[12px] py-[12px] leading-[1.25] text-black tablet:block">
-                {application.user.item.bio}
+                <div className="desktop:translate-y-[1rem]">
+                  {application.user.item.bio}
+                </div>
               </TableCell>
               <TableCell className="line-clamp-2 hidden w-full items-center text-ellipsis border-b-[1px] border-r-[1px] border-gray-20 px-[12px] py-[12px] leading-[1.25] text-black desktop:block">
-                {application.user.item.phone}
+                <div className="translate-y-[1rem]">
+                  {application.user.item.phone}
+                </div>
               </TableCell>
               <TableCell className="flex w-full items-center gap-[1rem] border-b-[1px] px-[12px] py-[12px]">
                 {application.status === "canceled" && <CancelBadge />}
