@@ -83,6 +83,10 @@ URL: https://julge.vercel.app
 
 ### 🐿️ 박윤수
 
+- 사장 가게 등록 / 편집
+  - CRU 기능 구현 (DELETE 백엔드 미구현)
+- 공고 리스트 페이지
+  - 페이지 네이션 / 필터 / 정렬
 
 ## 👀 페이지 preview
 
